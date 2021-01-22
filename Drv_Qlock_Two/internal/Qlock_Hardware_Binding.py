@@ -6,7 +6,7 @@ Created on Mon Jan 18 19:47:16 2021
 """
 import numpy as np;
 import time
-from internal.Drv_ws2812b_mock import Drv_ws2812b
+from internal.Drv_ws2812b import Drv_ws2812b
 
 class Qlock_Hardware_Binding:
     def __init__(self, num_leds, font_color, font_brightness, frame_color, frame_brightness, minute_color, minute_brightness, general_brightness):
@@ -23,7 +23,7 @@ class Qlock_Hardware_Binding:
         
         self.__init__transition_intervals();
         
-        self.__drv_ws2812b = Drv_ws2812b()
+        self.__drv_ws2812b = Drv_ws2812b(num_leds)
         
 
     
