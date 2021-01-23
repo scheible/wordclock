@@ -62,7 +62,6 @@ class Qlock_Hardware_Binding:
         elif (self.__transition_mode == 1):
             y = self.__A_off * np.exp(-(tick + 1) / self.__transition_intervals) + self.__b_off;
             col_led_off = np.array(y * self.__font_color, dtype=np.ubyte);
-            print(y)
             
         return col_led_off
         

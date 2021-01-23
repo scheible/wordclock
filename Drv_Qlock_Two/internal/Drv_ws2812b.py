@@ -8,7 +8,7 @@ Created on Fri Jan 22 15:02:12 2021
 import numpy as np
 import sys
 from os.path import dirname
-sys.path.append(dirname("/home/pi/rpi_ws281x/"))
+#sys.path.append(dirname("/home/pi/QlockTwo/uhrthree/Drv_Qlock_Two"))
 from rpi_ws281x import *
 
 class Drv_ws2812b:
@@ -31,13 +31,7 @@ class Drv_ws2812b:
         
         
     def setPixelColor(self, index, color):
-        color = np.array(color, dtype=np.ubyte)
-        col = Color(color[0], color[1], color[2])
-        print(Color(6, 6, 6))
-        print(index)
-        print(col)
-        print(color)
-        self.__strip.setPixelColor(index, col)
+        self.__strip.setPixelColor(index, Color(int(color[0]), int(color[1]), int(color[2])))
         
     def show(self):
         self.__strip.show()
