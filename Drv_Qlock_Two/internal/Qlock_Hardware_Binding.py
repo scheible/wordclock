@@ -7,6 +7,8 @@ Created on Mon Jan 18 19:47:16 2021
 import numpy as np;
 import time
 from internal.Drv_ws2812b import Drv_ws2812b
+from internal.Task_Pool import Task_Pool
+
 
 class Qlock_Hardware_Binding:
     def __init__(self, num_leds, font_color, font_brightness, frame_color, frame_brightness, minute_color, minute_brightness, general_brightness):
@@ -24,6 +26,12 @@ class Qlock_Hardware_Binding:
         self.__init__transition_intervals();
         
         self.__drv_ws2812b = Drv_ws2812b(num_leds)
+        
+        
+        self.__running_task_id = 0;
+        self.__task_id_in_queue = 0;
+        
+        self.__task_pool = Task_Pool()
         
 
     
@@ -66,8 +74,9 @@ class Qlock_Hardware_Binding:
             
         return col_led_off
         
-    
-    
+    def flush(self, led_list):     
+        self.__task_pool.add_task(self.flush_sync, led_list)
+        
     def flush_sync(self, led_list):
         led_list = np.array(led_list);
         
