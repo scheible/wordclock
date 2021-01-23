@@ -5,7 +5,7 @@ from internal.Qlock_Matrix import Qlock_Matrix
 from internal.Qlock_Hardware_Binding import Qlock_Hardware_Binding
 class Drv_QlockTwo:
     
-    def __init__(self, num_letter_vertical = 10, num_letter_horizontal = 11, leds_per_letter = 2):        
+    def __init__(self, num_letter_vertical = 10, num_letter_horizontal = 11, leds_per_letter = 2):
         font_color = np.array((100, 100, 100), dtype=np.ubyte);
         font_brightness = 100;
         frame_color = np.array((100, 100, 100), dtype=np.ubyte);
@@ -35,8 +35,12 @@ class Drv_QlockTwo:
         self.__qlock_matrix.disable_letter(pos_vertical, pos_horizontal)
         
     def flush(self, clear_letter_matrix_after_flush = True):
-        self.flush_sync(clear_letter_matrix_after_flush);
+        led_list = self.__qlock_matrix.get_led_list();
+        self.__qlock_hardware_binding.flush(led_list);
         
+        if (clear_letter_matrix_after_flush):
+            self.clear_all_letter();
+            
     def flush_sync(self, clear_letter_matrix_after_flush = True):
         led_list = self.__qlock_matrix.get_led_list();
         self.__qlock_hardware_binding.flush_sync(led_list);

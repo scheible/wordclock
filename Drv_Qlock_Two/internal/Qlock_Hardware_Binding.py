@@ -73,8 +73,9 @@ class Qlock_Hardware_Binding:
             
         return col_led_off
         
-    def flush(self, led_list):     
-        self.__task_pool.add_task(self.flush_sync, led_list)
+    def flush(self, led_list):
+        led_list_ = led_list.copy();
+        self.__task_pool.add_task(self.flush_sync, led_list_)
         
     def flush_sync(self, led_list):
         led_list = np.array(led_list);
@@ -96,7 +97,8 @@ class Qlock_Hardware_Binding:
             strip_duration = round(time.time() * 1000) - startTime
             if (strip_duration > self.__transition_interval_ms):
                 sleep_duration = self.__transition_interval_ms - strip_duration
-                time.sleep(sleep_duration/1000.0)
+                if (sleep_duration > 0):
+                    time.sleep(sleep_duration/1000.0)
                 
         self.__old_led_list = led_list
                 
