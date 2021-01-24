@@ -8,7 +8,7 @@ import numpy as np
 
 class Qlock_Matrix:
     
-    def __init__(self, num_letter_vertical = 10, num_letter_horizontal = 11, leds_per_letter = 2):
+    def __init__(self, num_letter_vertical, num_letter_horizontal, leds_per_letter):
         self.__num_letter_vertical = num_letter_vertical;
         self.__num_letter_horizontal = num_letter_horizontal;
         self.__leds_per_letter = leds_per_letter;
@@ -27,9 +27,9 @@ class Qlock_Matrix:
         for i in range(self.__num_letter_horizontal):
             for j in range(self.__num_leds_vertical):
                 if (i % self.__leds_per_letter == 0):
-                    self.__led_look_up_table[i * self.__num_leds_vertical + j, 1] = j // 2
+                    self.__led_look_up_table[i * self.__num_leds_vertical + j, 1] = j // self.__leds_per_letter
                 else:
-                    self.__led_look_up_table[i * self.__num_leds_vertical + j, 1] = (self.__num_leds_vertical - j - 1) // 2
+                    self.__led_look_up_table[i * self.__num_leds_vertical + j, 1] = (self.__num_leds_vertical - j - 1) // self.__leds_per_letter
                 self.__led_look_up_table[i * self.__num_leds_vertical + j, 0] = i
                 
     def get_led_list(self):
