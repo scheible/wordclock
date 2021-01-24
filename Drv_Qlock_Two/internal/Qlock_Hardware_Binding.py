@@ -9,23 +9,30 @@ import time
 from internal.Drv_ws2812b import Drv_ws2812b
 from internal.Task_Pool import Task_Pool
 
-
 class Qlock_Hardware_Binding:
-    def __init__(self, num_leds, font_color, font_brightness, frame_color, frame_brightness, minute_color, minute_brightness, general_brightness):
+    def __init__(self, num_leds, qlock_cfg, ws_2812b_cfg):
+        
+        
         self.__num_leds = num_leds;
-        self.__font_color = font_color;
-        self.__font_brightness = font_brightness;
-        self.__frame_color = frame_color;
-        self.__frame_brightness = frame_brightness;
-        self.__minute_color = minute_color;
-        self.__minute_brightness = minute_brightness;
-        self.__general_brightness = general_brightness;
+        self.__font_color = np.array(qlock_cfg[3]);
+        self.__font_brightness = qlock_cfg[4];
+        self.__frame_color = np.array(qlock_cfg[5]);
+        self.__frame_brightness = qlock_cfg[6];
+        self.__minute_color = np.array(qlock_cfg[7]);
+        self.__minute_brightness = qlock_cfg[8];
+        self.__general_brightness = qlock_cfg[9];
+        self.__off_color = np.zeros(3);
         
         self.__old_led_list = np.zeros((num_leds))
         
-        self.__init__transition_intervals();
         
-        self.__drv_ws2812b = Drv_ws2812b(num_leds)
+        self.__ist_soft_transition_enabled = qlock_cfg[12];
+        transition_time_ms = qlock_cfg[13];
+        transition_mode = qlock_cfg[14];
+        
+        self.__init__transition_intervals(transition_time_ms, transition_mode);
+        
+        self.__drv_ws2812b = Drv_ws2812b(num_leds, ws_2812b_cfg)
         
         
         self.__running_task_id = 0;
@@ -35,7 +42,7 @@ class Qlock_Hardware_Binding:
         
 
     
-    def __init__transition_intervals(self, transition_time_ms = 200, transition_mode = 1, transition_interval_ms = 20):
+    def __init__transition_intervals(self, transition_time_ms, transition_mode, transition_interval_ms = 20):
         self.__transition_interval_ms = transition_interval_ms;
         self.__transition_time_ms = transition_time_ms;
         self.__transition_mode = transition_mode;
@@ -85,21 +92,27 @@ class Qlock_Hardware_Binding:
         if (led_list.size != self.__num_leds):
             return -1;
         
-        for transitions in range(self.__transition_intervals):
-            startTime = round(time.time() * 1000)
+        if (not self.__ist_soft_transition_enabled):
             for i in range(self.__num_leds):
-                if (led_list[i] == 1) and (self.__old_led_list[i] == 0):
-                    self.__drv_ws2812b.setPixelColor(i, self.__get_transitionColor_On(transitions));
-                elif (led_list[i] == 0) and (self.__old_led_list[i] == 1):
-                    self.__drv_ws2812b.setPixelColor(i, self.__get_transitionColor_Off(transitions));
+                if (led_list[i] == 1):
+                    self.__drv_ws2812b.setPixelColor(i, self.__font_color);
             self.__drv_ws2812b.show();
-            start_time = round(time.time() * 1000)
-            strip_duration = round(time.time() * 1000) - startTime
-            if (strip_duration > self.__transition_interval_ms):
-                sleep_duration = self.__transition_interval_ms - strip_duration
-                if (sleep_duration > 0):
-                    time.sleep(sleep_duration/1000.0)
-                
+        else:
+            for transitions in range(self.__transition_intervals):
+                startTime = round(time.time() * 1000)
+                for i in range(self.__num_leds):
+                    if (led_list[i] == 1) and (self.__old_led_list[i] == 0):
+                        self.__drv_ws2812b.setPixelColor(i, self.__get_transitionColor_On(transitions));
+                    elif (led_list[i] == 0) and (self.__old_led_list[i] == 1):
+                        self.__drv_ws2812b.setPixelColor(i, self.__get_transitionColor_Off(transitions));
+                self.__drv_ws2812b.show();
+                start_time = round(time.time() * 1000)
+                strip_duration = round(time.time() * 1000) - startTime
+                if (strip_duration < self.__transition_interval_ms):
+                    sleep_duration = self.__transition_interval_ms - strip_duration
+                    if (sleep_duration > 0):
+                        time.sleep(sleep_duration/1000.0)
+                    
         self.__old_led_list = led_list
                 
     

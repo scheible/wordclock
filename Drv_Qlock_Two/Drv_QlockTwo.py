@@ -3,27 +3,34 @@
 import numpy as np;
 from internal.Qlock_Matrix import Qlock_Matrix
 from internal.Qlock_Hardware_Binding import Qlock_Hardware_Binding
+from internal.Json_QlockTwo import Json_QlockTwo
+from internal.Json_Ws2812b import Json_Ws2812b
+import sys
+
 class Drv_QlockTwo:
     
-    def __init__(self, num_letter_vertical = 10, num_letter_horizontal = 11, leds_per_letter = 2):
-        font_color = np.array((100, 100, 100), dtype=np.ubyte);
-        font_brightness = 100;
-        frame_color = np.array((100, 100, 100), dtype=np.ubyte);
-        frame_brightness = 100;
-        minute_color = np.array((100, 100, 100), dtype=np.ubyte);
-        minute_brightness = 100;
-        general_brightness = 100;
-        self.__is_minutes_shown = False;
-        self.__is_frame_shown = False;
-        self.__is_soft_transistion_enabled = True;
-        self.__transition_time_ms = 1000;
-        self.__transition_mode = 0;
+    def __init__(self, json_qlocktwo_file_path, json_ws2812b_file_path):
+        
+        
+        self.__json_qlocktwo = Json_QlockTwo(json_qlocktwo_file_path)
+        if (not(self.__json_qlocktwo.is_json_valid())):
+            sys.exit("QlockTwo Json does not yield a valid config. System will exit!")
+        qlock_cfg = self.__json_qlocktwo.get_json_results()
+        
+        self.__json_ws2812b = Json_Ws2812b(json_ws2812b_file_path)
+        if (not(self.__json_ws2812b.is_json_valid())):
+            sys.exit("Ws2812b Json does not yield a valid config. System will exit!")
+        ws_2812b_cfg = self.__json_ws2812b.get_json_results()
+        
+        
+        num_letter_vertical = qlock_cfg[0]
+        num_letter_horizontal = qlock_cfg[1]
+        leds_per_letter = qlock_cfg[2]
+        num_leds = num_letter_vertical * num_letter_horizontal * leds_per_letter;
         
         
         self.__qlock_matrix = Qlock_Matrix(num_letter_vertical, num_letter_horizontal, leds_per_letter);
-        
-        num_leds = num_letter_vertical * num_letter_horizontal * leds_per_letter;
-        self.__qlock_hardware_binding = Qlock_Hardware_Binding(num_leds, font_color, font_brightness, frame_color, frame_brightness, minute_color, minute_brightness, general_brightness);
+        self.__qlock_hardware_binding = Qlock_Hardware_Binding(num_leds, qlock_cfg, ws_2812b_cfg);
      
     def clear_all_letter(self):
         self.__qlock_matrix.clear_all_letter();

@@ -7,16 +7,24 @@ Created on Fri Jan 22 15:10:56 2021
 
 from Drv_QlockTwo import Drv_QlockTwo;
 import time
-drv_qlocktwo = Drv_QlockTwo()
-for n in range(0,5):
-    for i in range(6, 11):
-        drv_qlocktwo.enable_letter(n, i);
-        startTime = round(time.time() * 1000)
-        drv_qlocktwo.flush(False);
-        print("Application took ", round(time.time() * 1000) - startTime);
-    #time.sleep(2);
-    drv_qlocktwo.flush();
-    #time.sleep(0.2);
+
+json_qlocktwo_file_path = "cfg/Drv_QlockTwo.json"
+json_ws2812b_file_path = "cfg/Drv_ws2812b.json"
+drv_qlocktwo = Drv_QlockTwo(json_qlocktwo_file_path, json_ws2812b_file_path)
+
+drv_qlocktwo.enable_letter(0, 0);
+drv_qlocktwo.flush();
+
+if (False):
+    for n in range(0,5):
+        for i in range(6, 11):
+            drv_qlocktwo.enable_letter(n, i);
+            startTime = round(time.time() * 1000)
+            drv_qlocktwo.flush(False);
+            print("Application took ", round(time.time() * 1000) - startTime);
+        #time.sleep(2);
+        drv_qlocktwo.flush();
+        #time.sleep(0.2);
             
-drv_qlocktwo.clear_all_letter();
-drv_qlocktwo.flush(); 
+    drv_qlocktwo.clear_all_letter();
+    drv_qlocktwo.flush(); 
