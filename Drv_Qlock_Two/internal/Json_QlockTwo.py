@@ -29,7 +29,23 @@ class Json_QlockTwo:
                                     "transition_mode", int]
           
         self.__cfg = []
+        self.__json_file_path = json_file_path;
         self.__is_valid = self.__parse_json_qlocktwo(json_file_path);
+        
+        
+    def update_json_entry(self, cfg_id, new_value):
+        is_updated = False
+        
+        if (self.__is_valid):
+            if (cfg_id < (len(self.__searchedVariables) // 2)):
+                if ((self.__searchedVariables[cfg_id * 2].upper() in self.__json_data)): 
+                    if isinstance(new_value, self.__searchedVariables[cfg_id * 2 + 1]): 
+                        self.__json_data[self.__searchedVariables[cfg_id * 2].upper()] = new_value
+                        with open(self.__json_file_path, "w") as write_file:
+                            json.dump(self.__json_data, write_file, indent=4)
+                        is_updated = True
+        return is_updated
+            
         
         
     def is_json_valid(self):

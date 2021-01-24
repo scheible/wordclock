@@ -12,8 +12,11 @@ json_qlocktwo_file_path = "cfg/Drv_QlockTwo.json"
 json_ws2812b_file_path = "cfg/Drv_ws2812b.json"
 drv_qlocktwo = Drv_QlockTwo(json_qlocktwo_file_path, json_ws2812b_file_path)
 
+
+drv_qlocktwo.set_font_color([0, 0, 255])
 drv_qlocktwo.enable_letter(0, 0);
-drv_qlocktwo.flush();
+drv_qlocktwo.flush(False); 
+
 
 if (False):
     for n in range(0,5):
