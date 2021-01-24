@@ -12,10 +12,14 @@ json_qlocktwo_file_path = "cfg/Drv_QlockTwo.json"
 json_ws2812b_file_path = "cfg/Drv_ws2812b.json"
 drv_qlocktwo = Drv_QlockTwo(json_qlocktwo_file_path, json_ws2812b_file_path)
 
-
-drv_qlocktwo.set_font_color([0, 0, 255])
+print("Set green")
+drv_qlocktwo.set_font_color([0, 255, 0])
 drv_qlocktwo.enable_letter(0, 0);
-drv_qlocktwo.flush(False); 
+drv_qlocktwo.flush_sync(True);
+print("Set red")
+drv_qlocktwo.set_font_color([255, 0, 0])
+drv_qlocktwo.enable_letter(0, 1);
+drv_qlocktwo.flush_sync(False); 
 
 
 if (False):

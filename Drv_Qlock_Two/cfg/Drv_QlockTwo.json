@@ -3,9 +3,9 @@
     "NUM_LETTER_HORIZONTAL": 11,
     "LEDS_PER_LETTER": 2,
     "FONT_COLOR": [
-        120,
-        120,
-        120
+        255,
+        0,
+        0
     ],
     "FONT_BRIGHTNESS": 100,
     "FRAME_COLOR": [

@@ -105,6 +105,8 @@ class Qlock_Hardware_Binding:
                         self.__drv_ws2812b.setPixelColor(i, self.__get_transitionColor_On(transitions));
                     elif (led_list[i] == 0) and (self.__old_led_list[i] == 1):
                         self.__drv_ws2812b.setPixelColor(i, self.__get_transitionColor_Off(transitions));
+                    elif (led_list[i] == 1) and (self.__old_led_list[i] == 1):
+                        self.__drv_ws2812b.setPixelColor(i, self.__font_color);
                 self.__drv_ws2812b.show();
                 start_time = round(time.time() * 1000)
                 strip_duration = round(time.time() * 1000) - startTime
@@ -121,21 +123,21 @@ class Qlock_Hardware_Binding:
     
     # Setter and Getter for Font Color
     def set_font_color(self, font_color):
-        self.__font_color = font_color;
+        self.__font_color = np.array(font_color);
         
     def get_font_color(self):
         return self.__font_color;
 
     # Setter and Getter for Font Brightness
     def set_font_brightness(self, font_brightness):
-        self.__font_brightness = font_brightness;
+        self.__font_brightness = np.array(font_brightness);
         
     def get___font_brightness(self):
         return self.__font_brightness;
     
     # Setter and Getter for Frame Color
     def set_frame_color(self, frame_color):
-        self.__frame_color = frame_color;
+        self.__frame_color = np.array(frame_color);
         
     def get_frame_color(self):
         return self.__frame_color;
