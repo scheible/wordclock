@@ -8,13 +8,12 @@ import numpy as np;
 import time
 from internal.Drv_ws2812b import Drv_ws2812b
 from internal.Task_Pool import Task_Pool
-
+#from numba import jit
 class Qlock_Hardware_Binding:
     def __init__(self, num_leds, qlock_cfg, ws_2812b_cfg):
         
         
         self.__num_leds = num_leds;
-        self.__font_color = np.array(qlock_cfg[3]);
         self.__font_brightness = qlock_cfg[4];
         self.__frame_color = np.array(qlock_cfg[5]);
         self.__frame_brightness = qlock_cfg[6];
@@ -23,7 +22,7 @@ class Qlock_Hardware_Binding:
         self.__general_brightness = qlock_cfg[9];
         self.__off_color = np.zeros(3);
         
-        self.__old_led_list = np.zeros((num_leds))
+        self.__old_led_list = np.zeros((num_leds, 3))
         
         
         self.__ist_soft_transition_enabled = qlock_cfg[12];
@@ -42,7 +41,7 @@ class Qlock_Hardware_Binding:
         
 
     
-    def __init__transition_intervals(self, transition_time_ms, transition_mode, transition_interval_ms = 20):
+    def __init__transition_intervals(self, transition_time_ms, transition_mode, transition_interval_ms = 40):
         self.__transition_interval_ms = transition_interval_ms;
         self.__transition_time_ms = transition_time_ms;
         self.__transition_mode = transition_mode;
@@ -57,76 +56,73 @@ class Qlock_Hardware_Binding:
         col_led_on = np.array((1, 1, 1), dtype=np.ubyte)
         # Linear
         if (self.__transition_mode == 0):
-            col_led_on = np.array(self.__font_color * ((tick + 1) / self.__transition_intervals), dtype=np.ubyte);
+            y =  (tick + 1) / self.__transition_intervals
             
         # Exp
         elif (self.__transition_mode == 1):
             y = self.__A_on * np.exp((tick + 1) / self.__transition_intervals) + self.__b_on;
-            col_led_on = np.array(y * self.__font_color, dtype=np.ubyte);
             
-        return col_led_on
+        return y
     
     def __get_transitionColor_Off(self, tick):
         
         col_led_off = np.array((1, 1, 1), dtype=np.ubyte)
         # Linear
         if (self.__transition_mode == 0):
-            col_led_off = self.__font_color - np.array(self.__font_color * tick / self.__transition_intervals, dtype=np.ubyte);
+            y = 1 - (tick + 1) / self.__transition_intervals
             
         # Exp
         elif (self.__transition_mode == 1):
             y = self.__A_off * np.exp(-(tick + 1) / self.__transition_intervals) + self.__b_off;
-            col_led_off = np.array(y * self.__font_color, dtype=np.ubyte);
             
-        return col_led_off
+        return y
         
     def flush(self, led_list):
         led_list_ = led_list.copy();
         self.__task_pool.add_task(self.flush_sync, led_list_)
         
     def flush_sync(self, led_list):
-        led_list = np.array(led_list);
-        
-        if (led_list.ndim != 1):
+       
+        if (led_list.ndim != 2):
             return -1;
-        if (led_list.size != self.__num_leds):
+        if (led_list.size != 4 * self.__num_leds):
             return -1;
         
         if (not self.__ist_soft_transition_enabled):
             for i in range(self.__num_leds):
-                if (led_list[i] == 1):
-                    self.__drv_ws2812b.setPixelColor(i, self.__font_color);
+                if (led_list[i, 0] == 1):
+                    self.__drv_ws2812b.setPixelColor(i, led_list[i, 1:4]);
             self.__drv_ws2812b.show();
         else:
+            t1 = round(time.time() * 1000)
             for transitions in range(self.__transition_intervals):
                 startTime = round(time.time() * 1000)
-                for i in range(self.__num_leds):
-                    if (led_list[i] == 1) and (self.__old_led_list[i] == 0):
-                        self.__drv_ws2812b.setPixelColor(i, self.__get_transitionColor_On(transitions));
-                    elif (led_list[i] == 0) and (self.__old_led_list[i] == 1):
-                        self.__drv_ws2812b.setPixelColor(i, self.__get_transitionColor_Off(transitions));
-                    elif (led_list[i] == 1) and (self.__old_led_list[i] == 1):
-                        self.__drv_ws2812b.setPixelColor(i, self.__font_color);
-                self.__drv_ws2812b.show();
-                start_time = round(time.time() * 1000)
+                col_on = self.__get_transitionColor_On(transitions)
+                col_off = self.__get_transitionColor_Off(transitions)
+                
+                # prepare multiply arrays
+                factor = np.zeros((self.__num_leds, 3))
+                factor[(led_list[:, 0] == 1) & (self.__old_led_list[:, 0] == 0), :] = col_on
+                factor[(led_list[:, 0] == 0) & (self.__old_led_list[:, 0] == 1), :] = col_off
+                factor[(led_list[:, 0] == 1) & (self.__old_led_list[:, 0] == 1), :] = 1
+                
+                led_colors = np.array(led_list[:, 1:4] * factor, dtype=int)
+                led_colors = (led_colors[:, 0] << 16) | (led_colors[:, 1] << 8) | (led_colors[:, 2])
+                self.__drv_ws2812b.updateAllPixel(led_colors)
+                self.__drv_ws2812b.show()
                 strip_duration = round(time.time() * 1000) - startTime
                 if (strip_duration < self.__transition_interval_ms):
                     sleep_duration = self.__transition_interval_ms - strip_duration
                     if (sleep_duration > 0):
                         time.sleep(sleep_duration/1000.0)
-                    
+            t2 = round(time.time() * 1000)
+            print("Flashing took ", t2 - t1, " ms")
         self.__old_led_list = led_list
                 
     
     
     
     
-    # Setter and Getter for Font Color
-    def set_font_color(self, font_color):
-        self.__font_color = np.array(font_color);
-        
-    def get_font_color(self):
-        return self.__font_color;
 
     # Setter and Getter for Font Brightness
     def set_font_brightness(self, font_brightness):

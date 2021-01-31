@@ -34,7 +34,14 @@ class Drv_ws2812b:
     def setPixelColor(self, index, color):
         self.__strip.setPixelColor(index, Color(int(color[0]), int(color[1]), int(color[2])))
         
+    def updateAllPixel(self, led_colors):
+        pixel_ref = self.__strip.getPixels()
+                
+        pixel_ref[:] = led_colors.tolist()
+        
     def show(self):
+        #pixel_ref = self.__strip.getPixels()
+        #pixel_ref[0] = Color(100, 0, 0)
         self.__strip.show()
             
             

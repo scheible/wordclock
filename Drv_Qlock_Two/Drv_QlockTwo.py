@@ -26,35 +26,36 @@ class Drv_QlockTwo:
         num_letter_vertical = qlock_cfg[0]
         num_letter_horizontal = qlock_cfg[1]
         leds_per_letter = qlock_cfg[2]
+        font_color = qlock_cfg[3]
         num_leds = num_letter_vertical * num_letter_horizontal * leds_per_letter;
         
         
         
-        self.__qlock_matrix = Qlock_Matrix(num_letter_vertical, num_letter_horizontal, leds_per_letter);
+        self.__qlock_matrix = Qlock_Matrix(num_letter_vertical, num_letter_horizontal, leds_per_letter, font_color);
         self.__qlock_hardware_binding = Qlock_Hardware_Binding(num_leds, qlock_cfg, ws_2812b_cfg);
      
-    def clear_all_letter(self):
-        self.__qlock_matrix.clear_all_letter();
+    def clear_all_elements(self):
+        self.__qlock_matrix.clear_all_elements();
         
-    def enable_letter(self, pos_vertical, pos_horizontal):
-        self.__qlock_matrix.enable_letter(pos_vertical, pos_horizontal)
+    def enable_element(self, pos_vertical, pos_horizontal, color = -1):
+        self.__qlock_matrix.enable_element(pos_vertical, pos_horizontal, color)
         
-    def disable_letter(self, pos_vertical, pos_horizontal):
-        self.__qlock_matrix.disable_letter(pos_vertical, pos_horizontal)
+    def disable_element(self, pos_vertical, pos_horizontal):
+        self.__qlock_matrix.disable_element(pos_vertical, pos_horizontal)
         
-    def flush(self, clear_letter_matrix_after_flush = True):
+    def flush(self, clear_elements_matrix_after_flush = True):
         led_list = self.__qlock_matrix.get_led_list();
         self.__qlock_hardware_binding.flush(led_list);
         
-        if (clear_letter_matrix_after_flush):
-            self.clear_all_letter();
+        if (clear_elements_matrix_after_flush ):
+            self.clear_all_elements();
             
-    def flush_sync(self, clear_letter_matrix_after_flush = True):
+    def flush_sync(self, clear_elements_matrix_after_flush = True):
         led_list = self.__qlock_matrix.get_led_list();
         self.__qlock_hardware_binding.flush_sync(led_list);
         
-        if (clear_letter_matrix_after_flush):
-            self.clear_all_letter();
+        if (clear_elements_matrix_after_flush):
+            self.clear_all_elements();
         
         
         
@@ -62,7 +63,7 @@ class Drv_QlockTwo:
         is_updated = False;
         if (len(font_color) == 3):
             is_updated = self.__json_qlocktwo.update_json_entry(3, list(font_color))
-            self.__qlock_hardware_binding.set_font_color(font_color);
+            self.__qlock_matrix.set_font_color(font_color);
         return is_updated
         
     def set_font_brightness(self, font_brightness):
