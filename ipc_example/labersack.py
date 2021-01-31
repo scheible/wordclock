@@ -140,7 +140,8 @@ class Client():
 
 
 class Server():
-	def __init__(self):
+	def __init__(self, driver):
+		self.__driver = driver
 		self.__host = '*'
 		self.__port = 1234
 		self.__context = zmq.Context()
@@ -150,11 +151,12 @@ class Server():
 		self.__socket.bind('tcp://' + self.__host + ':' + str(self.__port))
 
 		self.__pubContext = zmq.Context()
-			self.frameColor = [10, 20, 30]
+		self.frameColor = [10, 20, 30]
 		self.letterColor = [99, 199, 249]
 		self.secondsColor = [0, 0, 0]
 		self.minutesColor = [0, 0, 0]
-		self.brightness = [2]	self.__pubSocket = self.__pubContext.socket(zmq.PUB)
+		self.brightness = [2]
+		self.__pubSocket = self.__pubContext.socket(zmq.PUB)
 		self.__pubSocket.bind("tcp://*:6666")
 
 		self.__onChangeCallback = None
@@ -217,7 +219,20 @@ class Server():
 				colorPointer[i] = p;
 			self.__socket.send(COMMAND_OK)
 			self.__pubSocket.send(b'UPD')
-			self.__onChangeCallback()
+
+			if (colorPointer == self.letterColor):
+				tempColor = self.letterColor.copy()
+				tempColor[0] = int(self.letterColor[0]*self.brightness[0]/255)
+				tempColor[1] = int(self.letterColor[1]*self.brightness[0]/255)
+				tempColor[2] = int(self.letterColor[2]*self.brightness[0]/255)
+				self.__driver.set_font_color(tempColor)
+
+			if (colorPointer == self.brightness):
+				tempColor = self.letterColor.copy()
+				tempColor[0] = int(self.letterColor[0]*self.brightness[0]/255)
+				tempColor[1] = int(self.letterColor[1]*self.brightness[0]/255)
+				tempColor[2] = int(self.letterColor[2]*self.brightness[0]/255)
+				self.__driver.set_font_color(tempColor)
 		else:
 			self.__socket.send(COMMAND_NOT_OK)
 

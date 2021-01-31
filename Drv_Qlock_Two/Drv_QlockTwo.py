@@ -27,7 +27,7 @@ class Drv_QlockTwo:
         num_letter_vertical = qlock_cfg[0]
         num_letter_horizontal = qlock_cfg[1]
         leds_per_letter = qlock_cfg[2]
-        font_color = qlock_cfg[3]
+        font_color = qlock_cfg[6]
         num_leds = num_letter_vertical * num_letter_horizontal * leds_per_letter;
         
         self.__task_pool = Task_Pool()
@@ -68,7 +68,7 @@ class Drv_QlockTwo:
     def set_font_color(self, font_color):
         is_updated = False;
         if (len(font_color) == 3):
-            is_updated = self.__json_qlocktwo.update_json_entry(3, list(font_color))
+            is_updated = self.__json_qlocktwo.update_json_entry(6, list(font_color))
             self.__qlock_matrix.set_font_color(font_color);
             led_list = self.__qlock_matrix.get_led_list();
             led_list_ = led_list.copy();

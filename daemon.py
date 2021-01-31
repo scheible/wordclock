@@ -1,12 +1,17 @@
 from Drv_Qlock_Two.Drv_QlockTwo import *
-from time import sleep
+from time import sleep, tzset
 from datetime import datetime
+from ipc_example.labersack import Server
 
 json_qlocktwo_file_path = "Drv_Qlock_Two/cfg/Drv_QlockTwo.json"
 json_ws2812b_file_path = "Drv_Qlock_Two/cfg/Drv_ws2812b.json"
 drv_qlocktwo = Drv_QlockTwo(json_qlocktwo_file_path, json_ws2812b_file_path)
-drv_qlocktwo.set_font_color([180, 180, 180])
 old_mm = -1
+old_hh = -1
+
+ipcSrv = Server(drv_qlocktwo)
+
+
 def hour(h):
 
 	if (h == 0):
@@ -37,16 +42,24 @@ def hour(h):
 		ZWOELF()
 
 def tick():
+	tzset()
 	hh = datetime.now().hour
 	mm = datetime.now().minute
 	global old_mm
-	if (mm == old_mm):
+	global old_hh
+
+	if (mm == old_mm and hh == old_hh):
 		return
+
+	drv_qlocktwo.clear_all_elements()
 	old_mm = mm
+	old_hh = hh
 	ES()
 	IST()
 
-	if (mm < 10):
+	if (mm < 5):
+		UHR()
+	elif (mm < 10):
 		FUENF1()
 		NACH()
 	elif (mm < 15):
@@ -91,7 +104,7 @@ def tick():
 		UHR()
 
 
-	drv_qlocktwo.flush(); 
+	drv_qlocktwo.flush(False)
 
 
 
@@ -183,4 +196,5 @@ def off(x, y):
 
 while True:
 	tick()
-	sleep(1)    
+	ipcSrv.poll()
+	sleep(0.1)    

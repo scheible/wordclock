@@ -2,13 +2,13 @@
     "NUM_LETTER_VERTICAL": 10,
     "NUM_LETTER_HORIZONTAL": 11,
     "LEDS_PER_LETTER": 2,
-	"IS_SOFT_TRANSISTION_ENABLED": true,
+    "IS_SOFT_TRANSISTION_ENABLED": true,
     "TRANSITION_TIME_MS": 5000,
     "TRANSITION_MODE": 1,
     "FONT_COLOR": [
-        180,
-        180,
-        180
+        0,
+        25,
+        9
     ],
     "FONT_BRIGHTNESS": 100,
     "FRAME_COLOR": [
