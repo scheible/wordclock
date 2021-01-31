@@ -14,20 +14,14 @@ class Qlock_Hardware_Binding:
         
         
         self.__num_leds = num_leds;
-        self.__font_brightness = qlock_cfg[4];
-        self.__frame_color = np.array(qlock_cfg[5]);
-        self.__frame_brightness = qlock_cfg[6];
-        self.__minute_color = np.array(qlock_cfg[7]);
-        self.__minute_brightness = qlock_cfg[8];
-        self.__general_brightness = qlock_cfg[9];
         self.__off_color = np.zeros(3);
         
         self.__old_led_list = np.zeros((num_leds, 3))
         
         
-        self.__ist_soft_transition_enabled = qlock_cfg[12];
-        transition_time_ms = qlock_cfg[13];
-        transition_mode = qlock_cfg[14];
+        self.__ist_soft_transition_enabled = qlock_cfg[3];
+        transition_time_ms = qlock_cfg[4];
+        transition_mode = qlock_cfg[5];
         
         self.__init__transition_intervals(transition_time_ms, transition_mode);
         
@@ -37,7 +31,7 @@ class Qlock_Hardware_Binding:
         self.__running_task_id = 0;
         self.__task_id_in_queue = 0;
         
-        self.__task_pool = Task_Pool()
+        
         
 
     
@@ -116,7 +110,7 @@ class Qlock_Hardware_Binding:
                     if (sleep_duration > 0):
                         time.sleep(sleep_duration/1000.0)
             t2 = round(time.time() * 1000)
-            print("Flashing took ", t2 - t1, " ms")
+            #print("Flashing took ", t2 - t1, " ms")
         self.__old_led_list = led_list
                 
     

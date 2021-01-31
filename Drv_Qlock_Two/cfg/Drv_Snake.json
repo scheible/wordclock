@@ -2,15 +2,19 @@
     "NUM_LETTER_VERTICAL": 10,
     "NUM_LETTER_HORIZONTAL": 11,
     "LEDS_PER_LETTER": 2,
-    "BODY_COLOR": [
-        180,
-        180,
-        180
+    "IS_SOFT_TRANSISTION_ENABLED": true,
+    "TRANSITION_TIME_MS": 180,
+    "TRANSITION_MODE": 1,
+	"GAME_SPEED_IN_MS": 200,
+	"BODY_COLOR": [
+        0,
+        100,
+        0
     ],
     "HEAD_COLOR": [
         100,
-        100,
-        100
+        0,
+        0
     ],
     "BACKGROUND_COLOR": [
         100,
@@ -21,8 +25,5 @@
         100,
         100,
         100
-    ],
-    "IS_SOFT_TRANSISTION_ENABLED": true,
-    "TRANSITION_TIME_MS": 100,
-    "TRANSITION_MODE": 1
+    ]
 }

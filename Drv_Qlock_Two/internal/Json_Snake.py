@@ -15,13 +15,14 @@ class Json_Snake:
         self.__searchedVariables = ["num_letter_vertical", int,              \
                                     "num_letter_horizontal", int,            \
                                     "leds_per_letter", int,                  \
-                                    "body_color", list,                      \
-                                    "head_color", int,                       \
-                                    "background_color", list,                \
-                                    "token_color", int,                      \
-                                    "is_soft_transistion_enabled", list,     \
+                                    "is_soft_transistion_enabled", bool,     \
                                     "transition_time_ms", int,               \
-                                    "transition_mode", int]
+                                    "transition_mode", int,                  \
+                                    "game_speed_in_ms", int,                 \
+                                    "body_color", list,                      \
+                                    "head_color", list,                      \
+                                    "background_color", list,                \
+                                    "token_color", list]
           
         self.__cfg = []
         self.__json_file_path = json_file_path;

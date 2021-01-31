@@ -34,7 +34,7 @@ class Qlock_Matrix:
                 self.__led_look_up_table[i * self.__num_leds_vertical + j, 0] = self.__num_element_horizontal - i - 1
                 
         # Init a clear led Matrix
-        self.__led_clear_matrix = self.__led_matrix
+        self.__led_clear_matrix = self.__led_matrix.copy()
                 
     def get_led_list(self):
       
@@ -43,7 +43,7 @@ class Qlock_Matrix:
     
     
     def clear_all_elements(self):
-        self.__led_matrix = self.__led_clear_matrix
+        self.__led_matrix = self.__led_clear_matrix.copy()
     
     def enable_element(self, pos_vertical, pos_horizontal, color = -1):
         if (color == -1):
