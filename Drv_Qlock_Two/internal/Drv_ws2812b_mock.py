@@ -4,7 +4,7 @@ Created on Fri Jan 22 15:02:12 2021
 
 @author: andre
 """
-from internal.Json_Ws2812b import Json_Ws2812b
+from Drv_Qlock_Two.internal.Json_Ws2812b import Json_Ws2812b
 import sys
 
 class Drv_ws2812b:

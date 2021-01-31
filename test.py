@@ -5,11 +5,11 @@ Created on Fri Jan 22 15:10:56 2021
 @author: andre
 """
 
-from Drv_QlockTwo import Drv_QlockTwo;
+from Drv_Qlock_Two.Drv_QlockTwo import *
 import time
 
-json_qlocktwo_file_path = "cfg/Drv_QlockTwo.json"
-json_ws2812b_file_path = "cfg/Drv_ws2812b.json"
+json_qlocktwo_file_path = "Drv_Qlock_Two/cfg/Drv_QlockTwo.json"
+json_ws2812b_file_path = "Drv_Qlock_Two/cfg/Drv_ws2812b.json"
 drv_qlocktwo = Drv_QlockTwo(json_qlocktwo_file_path, json_ws2812b_file_path)
 #drv_qlocktwo.flush();
 
@@ -59,9 +59,9 @@ drv_qlocktwo.enable_element(7, 10);
 #drv_qlocktwo.enable_element(5, 2);
 #drv_qlocktwo.enable_element(5, 3);
 print("Flush")
-drv_qlocktwo.flush();
+drv_qlocktwo.flush_sync();
 
-time.sleep(50);
+time.sleep(2);
 drv_qlocktwo.enable_element(0, 0);
 drv_qlocktwo.enable_element(0, 1);
 drv_qlocktwo.enable_element(0, 3);
@@ -77,8 +77,9 @@ drv_qlocktwo.enable_element(9, 8);
 drv_qlocktwo.enable_element(9, 9);
 drv_qlocktwo.enable_element(9, 10);
 
-drv_qlocktwo.flush();
+drv_qlocktwo.flush(False);
 drv_qlocktwo.set_font_color([180, 0, 0])
+
 
 if (False):
     for n in range(0,5):

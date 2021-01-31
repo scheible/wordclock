@@ -15,6 +15,9 @@ class Json_QlockTwo:
         self.__searchedVariables = ["num_letter_vertical", int,              \
                                     "num_letter_horizontal", int,            \
                                     "leds_per_letter", int,                  \
+                                    "is_soft_transistion_enabled", bool,     \
+                                    "transition_time_ms", int,               \
+                                    "transition_mode", int,                  \
                                     "font_color", list,                      \
                                     "font_brightness", int,                  \
                                     "frame_color", list,                     \
@@ -23,10 +26,7 @@ class Json_QlockTwo:
                                     "minute_brightness", int,                \
                                     "general_brightness", int,               \
                                     "is_minutes_shown", bool,                \
-                                    "is_frame_shown", bool,                  \
-                                    "is_soft_transistion_enabled", bool,     \
-                                    "transition_time_ms", int,               \
-                                    "transition_mode", int]
+                                    "is_frame_shown", bool]
           
         self.__cfg = []
         self.__json_file_path = json_file_path;

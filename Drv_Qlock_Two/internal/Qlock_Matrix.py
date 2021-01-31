@@ -6,6 +6,7 @@ Created on Mon Jan 18 18:46:56 2021
 """
 import numpy as np
 
+
 class Qlock_Matrix:
     
     def __init__(self, num_element_vertical, num_element_horizontal, leds_per_element, element_color):
@@ -19,6 +20,8 @@ class Qlock_Matrix:
         self.__led_matrix = np.zeros((self.__num_element_horizontal, self.__num_element_vertical, 4), dtype=np.ubyte)
         self.__element_color = np.array(element_color, dtype=np.ubyte);
         self.__init();
+        
+        
         
         
     def __init(self):
@@ -67,6 +70,7 @@ class Qlock_Matrix:
 
     def set_font_color(self, element_color):
         self.__element_color = np.array(element_color, dtype=np.ubyte);
+        self.__led_matrix[self.__led_matrix[..., 0] == 1, 1:4] = self.__element_color
 
         
     def getmat(self):

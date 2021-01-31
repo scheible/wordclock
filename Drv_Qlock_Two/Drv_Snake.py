@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np;
-from internal.Qlock_Matrix import Qlock_Matrix
-from internal.Qlock_Hardware_Binding import Qlock_Hardware_Binding
-from internal.Json_Snake import Json_Snake
-from internal.Json_Ws2812b import Json_Ws2812b
-from internal.Task_Pool import Task_Pool
-from internal.Snake_Game import *
+from Drv_Qlock_Two.internal.Qlock_Matrix import Qlock_Matrix
+from Drv_Qlock_Two.internal.Qlock_Hardware_Binding import Qlock_Hardware_Binding
+from Drv_Qlock_Two.internal.Json_Snake import Json_Snake
+from Drv_Qlock_Two.internal.Json_Ws2812b import Json_Ws2812b
+from Drv_Qlock_Two.internal.Task_Pool import Task_Pool
+from Drv_Qlock_Two.internal.Snake_Game import *
 import sys
 
 

@@ -6,8 +6,8 @@ Created on Mon Jan 18 19:47:16 2021
 """
 import numpy as np;
 import time
-from internal.Drv_ws2812b import Drv_ws2812b
-from internal.Task_Pool import Task_Pool
+from Drv_Qlock_Two.internal.Drv_ws2812b import Drv_ws2812b
+from Drv_Qlock_Two.internal.Task_Pool import Task_Pool
 #from numba import jit
 class Qlock_Hardware_Binding:
     def __init__(self, num_leds, qlock_cfg, ws_2812b_cfg):
@@ -16,12 +16,13 @@ class Qlock_Hardware_Binding:
         self.__num_leds = num_leds;
         self.__off_color = np.zeros(3);
         
-        self.__old_led_list = np.zeros((num_leds, 3))
+        self.__old_led_list = np.zeros((num_leds, 4))
         
         
         self.__ist_soft_transition_enabled = qlock_cfg[3];
         transition_time_ms = qlock_cfg[4];
         transition_mode = qlock_cfg[5];
+        print(transition_mode)
         
         self.__init__transition_intervals(transition_time_ms, transition_mode);
         
@@ -71,22 +72,16 @@ class Qlock_Hardware_Binding:
             
         return y
         
-    def flush(self, led_list):
-        led_list_ = led_list.copy();
-        self.__task_pool.add_task(self.flush_sync, led_list_)
-        
+
     def flush_sync(self, led_list):
-       
+        t_start_flush = round(time.time() * 1000)
         if (led_list.ndim != 2):
             return -1;
         if (led_list.size != 4 * self.__num_leds):
             return -1;
         
         if (not self.__ist_soft_transition_enabled):
-            for i in range(self.__num_leds):
-                if (led_list[i, 0] == 1):
-                    self.__drv_ws2812b.setPixelColor(i, led_list[i, 1:4]);
-            self.__drv_ws2812b.show();
+            self.flush_once(led_list)
         else:
             t1 = round(time.time() * 1000)
             for transitions in range(self.__transition_intervals):
@@ -95,12 +90,13 @@ class Qlock_Hardware_Binding:
                 col_off = self.__get_transitionColor_Off(transitions)
                 
                 # prepare multiply arrays
-                factor = np.zeros((self.__num_leds, 3))
-                factor[(led_list[:, 0] == 1) & (self.__old_led_list[:, 0] == 0), :] = col_on
-                factor[(led_list[:, 0] == 0) & (self.__old_led_list[:, 0] == 1), :] = col_off
-                factor[(led_list[:, 0] == 1) & (self.__old_led_list[:, 0] == 1), :] = 1
+                factor_on = np.zeros((self.__num_leds, 3))
+                factor_off = np.zeros((self.__num_leds, 3))
+                factor_on[(led_list[:, 0] == 1) & (self.__old_led_list[:, 0] == 0), :] = col_on
+                factor_on[(led_list[:, 0] == 1) & (self.__old_led_list[:, 0] == 1), :] = 1
+                factor_off[(led_list[:, 0] == 0) & (self.__old_led_list[:, 0] == 1), :] = col_off
                 
-                led_colors = np.array(led_list[:, 1:4] * factor, dtype=int)
+                led_colors = np.array(led_list[:, 1:4] * factor_on + self.__old_led_list[:, 1:4] * factor_off, dtype=int)
                 led_colors = (led_colors[:, 0] << 16) | (led_colors[:, 1] << 8) | (led_colors[:, 2])
                 self.__drv_ws2812b.updateAllPixel(led_colors)
                 self.__drv_ws2812b.show()
@@ -112,9 +108,20 @@ class Qlock_Hardware_Binding:
             t2 = round(time.time() * 1000)
             #print("Flashing took ", t2 - t1, " ms")
         self.__old_led_list = led_list
-                
+        t_end_flush = round(time.time() * 1000)
+        print("Flush took: ", t_end_flush - t_start_flush, "ms.")
     
-    
+    def flush_once(self, led_list):
+        if (led_list.ndim != 2):
+            return -1;
+        if (led_list.size != 4 * self.__num_leds):
+            return -1;
+        
+        led_colors = np.array(led_list[:, 1:4], dtype=int)
+        led_colors = (led_colors[:, 0] << 16) | (led_colors[:, 1] << 8) | (led_colors[:, 2])
+        self.__drv_ws2812b.updateAllPixel(led_colors)
+        self.__drv_ws2812b.show()
+        self.__old_led_list = led_list
     
     
 

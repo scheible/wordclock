@@ -23,6 +23,7 @@ class Task_Pool:
         self.__run_thread.start()
         
     def add_task(self, task, args):
+        print("Add Task")
         if (len(self.__task_queue) <= self.__task_pool_size):
             self.__task_queue.append(task)
             self.__param_queue.append(args)

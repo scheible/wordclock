@@ -5,7 +5,8 @@ from datetime import datetime
 json_qlocktwo_file_path = "Drv_Qlock_Two/cfg/Drv_QlockTwo.json"
 json_ws2812b_file_path = "Drv_Qlock_Two/cfg/Drv_ws2812b.json"
 drv_qlocktwo = Drv_QlockTwo(json_qlocktwo_file_path, json_ws2812b_file_path)
-
+drv_qlocktwo.set_font_color([180, 180, 180])
+old_mm = -1
 def hour(h):
 
 	if (h == 0):
@@ -38,6 +39,10 @@ def hour(h):
 def tick():
 	hh = datetime.now().hour
 	mm = datetime.now().minute
+	global old_mm
+	if (mm == old_mm):
+		return
+	old_mm = mm
 	ES()
 	IST()
 
@@ -161,7 +166,7 @@ def ZWOELF():
 
 
 def on(x, y):
-	drv_qlocktwo.enable_element(x, y)
+	drv_qlocktwo.enable_element(y, x)
 
 def wordOn(line, start, length):
 	for i in range(start, start+length):
@@ -178,3 +183,4 @@ def off(x, y):
 
 while True:
 	tick()
+	sleep(1)    

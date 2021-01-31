@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np;
-from internal.Qlock_Matrix import Qlock_Matrix
-from internal.Qlock_Hardware_Binding import Qlock_Hardware_Binding
-from internal.Json_QlockTwo import Json_QlockTwo
-from internal.Json_Ws2812b import Json_Ws2812b
+from Drv_Qlock_Two.internal.Qlock_Matrix import Qlock_Matrix
+from Drv_Qlock_Two.internal.Qlock_Hardware_Binding import Qlock_Hardware_Binding
+from Drv_Qlock_Two.internal.Json_QlockTwo import Json_QlockTwo
+from Drv_Qlock_Two.internal.Json_Ws2812b import Json_Ws2812b
+from Drv_Qlock_Two.internal.Task_Pool import Task_Pool
 import sys
 
 class Drv_QlockTwo:
@@ -29,7 +30,8 @@ class Drv_QlockTwo:
         font_color = qlock_cfg[3]
         num_leds = num_letter_vertical * num_letter_horizontal * leds_per_letter;
         
-        
+        self.__task_pool = Task_Pool()
+        self.__task_pool.start_worker_thread()
         
         self.__qlock_matrix = Qlock_Matrix(num_letter_vertical, num_letter_horizontal, leds_per_letter, font_color);
         self.__qlock_hardware_binding = Qlock_Hardware_Binding(num_leds, qlock_cfg, ws_2812b_cfg);
@@ -45,10 +47,14 @@ class Drv_QlockTwo:
         
     def flush(self, clear_elements_matrix_after_flush = True):
         led_list = self.__qlock_matrix.get_led_list();
-        self.__qlock_hardware_binding.flush(led_list);
-        
+        led_list_ = led_list.copy();
+       
+        self.__task_pool.add_task(self.__qlock_hardware_binding.flush_sync, led_list_)
         if (clear_elements_matrix_after_flush ):
             self.clear_all_elements();
+            
+                    
+        
             
     def flush_sync(self, clear_elements_matrix_after_flush = True):
         led_list = self.__qlock_matrix.get_led_list();
@@ -64,11 +70,15 @@ class Drv_QlockTwo:
         if (len(font_color) == 3):
             is_updated = self.__json_qlocktwo.update_json_entry(3, list(font_color))
             self.__qlock_matrix.set_font_color(font_color);
+            led_list = self.__qlock_matrix.get_led_list();
+            led_list_ = led_list.copy();
+            self.__task_pool.add_task(self.__qlock_hardware_binding.flush_once, led_list_)
         return is_updated
         
     def set_font_brightness(self, font_brightness):
         is_updated = self.__json_qlocktwo.update_json_entry(4, font_brightness)
         self.__qlock_hardware_binding.set_font_brightness(font_brightness);
+        
         return is_updated
         
     def set_frame_color(self, frame_color):
