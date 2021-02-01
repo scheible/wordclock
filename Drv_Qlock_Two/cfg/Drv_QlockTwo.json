@@ -6,9 +6,9 @@
     "TRANSITION_TIME_MS": 5000,
     "TRANSITION_MODE": 1,
     "FONT_COLOR": [
+        180,
         0,
-        25,
-        9
+        0
     ],
     "FONT_BRIGHTNESS": 100,
     "FRAME_COLOR": [
