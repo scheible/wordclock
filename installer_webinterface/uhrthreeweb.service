@@ -1,0 +1,12 @@
+[Unit]
+Description = Uhr Three Webinterface Daemon
+After = network.target
+
+[Service]
+User = pi
+Group = pi
+WorkingDirectory = /opt/uhrthree/
+ExecStart = /opt/uhrthree/env/bin/gunicorn --workers 3 --bind 127.0.0.1:8080 wsgi:app
+
+[Install]
+WantedBy = multi-user.target
