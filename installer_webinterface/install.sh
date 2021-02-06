@@ -6,7 +6,7 @@ echo "updating package sources"
 apt-get update
 
 echo "install binary packages"
-apt-get install -y hostapd dnsmasq python3.7-venv nginx
+apt-get install -y hostapd dnsmasq python3.7-venv nginx python3-pip
 
 echo "unmasking hostapd daemon"
 systemctl unmask hostapd
@@ -33,15 +33,18 @@ cp uhrthreeweb /etc/nginx/sites-available/
 rm /etc/nginx/sites-enabled/default
 ln -s /etc/nginx/sites-available/uhrthreeweb /etc/nginx/sites-enabled/uhrthreeweb
 
+echo "restarting nginx"
+systemctl restart nginx
+
 echo "creating application directory"
 mkdir /opt/uhrthree
 
 echo "installing AP scripts"
-cp ../ap_config/change_dhcpcd_config.py /etc/uhrthree/
-cp ../ap_config/start_ap.sh /etc/uhrthree/
-cp ../ap_config/stop_ap.sh /etc/uhrthree/
-chmod +x /etc/uhrthree/start_ap.sh
-chmod +x /etc/uhrthree/sstop_ap.sh
+cp ../ap_config/change_dhcpcd_config.py /opt/uhrthree/
+cp ../ap_config/start_ap.sh /opt/uhrthree/
+cp ../ap_config/stop_ap.sh /opt/uhrthree/
+chmod +x /opt/uhrthree/start_ap.sh
+chmod +x /opt/uhrthree/stop_ap.sh
 
 echo "creating python virtual environment"
 python3 -m venv /opt/uhrthree/env
@@ -57,6 +60,8 @@ cp -r ../modules/uhrthree /opt/uhrthree/env/lib/python3.7/site-packages
 echo "installing web application files"
 cp ../web_application/webinterface.py /opt/uhrthree/webinterface.py
 cp ../web_application/wsgi.py /opt/uhrthree/wsgi.py
+cp -r ../web_application/templates /opt/uhrthree/
+cp -r ../web_application/static /opt/uhrthree/
 
 echo "creating gunicorn service"
 cp uhrthreeweb.service /etc/systemd/system/
@@ -67,4 +72,4 @@ systemctl start uhrthreeweb.service
 echo "modify access rights on wpa_supplicant and etc/localtime"
 chmod o+w /etc
 chmod o+w /etc/localtime
-chmod o+w /etc/wpa_supplicant/
+chmod o+w /etc/wpa_supplicant/wpa_supplicant.conf

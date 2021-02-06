@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<script>
+		window.onload = onLoadFunction;
+
+		function onLoadFunction() {
+			loadWifiList('/listwifi')
+		}
+
+		function addOption(elemendId, text, value) {
+			var option = document.createElement("option");
+			option.text = text;
+			option.value = value;
+			var select = document.getElementById(elemendId);
+			select.appendChild(option);
+		}
+
+		function loadWifiList(url) {
+		  var xhttp;
+		  xhttp=new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		    	response = JSON.parse(this.responseText);
+				for (i=0; i<response.length; i++) {
+					addOption("ssid", response[i], response[i]);
+				}
+		    }
+		  };
+		  xhttp.open("GET", url, true);
+		  xhttp.send();
+		}
+		
+		function myFunction(xhttp) {
+		  document.getElementById("demo").innerHTML =
+		  xhttp.responseText;
+		}
+
+		function toggleMenu() {
+		  var x = document.getElementById("menu");
+		  if (x.style.display === "none") {
+		    x.style.display = "block";
+		  } else {
+		    x.style.display = "none";
+		  }
+		}
+
+
+
+		</script>
+{% endblock %}
+
+{% block content %}
+			<div class="header">UHR THREE</div>
+			<div class="explanation">
+				Wähle dein Wifi-Netzwerk aus und gib dein Passwort ein um die UHR THREE mit deinem Wifi zu verbinden.
+			</div>
+			<form method="post" action="/wifisetup/">
+				<div class="input">
+					<select name="ssid" id="ssid"></select>
+				</div>
+				<div class="input">
+					<input type="password" name="password" placeholder="Passwort">
+				</div>
+
+				<center><input type="submit" value="ok" id="connectButton"></center>
+			</form>
+
+			<div class="explanation">
+				Tip: Um die Wifi-Liste zu aktualisieren, lade die Seite einfach kurz neu!
+			</div>
+		</div>
+	{% endblock %}

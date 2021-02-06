@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+	<script>
+		window.onload = onLoadFunction;
+
+		function onLoadFunction() {
+			loadSelect('/timesettings/timezonecategories', 'timezone_category');
+		}
+
+		function addOption(elementId, text, value) {
+			var option = document.createElement("option");
+			option.text = text;
+			option.value = value;
+			var select = document.getElementById(elementId);
+			select.appendChild(option);
+		}
+
+		function clearSelect(elementId) {
+			var select = document.getElementById(elementId);
+			while (select.options.length > 0) {
+				select.remove(0);
+			}
+		}
+
+		function loadSelect(url, elementId) {
+		  var xhttp;
+		  xhttp=new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		    	response = JSON.parse(this.responseText);
+				for (i=0; i<response.length; i++) {
+					addOption(elementId, response[i], response[i]);
+				}
+		    }
+		  };
+		  xhttp.open("GET", url, true);
+		  xhttp.send();
+		}
+
+		function categoryChange() {
+			var select = document.getElementById('timezone_category');
+			clearSelect('timezone');
+			loadSelect('/timesettings/timezones/'+ select.value,'timezone');
+		}
+
+	</script>
+
+{% endblock %}
+
+{% block content %}
+			<div class="header">ZEIT ZONE</div>
+			<div class="explanation">
+				Wähle die Zeitzone. Die Uhrzeit wird über das Internet synchronisiert.
+			</div>
+			<form method="post" action="/timesettings/timezone">
+				<div class="input">
+					<select name="category" id="timezone_category" onchange="categoryChange();"></select>
+				</div>
+
+				<div class="input">
+					<select name="zone" id="timezone"></select>
+				</div>
+
+
+				<center><input type="submit" value="ok" id="connectButton"></center>
+			</form>
+
+		</div>
+	{% endblock %}

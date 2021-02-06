@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<title>Hello</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+
+		{% block header %}{% endblock %}
+
+		<link rel="stylesheet" href="/static/style.css">
+	</head>
+	<body>
+		<div id="wrapper">
+			<div id="menubar">
+				<div id="openMenu" onclick="toggleMenu();"></div>
+				<div id="menu">
+					<ul>
+						<a href="/settings"><li>Einstellungen</li></a>
+						<a href="/wifisetup"><li>WiFi ändern</li></a>
+						<a href="/tetris"><li>Tetris</li></a>
+						<a href="/snake"><li>Snake</li></a>
+						<a href="/connectfour"><li>Vier Gewinnt</li></a>
+					</ul>
+
+				</div>
+
+				<a id="settings" href="/wifisetup"><img src="/static/wifi_icon.png"></a>
+				<a id="settings" href="/settings"><img src="/static/settings_icon.png"></a>
+				<a id="settings" href="/timesettings"><img src="/static/clock_icon.png"></a>
+			</div>
+
+			{% block content %}{% endblock %}
+
+
+
+
+	</body>
+</html>
