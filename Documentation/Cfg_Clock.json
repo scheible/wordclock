@@ -1,0 +1,81 @@
+{
+    "APPLICATION_ID": 1,
+    "NUM_LETTER_VERTICAL": 10,
+    "NUM_LETTER_HORIZONTAL": 11,
+    "NUM_LED_BORDER_SIDE": 15,
+    "NUM_LED_BORDER_CORNER": 10,
+    "LEDS_PER_LETTER": 2,
+    "profiles_enabled": true,
+    
+    "default_profil":  {
+        "IS_SOFT_TRANSISTION_ENABLED": true,
+        "TRANSITION_TIME_MS": 5000,
+        "TRANSITION_MODE": "exp",
+        "FONT_COLOR": [
+            180,
+            0,
+            0
+        ],
+        "FONT_BRIGHTNESS": 255,
+        "FRAME_COLOR": [
+            100,
+            100,
+            100
+        ],
+        "FRAME_BRIGHTNESS": 255,
+        "MINUTE_COLOR": [
+            100,
+            100,
+            100
+        ],
+        "MINUTE_BRIGHTNESS": 255,
+        "SECOND_COLOR": [
+            100,
+            100,
+            100
+        ],
+        "SECOND_BRIGHTNESS": 255,
+        "IS_MINUTES_SHOWN": false,
+        "IS_SECOND_SHOWN": false,
+        "IS_FRAME_SHOWN": false
+        }
+    
+    "profiles": [
+        "startTime": 0,
+        "stopTime": 100,
+        "profil_enabled": true,
+        "config": {
+        "IS_SOFT_TRANSISTION_ENABLED": true,
+        "TRANSITION_TIME_MS": 5000,
+        "TRANSITION_MODE": "exp",
+        "FONT_COLOR": [
+            180,
+            0,
+            0
+        ],
+        "FONT_BRIGHTNESS": 255,
+        "FRAME_COLOR": [
+            100,
+            100,
+            100
+        ],
+        "FRAME_BRIGHTNESS": 255,
+        "MINUTE_COLOR": [
+            100,
+            100,
+            100
+        ],
+        "MINUTE_BRIGHTNESS": 255,
+        "SECOND_COLOR": [
+            100,
+            100,
+            100
+        ],
+        "SECOND_BRIGHTNESS": 255,
+        "IS_MINUTES_SHOWN": false,
+        "IS_SECOND_SHOWN": false,
+        "IS_FRAME_SHOWN": false
+        }
+    ]
+    
+}
