@@ -9,25 +9,25 @@
         "isSoftTransitionEnabled": true,
         "transitionTimeMs": 5000,
         "transitionMode": "exp",
-        "fontColor": [
+        "fontColorRGB": [
             180,
             0,
             0
         ],
         "fontBrightness": 255,
-        "frameColor": [
+        "frameColorRGB": [
             100,
             100,
             100
         ],
         "frameBrightness": 255,
-        "minuteColor": [
+        "minuteColorRGB": [
             100,
             100,
             100
         ],
         "minuteBrightness": 255,
-        "secondColor": [
+        "secondColorRGB": [
             100,
             100,
             100
@@ -54,25 +54,25 @@
         "isSoftTransitionEnabled": true,
         "transitionTimeMs": 5000,
         "transitionMode": "exp",
-        "fontColor": [
+        "fontColorRGB": [
             180,
             0,
             0
         ],
         "fontBrightness": 255,
-        "frameColor": [
+        "frameColorRGB": [
             100,
             100,
             100
         ],
         "frameBrightness": 255,
-        "minuteColor": [
+        "minuteColorRGB": [
             100,
             100,
             100
         ],
         "minuteBrightness": 255,
-        "secondColor": [
+        "secondColorRGB": [
             100,
             100,
             100
