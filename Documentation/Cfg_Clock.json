@@ -5,9 +5,7 @@
     "NUM_LED_BORDER_SIDE": 15,
     "NUM_LED_BORDER_CORNER": 10,
     "LEDS_PER_LETTER": 2,
-    "profiles_enabled": true,
-    
-    "default_profil":  {
+    "DEFAULT_PROFIL":  {
         "IS_SOFT_TRANSISTION_ENABLED": true,
         "TRANSITION_TIME_MS": 5000,
         "TRANSITION_MODE": "exp",
@@ -39,13 +37,13 @@
         "IS_SECOND_SHOWN": false,
         "IS_FRAME_SHOWN": false
         },
-    
-    "profiles": [
+    "USER_PROFILES_ENABLED": true,
+    "USER_PROFILES": [
       {
-        "startTime": 0,
-        "stopTime": 100,
-        "profil_enabled": true,
-        "config": {
+        "START_TIME": 0,
+        "STOP_TIME": 100,
+        "USER_PROFIL_ENABLED": true,
+        "CONFIG": {
         "IS_SOFT_TRANSISTION_ENABLED": true,
         "TRANSITION_TIME_MS": 5000,
         "TRANSITION_MODE": "exp",
