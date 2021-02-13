@@ -17,7 +17,7 @@ namespace Application{
           +stop()
 
           -{abstract} applicationThread()
-          -{abstract} updateJson(jsonConfig) 
+          -{abstract} updateJson(jsonConfig)
       }
 
 
@@ -53,10 +53,11 @@ namespace Application{
           }
 
           class LedMatrix {
-            -float[3] colorBody
-            -float[3] colorMinute
-            -float[3] colorSecond
-            -float[3] colorBorder
+            -float[3] colorBodyRGB
+            -float[3] colorMinuteRGB
+            -float[3] colorSecondRGB
+            -float[3] colorBorderRGB
+            -profile
             -matrixBody
             -borderBody
             -ledList

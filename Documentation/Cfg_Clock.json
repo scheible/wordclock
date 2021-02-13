@@ -5,41 +5,41 @@
     "numLedBorderSide": 15,
     "numLedBorderCorner": 10,
     "ledsPerLetter": 2,
-    "defaultProfil":  {
+    "defaultProfile":  {
         "isSoftTransitionEnabled": true,
         "transitionTimeMs": 5000,
         "transitionMode": "exp",
-        "fontColorRGB": [
+        "colorBodyRGB": [
             180,
             0,
             0
         ],
-        "fontBrightness": 255,
-        "frameColorRGB": [
+        "brightnessBody": 255,
+        "colorBorderRGB": [
             100,
             100,
             100
         ],
-        "frameBrightness": 255,
-        "minuteColorRGB": [
+        "brightnessBorder": 255,
+        "colorMinuteRGB": [
             100,
             100,
             100
         ],
-        "minuteBrightness": 255,
-        "secondColorRGB": [
+        "brightnessMinute": 255,
+        "colorSecondRGB": [
             100,
             100,
             100
         ],
-        "secondBrightness": 255,
+        "brightnessSecond": 255,
         "isMinuteShown": false,
         "isSecondShown": false,
-        "isFrameShown": false
+        "isBorderShown": false
         },
     "userProfiles": [
       {
-	    "userProfilEnabled": true,
+	    "userProfileEnabled": true,
         "startTime": {
 			"hours": 22, 
 			"minutes": 0, 
@@ -54,33 +54,33 @@
         "isSoftTransitionEnabled": true,
         "transitionTimeMs": 5000,
         "transitionMode": "exp",
-        "fontColorRGB": [
+        "colorBodyRGB": [
             180,
             0,
             0
         ],
-        "fontBrightness": 255,
-        "frameColorRGB": [
+        "brightnessBody": 255,
+        "colorBorderRGB": [
             100,
             100,
             100
         ],
-        "frameBrightness": 255,
-        "minuteColorRGB": [
+        "brightnessBorder": 255,
+        "colorMinuteRGB": [
             100,
             100,
             100
         ],
-        "minuteBrightness": 255,
-        "secondColorRGB": [
+        "brightnessMinute": 255,
+        "colorSecondRGB": [
             100,
             100,
             100
         ],
-        "secondBrightness": 255,
+        "brightnessSecond": 255,
         "isMinuteShown": false,
         "isSecondShown": false,
-        "isFrameShown": false
+        "isBorderShown": false
         }
       }
     ]
