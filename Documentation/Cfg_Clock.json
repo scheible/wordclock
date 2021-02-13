@@ -1,81 +1,87 @@
 {
-    "APPLICATION_ID": 1,
-    "NUM_LETTER_VERTICAL": 10,
-    "NUM_LETTER_HORIZONTAL": 11,
-    "NUM_LED_BORDER_SIDE": 15,
-    "NUM_LED_BORDER_CORNER": 10,
-    "LEDS_PER_LETTER": 2,
-    "DEFAULT_PROFIL":  {
-        "IS_SOFT_TRANSISTION_ENABLED": true,
-        "TRANSITION_TIME_MS": 5000,
-        "TRANSITION_MODE": "exp",
-        "FONT_COLOR": [
+    "appId": 1,
+    "numLetterVertical": 10,
+    "numLetterHorizontal": 11,
+    "numLedBorderSide": 15,
+    "numLedBorderCorner": 10,
+    "ledsPerLetter": 2,
+    "defaultProfil":  {
+        "isSoftTransitionEnabled": true,
+        "transitionTimeMs": 5000,
+        "transitionMode": "exp",
+        "fontColor": [
             180,
             0,
             0
         ],
-        "FONT_BRIGHTNESS": 255,
-        "FRAME_COLOR": [
+        "fontBrightness": 255,
+        "frameColor": [
             100,
             100,
             100
         ],
-        "FRAME_BRIGHTNESS": 255,
-        "MINUTE_COLOR": [
+        "frameBrightness": 255,
+        "minuteColor": [
             100,
             100,
             100
         ],
-        "MINUTE_BRIGHTNESS": 255,
-        "SECOND_COLOR": [
+        "minuteBrightness": 255,
+        "secondColor": [
             100,
             100,
             100
         ],
-        "SECOND_BRIGHTNESS": 255,
-        "IS_MINUTES_SHOWN": false,
-        "IS_SECOND_SHOWN": false,
-        "IS_FRAME_SHOWN": false
+        "secondBrightness": 255,
+        "isMinuteShown": false,
+        "isSecondShown": false,
+        "isFrameShown": false
         },
-    "USER_PROFILES_ENABLED": true,
-    "USER_PROFILES": [
+    "userProfiles": [
       {
-        "START_TIME": 0,
-        "STOP_TIME": 100,
-        "USER_PROFIL_ENABLED": true,
-        "CONFIG": {
-        "IS_SOFT_TRANSISTION_ENABLED": true,
-        "TRANSITION_TIME_MS": 5000,
-        "TRANSITION_MODE": "exp",
-        "FONT_COLOR": [
+	    "userProfilEnabled": true,
+        "startTime": {
+			"hours": 22, 
+			"minutes": 0, 
+			"seconds": 0
+		},
+        "stopTime": {
+			"hours": 6, 
+			"minutes": 0, 
+			"seconds": 0
+		},
+        "config": {
+        "isSoftTransitionEnabled": true,
+        "transitionTimeMs": 5000,
+        "transitionMode": "exp",
+        "fontColor": [
             180,
             0,
             0
         ],
-        "FONT_BRIGHTNESS": 255,
-        "FRAME_COLOR": [
+        "fontBrightness": 255,
+        "frameColor": [
             100,
             100,
             100
         ],
-        "FRAME_BRIGHTNESS": 255,
-        "MINUTE_COLOR": [
+        "frameBrightness": 255,
+        "minuteColor": [
             100,
             100,
             100
         ],
-        "MINUTE_BRIGHTNESS": 255,
-        "SECOND_COLOR": [
+        "minuteBrightness": 255,
+        "secondColor": [
             100,
             100,
             100
         ],
-        "SECOND_BRIGHTNESS": 255,
-        "IS_MINUTES_SHOWN": false,
-        "IS_SECOND_SHOWN": false,
-        "IS_FRAME_SHOWN": false
+        "secondBrightness": 255,
+        "isMinuteShown": false,
+        "isSecondShown": false,
+        "isFrameShown": false
         }
       }
     ]
-    
 }

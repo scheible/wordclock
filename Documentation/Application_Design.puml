@@ -6,43 +6,43 @@ namespace "Word_O_Clock" as top {
     class Daemon {
         +main()
     }
-    
-   
+
+
     namespace Inputs {
         class ButtonReader {
             +getNewInput()
         }
     }
-    
+
     namespace Application {
         class ApplicationManager {
             +startApplication(appId)
             +stopApplication()
-            
+
             +setJsonConfig(appId, jsonConfig)
             +getJsonConfig(appId)
         }
-        
+
         interface Application {
             +{abstract} setJson(jsonConfig)
             +{abstract} getJson()
             +{abstract} start()
             +{abstract} stop()
-            
+
             -{abstract} applicationThread()
         }
-        
-        
-        
+
+
+
         class ThreadPool {
             +startWorkerThread()
             +stopWorkerThread()
             +setIdelDuration(idleDuration)
             +addTask(task, args)
         }
-        
+
         ThreadPool -* Application
-        
+
         namespace Clock {
             class ApplicationClock {
                 -applicationThread()
@@ -56,37 +56,37 @@ namespace "Word_O_Clock" as top {
             class LedBinding {
                 +showLedMatrix(ledMatrix)
             }
-            
+
             top.Application.Application <|-- top.Application.Clock.ApplicationClock
             ApplicationClock *-- ClockBackend
             ApplicationClock *-- ClockFrontend
             ClockFrontend *-- LedBinding
         }
-        
+
         namespace Snake {
             class ApplicationSnake
             top.Application.Application <|-- top.Application.Snake.ApplicationSnake
         }
     }
-    
+
     top.Application.ApplicationManager *--- top.Application.Clock.ApplicationClock
     top.Application.ApplicationManager *--- top.Application.Snake.ApplicationSnake
-    
+
     namespace DataTypes {
         class LedMatrix {
             +clockToList()
             +borderToList()
         }
     }
-    
-    
-    Daemon *-- env.IpcBinding 
+
+
+    Daemon *-- env.IpcBinding
     Daemon *- top.Inputs.ButtonReader
     Daemon *-- top.Application.ApplicationManager
-    
+
     Daemon -[hidden]- top.DataTypes.LedMatrix
-    
-    
+
+
 }
 
 namespace Webserver #DDDDDD {
@@ -103,5 +103,3 @@ namespace Webserver #DDDDDD {
 Webserver.Webserver *-- env.IpcBinding
 Webserver.Webserver -[hidden] top.Daemon
 @enduml
-
-
