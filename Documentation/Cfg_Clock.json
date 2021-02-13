@@ -38,9 +38,10 @@
         "IS_MINUTES_SHOWN": false,
         "IS_SECOND_SHOWN": false,
         "IS_FRAME_SHOWN": false
-        }
+        },
     
     "profiles": [
+      {
         "startTime": 0,
         "stopTime": 100,
         "profil_enabled": true,
@@ -76,6 +77,7 @@
         "IS_SECOND_SHOWN": false,
         "IS_FRAME_SHOWN": false
         }
+      }
     ]
     
 }
