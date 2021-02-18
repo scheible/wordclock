@@ -9,29 +9,13 @@
         "isSoftTransitionEnabled": true,
         "transitionTimeMs": 5000,
         "transitionMode": "exp",
-        "colorBodyRGB": [
-            180,
-            0,
-            0
-        ],
+        "colorBodyRGB": [11, 11, 11],
         "brightnessBody": 255,
-        "colorBorderRGB": [
-            100,
-            100,
-            100
-        ],
+        "colorBorderRGB": [11, 11, 11],
         "brightnessBorder": 255,
-        "colorMinuteRGB": [
-            100,
-            100,
-            100
-        ],
+        "colorMinuteRGB": [11, 11, 11],
         "brightnessMinute": 255,
-        "colorSecondRGB": [
-            100,
-            100,
-            100
-        ],
+        "colorSecondRGB": [11, 11, 11],
         "brightnessSecond": 255,
         "isMinuteShown": false,
         "isSecondShown": false,
@@ -51,36 +35,78 @@
 			"seconds": 0
 		},
         "config": {
-        "isSoftTransitionEnabled": true,
-        "transitionTimeMs": 5000,
-        "transitionMode": "exp",
-        "colorBodyRGB": [
-            180,
-            0,
-            0
-        ],
-        "brightnessBody": 255,
-        "colorBorderRGB": [
-            100,
-            100,
-            100
-        ],
-        "brightnessBorder": 255,
-        "colorMinuteRGB": [
-            100,
-            100,
-            100
-        ],
-        "brightnessMinute": 255,
-        "colorSecondRGB": [
-            100,
-            100,
-            100
-        ],
-        "brightnessSecond": 255,
-        "isMinuteShown": false,
-        "isSecondShown": false,
-        "isBorderShown": false
+            "isSoftTransitionEnabled": true,
+            "transitionTimeMs": 5000,
+            "transitionMode": "exp",
+            "colorBodyRGB": [11, 11, 11],
+            "brightnessBody": 255,
+            "colorBorderRGB": [11, 11, 11],
+            "brightnessBorder": 255,
+            "colorMinuteRGB": [11, 11, 11],
+            "brightnessMinute": 255,
+            "colorSecondRGB": [11, 11, 11],
+            "brightnessSecond": 255,
+            "isMinuteShown": false,
+            "isSecondShown": false,
+            "isBorderShown": false
+        }
+      },
+      {
+        "userProfileEnabled": true,
+        "startTime": {
+            "hours": 22, 
+            "minutes": 0, 
+            "seconds": 0
+        },
+        "stopTime": {
+            "hours": 6, 
+            "minutes": 0, 
+            "seconds": 0
+        },
+        "config": {
+            "isSoftTransitionEnabled": true,
+            "transitionTimeMs": 5000,
+            "transitionMode": "exp",
+            "colorBodyRGB": [11, 11, 11],
+            "brightnessBody": 255,
+            "colorBorderRGB": [11, 11, 11],
+            "brightnessBorder": 255,
+            "colorMinuteRGB": [11, 11, 11],
+            "brightnessMinute": 255,
+            "colorSecondRGB": [11, 11, 11],
+            "brightnessSecond": 255,
+            "isMinuteShown": false,
+            "isSecondShown": false,
+            "isBorderShown": false
+        }
+      },
+      {
+        "userProfileEnabled": true,
+        "startTime": {
+            "hours": 22, 
+            "minutes": 0, 
+            "seconds": 0
+        },
+        "stopTime": {
+            "hours": 6, 
+            "minutes": 0, 
+            "seconds": 0
+        },
+        "config": {
+            "isSoftTransitionEnabled": true,
+            "transitionTimeMs": 5000,
+            "transitionMode": "exp",
+            "colorBodyRGB": [11, 11, 11],
+            "brightnessBody": 255,
+            "colorBorderRGB": [11, 11, 11],
+            "brightnessBorder": 255,
+            "colorMinuteRGB": [11, 11, 11],
+            "brightnessMinute": 255,
+            "colorSecondRGB": [11, 11, 11],
+            "brightnessSecond": 255,
+            "isMinuteShown": false,
+            "isSecondShown": false,
+            "isBorderShown": false
         }
       }
     ]

@@ -1,0 +1,68 @@
+/wifi/list
+Method: GET
+
+get a list with available wifi networks
+
+
+/wifi/set
+Method: POST
+Form-Fields:
+ssid
+password
+
+set the wifi name and password, then connect to the wifi
+
+
+/wifi/hotspot
+Method: GET
+
+Start the wifi hotspot. This is usually done via button though
+
+
+/timezone/categories
+Method: GET
+
+get all the categories for timezones
+
+
+/timezone/<category>/zones
+Method: GET
+
+get all the timezones in category
+
+
+/timezone/set
+Method: POST
+category
+zone
+
+change the time zone
+
+
+/apps/list
+Method: GET
+
+get a list with all installed apps
+
+
+/apps/current/state
+Method: GET
+
+get the state of the currently active
+app
+
+
+/apps/current/pollstate
+Method: GET
+
+long polling for changes in the active's
+app state
+
+
+/apps/<appId>/set
+Method: POST
+Payload: JSON
+
+upload a json object that is passed to the
+app and that changes its config. This may
+trigger the long polling

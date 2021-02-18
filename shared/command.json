@@ -1,0 +1,14 @@
+{
+	"commandType": "set",
+	"data": {
+		"userProfiles": [
+			{},
+			{
+				"config": {
+					"transitionTimeMs": 444,
+					"colorBodyRGB": [{}, 19, 19]
+				}
+			}
+		]
+	}
+}
