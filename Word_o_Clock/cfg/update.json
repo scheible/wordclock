@@ -1,0 +1,18 @@
+{
+	"commandType": "set",
+	"dat": 
+	{
+    	"applications": [
+        	{
+        		"appId": 1,
+        		"defaultProfile":  {
+        			"colorBodyRGB": [
+        				200,
+        				10,
+        				50
+        			]
+        		}
+    		}
+		]
+	}
+}

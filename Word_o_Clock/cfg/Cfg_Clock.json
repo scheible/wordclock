@@ -1,0 +1,87 @@
+{
+    "appId": 1,
+    "numLetterVertical": 10,
+    "numLetterHorizontal": 11,
+    "numLedBorderSide": 14,
+    "numLedBorderCorner": 9,
+    "ledsPerLetter": 2,
+    "defaultProfile": {
+        "isSoftTransitionEnabled": true,
+        "transitionTimeMs": 5000,
+        "transitionMode": "exp",
+        "colorBodyRGB": [
+            200,
+            10,
+            50
+        ],
+        "brightnessBody": 255,
+        "colorBorderRGB": [
+            1,
+            1,
+            1
+        ],
+        "brightnessBorder": 255,
+        "colorMinuteRGB": [
+            10,
+            10,
+            10
+        ],
+        "brightnessMinute": 255,
+        "colorSecondRGB": [
+            20,
+            20,
+            20
+        ],
+        "brightnessSecond": 255,
+        "isMinuteShown": true,
+        "isSecondShown": true,
+        "isBorderShown": true
+    },
+    "userProfiles": [
+        {
+            "userProfileEnabled": true,
+            "startTime": {
+                "hours": 22,
+                "minutes": 38,
+                "seconds": 0
+            },
+            "stopTime": {
+                "hours": 13,
+                "minutes": 0,
+                "seconds": 0
+            },
+            "config": {
+                "isSoftTransitionEnabled": true,
+                "transitionTimeMs": 500,
+                "transitionMode": "exp",
+                "colorBodyRGB": [
+                    100,
+                    0,
+                    0
+                ],
+                "brightnessBody": 255,
+                "colorBorderRGB": [
+                    1,
+                    1,
+                    1
+                ],
+                "brightnessBorder": 255,
+                "colorMinuteRGB": [
+                    100,
+                    0,
+                    0
+                ],
+                "brightnessMinute": 255,
+                "colorSecondRGB": [
+                    20,
+                    20,
+                    20
+                ],
+                "brightnessSecond": 255,
+                "isMinuteShown": true,
+                "isSecondShown": false,
+                "isBorderShown": false
+            }
+        }
+    ]
+}
