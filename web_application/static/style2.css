@@ -1,0 +1,125 @@
+			body {
+ 				margin:0;
+ 				padding:0;
+			}
+
+			#menubar {
+				display: block;
+				max-width: 30em;
+				width: 100%;
+				height: 4em;
+				background-color: #ccc;
+				padding: 0;
+				position: fixed;
+				top: 0;
+				left: 50%;
+			    margin-right: -50%;
+			    transform: translate(-50%, 0);
+			    z-index: 99;
+			}
+			.menuItem {
+				padding: 0;
+				margin: 0;
+				display: inline-block;
+				height: 100%;
+			}
+			.menuItem img {
+				height: 100%;
+				display: block;
+			}
+
+			.applicationStartButton {
+				top: 10em;
+			}
+
+			.button {
+				padding: 1em;
+				background-color: red;
+				display: inline-block;
+				color: white;
+				font-family: arial;
+				font-size: 1em;
+
+			}
+			.button:hover, .button:active {
+				background-color: #a00;
+			}
+
+			.center {
+				position: relative;
+				left: 50%;
+			    transform: translate(-50%, 0) 	
+			}
+
+			.slider {
+				width: 80%;
+				display: inline-block;
+			}
+
+			.heading {
+				border-bottom: 1px solid white;
+				padding-bottom: 1em;
+				display: block;
+				font-weight: bold;
+			}
+
+			.groupBox {
+				margin: 1em;
+				padding: 1em;
+				border-radius: 0.7em;
+				border: 2px solid white;
+				background-color: #444;
+				color: white;
+			}
+
+			.labelIcon {
+				display: inline-block;
+				width: 2em;
+				height: 2em;
+				padding: 0.5em;
+				vertical-align:middle;
+			}
+			.labelIcon img {
+				width: 100%;
+			}
+
+			.label {
+				margin-top: 1em;
+				display:block;
+			}
+
+			.verticalSpacer {
+				height: 0.1em;
+			}
+
+			.page {
+				padding-top: 5em;
+				max-width: 30em;
+				margin: auto;
+				background-image: url('/static/bg.jpg');
+				background-size: cover;
+ 				background-repeat: no-repeat;
+ 				min-height: 100%;
+ 				box-sizing: border-box;
+ 				display: none;
+			}
+			#pLoading #spinner {
+				width: 5em;
+				top: 50%;
+				position: relative;
+				left: 50%;
+			    margin-right: -50%;
+			    transform: translate(-50%, 0) 				
+			}
+
+			#pWifi {
+				text-align: center;
+			}
+
+			#pWifi select {
+				min-width: 15em;
+			}
+
+			#pWifi #wifiSpinner {
+				width: 5em;
+			}
