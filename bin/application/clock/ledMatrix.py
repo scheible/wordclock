@@ -7,6 +7,7 @@ Created on Sat Feb 13 09:59:35 2021
 
 import numpy as np
 from scipy.stats import norm
+from time import tzset
 DISABLED_LETTER = 1
 ENABLED_LETTER = 2
 
@@ -230,6 +231,7 @@ class ClockBackend:
         return updateNecessary
         
     def buildLedMatrixFromCurrentTime(self, jsonConfig, updateJson=False):
+       tzset()
        currentTime = datetime.now()
        
        hour = currentTime.hour

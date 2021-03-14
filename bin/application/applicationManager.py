@@ -41,16 +41,26 @@ class ApplicationManager():
             
     def getJsonConfig(self, appId = APPLICATION_ID_ALL):
         if (appId == APPLICATION_ID_ALL): 
-            self.buildGeneralJson()
+            
             jsonConfig = self.__applicationClock.getJsonConfig()
+            localConfig = jsonConfig.copy()
+            localConfig = self.buildGeneralJson(localConfig)
+            
         elif (appId == APPLICATION_ID_CLOCK):
             jsonConfig = self.__applicationClock.getJsonConfig()
+            localConfig = jsonConfig.copy()
+            localConfig = self.buildGeneralJson(localConfig)
         else:
             print(appId, " is not a valid application Id, json could not be obtained for this application.")
             
-        return jsonConfig
+        return localConfig
     
     
     
-    def buildGeneralJson(self):
-        pass
+    def buildGeneralJson(self, jsonConfig):
+        generalJson = {
+          "applications": [
+              jsonConfig
+              ]
+        }
+        return generalJson

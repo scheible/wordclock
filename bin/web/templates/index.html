@@ -11,8 +11,8 @@
 
 		<div id="menubar">
 			<div class="menuItem" id="mClock"><img src="/static/clock_icon.png"></div>
-			<div class="menuItem" id="mSnake"><img src="/static/games.png"></div>
-			<div class="menuItem" id="mWifi"><img src="/static/wifi_icon.png"></div>
+			<div class="menuItem" id="mSnake" style="display: none;"><img src="/static/games.png"></div>
+			<div class="menuItem" id="mWifi" style="display: none;"><img src="/static/wifi_icon.png"></div>
 			<div class="menuItem" id="mTimezone"><img src="/static/globe.png"></div>
 		</div>
 
@@ -50,7 +50,7 @@
 					<span class="label">Buchstaben</span>
 
 					<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
-					<input type="range" min="0" max="255" class="slider" id="bodyBrightness" onchange="changeDefaultProfile('brightnessBody',$(this).val());">
+					<input type="range" min="0" max="255" class="slider" id="bodyBrightness" onchange="changeDefaultProfile('brightnessBody',parseInt($(this).val()));">
 
 					<div class="verticalSpacer"></div>
 
@@ -61,7 +61,7 @@
 					<span class="label">Rahmen</span>
 
 					<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
-					<input type="range" min="0" max="255" class="slider" id="frameBrightness" onchange="changeDefaultProfile('brightnessBorder',$(this).val());">
+					<input type="range" min="0" max="255" class="slider" id="frameBrightness" onchange="changeDefaultProfile('brightnessBorder',parseInt($(this).val()));">
 
 					<div class="verticalSpacer"></div>
 
@@ -72,7 +72,7 @@
 					<span class="label">Minuten</span>
 
 					<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
-					<input type="range" min="0" max="255" class="slider" id="minutesBrightness" onchange="changeDefaultProfile('brightnessMinute',$(this).val());">
+					<input type="range" min="0" max="255" class="slider" id="minutesBrightness" onchange="changeDefaultProfile('brightnessMinute',parseInt($(this).val()));">
 
 					<div class="verticalSpacer"></div>
 
@@ -83,7 +83,7 @@
 					<span class="label">Sekunden</span>
 
 					<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
-					<input type="range" min="0" max="255" class="slider" id="secondsBrightness" onchange="changeDefaultProfile('brightnessSecond',$(this).val());">
+					<input type="range" min="0" max="255" class="slider" id="secondsBrightness" onchange="changeDefaultProfile('brightnessSecond',parseInt($(this).val()));">
 
 					<div class="verticalSpacer"></div>
 

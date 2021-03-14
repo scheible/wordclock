@@ -7,35 +7,35 @@
     "ledsPerLetter": 2,
     "defaultProfile": {
         "isSoftTransitionEnabled": true,
-        "transitionTimeMs": 5000,
+        "transitionTimeMs": 1000,
         "transitionMode": "exp",
         "colorBodyRGB": [
-            100,
             0,
-            0
+            161,
+            216
         ],
-        "brightnessBody": 255,
+        "brightnessBody": 122,
         "colorBorderRGB": [
             0,
-            0,
-            0
+            255,
+            255
         ],
-        "brightnessBorder": 255,
+        "brightnessBorder": 3,
         "colorMinuteRGB": [
-            50,
-            50,
-            50
+            0,
+            0,
+            255
         ],
-        "brightnessMinute": 255,
+        "brightnessMinute": 0,
         "colorSecondRGB": [
             100,
             0,
             0
         ],
-        "brightnessSecond": 255,
+        "brightnessSecond": 0,
         "isMinuteShown": true,
         "isSecondShown": true,
-        "isBorderShown": false
+        "isBorderShown": true
     },
     "userProfiles": [
         {

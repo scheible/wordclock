@@ -14,6 +14,8 @@ applicationManager.startApplication(APPLICATION_ID_CLOCK)
 print("Daemon Component Ipc Bindung")
 daemonComponentIpcBindung = DaemonComponentIpcBindung()
 
+jsonConfig = applicationManager.getJsonConfig()
+daemonComponentIpcBindung.sendCommand(jsonConfig)
 
 while True:
     
