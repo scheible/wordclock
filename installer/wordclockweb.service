@@ -5,8 +5,8 @@ After = network.target
 [Service]
 User = pi
 Group = pi
-WorkingDirectory = /opt/wordclock/webinterface
-ExecStart = /opt/wordclock/env/bin/gunicorn --workers 2 --threads 5 --bind 127.0.0.1:8080 wsgi:app
+WorkingDirectory = /opt/wordclock/bin/web
+ExecStart = /opt/wordclock/bin/env/bin/gunicorn --workers 2 --threads 5 --bind 127.0.0.1:8080 wsgi:app
 
 [Install]
 WantedBy = multi-user.target

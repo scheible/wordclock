@@ -24,9 +24,9 @@ echo "disabling dnsmasq daemon"
 systemctl disable dnsmasq
 
 echo "overwriting AP settings"
-cp ../ap_config/dhcpcd.conf /etc/dhcpcd.conf
-cp ../ap_config/hostapd.conf /etc/hostapd/hostapd.conf
-cp ../ap_config/dnsmasq.conf /etc/dnsmasq.conf
+cp ./dhcpcd.conf /etc/dhcpcd.conf
+cp ./hostapd.conf /etc/hostapd/hostapd.conf
+cp ./dnsmasq.conf /etc/dnsmasq.conf
 
 echo "copying nginx configuration file"
 cp wordclock /etc/nginx/sites-available/
@@ -38,16 +38,16 @@ systemctl restart nginx
 
 
 echo "making AP scripts executable"
-chmod +x /opt/wordclock/shared/start_ap.sh
-chmod +x /opt/wordclock/shared/stop_ap.sh
+chmod +x /opt/wordclock/bin/shared/start_ap.sh
+chmod +x /opt/wordclock/bin/shared/stop_ap.sh
 
 echo "creating python virtual environment"
-python3 -m venv /opt/wordclock/env
+python3 -m venv /opt/wordclock/bin/env
 
 echo "installing python modules into virtual env"
-/opt/wordclock/env/bin/python -m pip install flask
-/opt/wordclock/env/bin/python -m pip install zmq
-/opt/wordclock/env/bin/python -m pip install gunicorn
+/opt/wordclock/bin/env/bin/python -m pip install flask
+/opt/wordclock/bin/env/bin/python -m pip install zmq
+/opt/wordclock/bin/env/bin/python -m pip install gunicorn
 
 
 echo "creating gunicorn service"
