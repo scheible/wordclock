@@ -110,7 +110,13 @@
 		</div>
 
 		<div class="page" id="pTimezone">
-			timezone setup<br>
+			Zeitzone einrichten<br><br>
+			<select class="center" id="timezoneCategory" onchange="timezoneUpdateTimezones();"></select><br>
+			<select class="center" id="timezone"></select><br>
+
+			<div class="button center" onclick="setTimezone();">
+				Ok
+			</div>
 		</div>
 
 	</body>

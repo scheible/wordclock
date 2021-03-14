@@ -54,10 +54,6 @@ def blub():
 		return json.dumps({'state': 'ok', 'update': 0})
 
 
-@app.route('/timesettings', methods=['GET'])
-def timeSettings():
-	return render_template('timesettings.html')
-
 @app.route('/timesettings/timezonecategories', methods=['GET'])
 def getTimezoneCategories():
 	cats = timesettings.getTimezoneCategories()
@@ -72,10 +68,15 @@ def getTimezones(zone):
 
 @app.route('/timesettings/timezone', methods=['POST'])
 def setTimezone():
-	cat = request.form['category']
-	zone = request.form['zone']
+	data = request.json
+	cat = data['category']
+	zone = data['timezone']
+
+	print(cat)
+	print(zone)
+
 	timesettings.setTimezone(cat, zone)
-	return render_template('timesettings_okay.html')
+	return json.dumps({'state': 'ok'})
 
 
 @app.route('/listwifi', methods=['GET'])
@@ -123,4 +124,4 @@ def test(path):
 
 
 if __name__ == "__main__":
-	app.run(debug=True, host="192.168.0.229", port=8080)
+	app.run(debug=True, host="192.168.0.199", port=8080)

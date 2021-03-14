@@ -3,8 +3,6 @@ var lastState;
 
 
 $(document).ready(function(){
-	showPage('#pTimezone');
-
 	$('#mWifi').click(menuOnclickWifi);
 	$('#mClock').click(menuOnclickClock);
 	$('#mSnake').click(menuOnclickSnake);
@@ -12,10 +10,11 @@ $(document).ready(function(){
 
 	$('#btnClockStart').click(appClockStart);
 
-
 	stopAllApps();;
 	initState();
 	longPolling();
+
+	$('#mTimezone').click();
 });
 
 function longPolling() {
@@ -159,18 +158,49 @@ function menuOnclickSnake(){
 }
 function menuOnclickTimezone(){
 	showPage('#pTimezone');
+	hLoadDropdownFromServer('#timezoneCategory', "/timesettings/timezonecategories");
+}
+
+function timezoneUpdateTimezones() {
+	var category = $('#timezoneCategory').val();
+	hLoadDropdownFromServer('#timezone', '/timesettings/timezones/' + category);
+}
+
+function setTimezone() {
+	var data = {'category': $('#timezoneCategory').val(), 'timezone': $('#timezone').val()};
+
+	$.ajax({
+		  type: "POST",
+		  url: "/timesettings/timezone",
+		  contentType: "application/json",
+		  data: JSON.stringify(data),
+		  dataType: "json"
+		});
 }
 
 function appClockStart() {
-	alert("starting clock application...");
+	alert("starting clock application... (not implemented yet)");
 }
 
 // ---- Helper Functions ---------------------------------
 
 function hAddOption(elementId, optionText, optionValue) {
-	$('#wifiName').append(`<option value="${optionValue}"> 
+	$(elementId).append(`<option value="${optionValue}"> 
 	                           ${optionText} 
 	                      </option>`);	
+}
+
+function hLoadDropdownFromServer(dropdownId, url) {
+	$.get(url, function(data, status){
+	    if (status == 'success') {
+	    	$(dropdownId + ' option').each(function(){$(this).remove();});
+	    	jData = JSON.parse(data);
+	    	for (i=0; i<jData.length; i++) {
+				hAddOption(dropdownId, jData[i], jData[i]);
+	    	}
+	    	$(dropdownId).change();
+	    }
+	});		
 }
 
 function hRGB2HEX(rgb) {
