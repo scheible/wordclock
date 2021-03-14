@@ -26,7 +26,7 @@ class ClockFrontend:
         return col
         
         
-    def showLedMatrix(self, ledMatrix, jsonConfig = -1):
+    def showLedMatrix(self, ledMatrix):
         
         currentTime = round(time.time() * 1000)
         executionTime = currentTime - self.__lastTimeStamp 
@@ -50,15 +50,23 @@ class ClockFrontend:
             colorEnabledLetter = self.__toIntegerColor(ledMatrix.colorLetterRGB)
             
             
-            listFromMatrix = ledMatrix.getListFromMatrix()
+            diffColor = ledMatrix.colorLetterRGB - ledMatrix.oldColorLetterRGB
+            colorUpdateLetter = self.__toIntegerColor(letterSoftTransitionRatio * (ledMatrix.colorLetterRGB - ledMatrix.oldColorLetterRGB) + ledMatrix.oldColorLetterRGB)
             
+            
+            listFromMatrix = ledMatrix.getListFromMatrix()
+            #print(colorUpdateLetter)
+            #print(ledList[listFromMatrix == UPDATE_LETTER])
             ledList[listFromMatrix == ENABLED_LETTER] = colorEnabledLetter
             ledList[listFromMatrix == ENABLE_LETTER] = colorEnableLetter
             ledList[listFromMatrix == DISABLE_LETTER] = colorDisableLetter
+            ledList[listFromMatrix == UPDATE_LETTER] = colorUpdateLetter
+            
+            ledMatrix.colorCurrentLetterRGB = letterSoftTransitionRatio * (ledMatrix.colorLetterRGB - ledMatrix.oldColorLetterRGB) + ledMatrix.oldColorLetterRGB
         else:
             listFromMatrix = ledMatrix.getListFromMatrix()
             colorEnabledLetter = self.__toIntegerColor(ledMatrix.colorLetterRGB)
-            ledList[listFromMatrix == ENABLED_LETTER] = colorEnabledLetter
+            ledList[listFromMatrix == ENABLED_LETTER | listFromMatrix == UPDATE_LETTER] = colorEnabledLetter
             
         ledList[listFromMatrix == BORDER_ELEMENT] = self.__toIntegerColor(ledMatrix.colorBorderRGB)
         ledList[listFromMatrix == MINUTE_ELEMENT] = self.__toIntegerColor(ledMatrix.colorMinuteRGB)

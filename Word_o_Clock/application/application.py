@@ -59,7 +59,6 @@ class Application:
             pass
         elif (operationType == NEW_JSON_REMOVE):
             isUpdated = updateJson(_tempJsonConfig, jsonConfig)
-    
         if (isUpdated):
              if (self.validateJson(_tempJsonConfig)):
                  self.__jsonConfig = _tempJsonConfig.copy()

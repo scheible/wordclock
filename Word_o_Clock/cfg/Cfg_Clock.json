@@ -10,32 +10,32 @@
         "transitionTimeMs": 5000,
         "transitionMode": "exp",
         "colorBodyRGB": [
-            200,
-            10,
-            50
+            100,
+            0,
+            0
         ],
         "brightnessBody": 255,
         "colorBorderRGB": [
-            1,
-            1,
-            1
+            0,
+            0,
+            0
         ],
         "brightnessBorder": 255,
         "colorMinuteRGB": [
-            10,
-            10,
-            10
+            50,
+            50,
+            50
         ],
         "brightnessMinute": 255,
         "colorSecondRGB": [
-            20,
-            20,
-            20
+            100,
+            0,
+            0
         ],
         "brightnessSecond": 255,
         "isMinuteShown": true,
         "isSecondShown": true,
-        "isBorderShown": true
+        "isBorderShown": false
     },
     "userProfiles": [
         {
@@ -46,7 +46,7 @@
                 "seconds": 0
             },
             "stopTime": {
-                "hours": 13,
+                "hours": 12,
                 "minutes": 0,
                 "seconds": 0
             },

@@ -7,8 +7,8 @@
         		"appId": 1,
         		"defaultProfile":  {
         			"colorBodyRGB": [
-        				0,
         				100,
+        				0,
         				0
         			]
         		}

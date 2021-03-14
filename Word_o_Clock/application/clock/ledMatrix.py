@@ -13,8 +13,9 @@ ENABLED_LETTER = 2
 DISABLE_LETTER = 3
 ENABLE_LETTER = 4
 TEMP_ENABLED_LETTER = 5
-BORDER_ELEMENT = 6
-MINUTE_ELEMENT = 7
+UPDATE_LETTER = 6
+BORDER_ELEMENT = 7
+MINUTE_ELEMENT = 8
 SECOND_ELEMENT = 10
 
 class LedMatrix:
@@ -38,10 +39,12 @@ class LedMatrix:
         self.colorSecondRGB = np.zeros(3, dtype = np.float)
         self.colorBorderRGB = np.zeros(3, dtype = np.float)
         
-        self.__oldColorLetterRGB =   np.zeros(3, dtype = np.float)
-        self.__oldColorMinuteRGB = np.zeros(3, dtype = np.float)
-        self.__oldColorSecondRGB = np.zeros(3, dtype = np.float)
-        self.__oldColorBorderRGB = np.zeros(3, dtype = np.float)
+        self.oldColorLetterRGB =   np.zeros(3, dtype = np.float)
+        self.oldColorMinuteRGB = np.zeros(3, dtype = np.float)
+        self.oldColorSecondRGB = np.zeros(3, dtype = np.float)
+        self.oldColorBorderRGB = np.zeros(3, dtype = np.float)
+        
+        self.colorCurrentLetterRGB = np.zeros(3, dtype = np.float)
         
         # Transition times
         self.letterTransitionTime = 0
@@ -88,7 +91,7 @@ class LedMatrix:
         tmp = np.sign(tmp) * np.min(np.array([np.abs(tmp), np.abs(tmp - 60)]), axis = 0)
         tmp = np.sign(tmp) * np.min(np.array([np.abs(tmp), np.abs(tmp + 60)]), axis = 0)
         return tmp
-
+    
 
     def getListFromMatrix(self):
         
@@ -162,10 +165,14 @@ class LedMatrix:
             self.profile = jsonConfig["userProfiles"][usedProfile]["config"]
             
         # Finally update colors and scale birghtness of colors directly here, once and for all
-        self.__oldColorLetterRGB = self.colorLetterRGB
-        self.__oldColorMinuteRGB = self.colorMinuteRGB
-        self.__oldColorSecondRGB = self.colorSecondRGB
-        self.__oldColorBorderRGB = self.colorBorderRGB
+        
+        if (self.letterTransitionTime == 0):
+            self.oldColorLetterRGB = self.colorLetterRGB.copy()
+        else:
+            self.oldColorLetterRGB = self.colorCurrentLetterRGB.copy()
+        self.oldColorMinuteRGB = self.colorMinuteRGB
+        self.oldColorSecondRGB = self.colorSecondRGB
+        self.oldColorBorderRGB = self.colorBorderRGB
     
         self.colorLetterRGB =   (self.profile["brightnessBody"] / 255)   * np.array(self.profile["colorBodyRGB"], dtype=np.float)
         self.colorMinuteRGB = (self.profile["brightnessMinute"] / 255) * np.array(self.profile["colorMinuteRGB"], dtype=np.float)
@@ -174,15 +181,23 @@ class LedMatrix:
         
     def preUpdate(self):
         self.__matrixBodyState[self.__matrixBodyState == DISABLE_LETTER] = DISABLED_LETTER
-        self.__matrixBodyState[self.__matrixBodyState == ENABLE_LETTER] = TEMP_ENABLED_LETTER
+        self.__matrixBodyState[self.__matrixBodyState == ENABLE_LETTER]  = TEMP_ENABLED_LETTER
         self.__matrixBodyState[self.__matrixBodyState == ENABLED_LETTER] = TEMP_ENABLED_LETTER
-
+        self.__matrixBodyState[self.__matrixBodyState == UPDATE_LETTER]  = TEMP_ENABLED_LETTER
+        
             
-    def postUpdate(self):
+    def postUpdate(self, jsonUpdate):
+        if (jsonUpdate):
+            if (np.sum(np.abs(self.oldColorLetterRGB - self.colorLetterRGB)) > 0):
+                self.__matrixBodyState[self.__matrixBodyState == ENABLED_LETTER] = UPDATE_LETTER
+                self.__matrixBodyState[self.__matrixBodyState == ENABLE_LETTER] = UPDATE_LETTER
+                
         self.__matrixBodyState[self.__matrixBodyState == TEMP_ENABLED_LETTER] = DISABLE_LETTER
         
         if (self.profile["isSoftTransitionEnabled"]):
             self.letterTransitionTime = self.profile["transitionTimeMs"]
+            
+        
             
     def enableLetters(self, line, start, length):
         if (self.__matrixBodyState[line, start] != TEMP_ENABLED_LETTER):
@@ -224,11 +239,15 @@ class ClockBackend:
        self.__ledMatrix.second = second
        self.__ledMatrix.secondWithMsInFloat = second + currentTime.microsecond / 1000000
         
+       
+           
        if(hour != self.__lastHour) or (minute != self.__lastMinute) or updateJson:
-           self.__ledMatrix.preUpdate()
+           
            self.__ledMatrix.setColorsFromTime(currentTime, jsonConfig)
+           
+           self.__ledMatrix.preUpdate()
            self.__setMatrixFromTime(currentTime)
-           self.__ledMatrix.postUpdate()
+           self.__ledMatrix.postUpdate(updateJson)
        
        return self.__ledMatrix
         
