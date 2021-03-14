@@ -18,7 +18,7 @@ class WebserverComponentIpcListener():
     def recv(self):
         try:
             m = self.__socket.recv()
-            return NEW_JSON_AVAILABLE, m.decode('UTF-8')
+            return NEW_JSON_UPDATE, m.decode('UTF-8')
         except zmq.error.Again:
             return NO_JSON_AVAILABLE, None
         except json.JSONDecodeError:
@@ -41,7 +41,7 @@ class WebserverComponentIpcSender():
             rcv = self.__socket.recv()
             return rcv.decode('UTF-8')
         except zmq.error.Again as e:
-            return "error"
+            return None
 
 
 class DaemonComponentIpcBindung():
@@ -68,7 +68,7 @@ class DaemonComponentIpcBindung():
             elif (obj['commandType'] == 'set'):
                 dataObj = obj['dat']
                 self.__returnOk()
-                return NEW_JSON_AVAILABLE, dataObj
+                return NEW_JSON_UPDATE, dataObj
 
             elif (obj['commandType'] == 'remove'):
                 dataObj = obj['dat']

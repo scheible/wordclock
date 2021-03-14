@@ -1,73 +1,117 @@
-{% extends 'base.html' %}
+<html>
+	<head>
+		<title>Hello</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-{% block header %}
-<script>
-		window.onload = onLoadFunction;
+		<link rel="stylesheet" href="/static/style2.css" />
+		<script src="/static/jquery-3.5.1.min.js"></script>
+		<script src="/static/code.js"></script>
+	</head>
+	<body>
 
-		function onLoadFunction() {
-			loadWifiList('/listwifi')
-		}
-
-		function addOption(elemendId, text, value) {
-			var option = document.createElement("option");
-			option.text = text;
-			option.value = value;
-			var select = document.getElementById(elemendId);
-			select.appendChild(option);
-		}
-
-		function loadWifiList(url) {
-		  var xhttp;
-		  xhttp=new XMLHttpRequest();
-		  xhttp.onreadystatechange = function() {
-		    if (this.readyState == 4 && this.status == 200) {
-		    	response = JSON.parse(this.responseText);
-				for (i=0; i<response.length; i++) {
-					addOption("ssid", response[i], response[i]);
-				}
-		    }
-		  };
-		  xhttp.open("GET", url, true);
-		  xhttp.send();
-		}
-		
-		function myFunction(xhttp) {
-		  document.getElementById("demo").innerHTML =
-		  xhttp.responseText;
-		}
-
-		function toggleMenu() {
-		  var x = document.getElementById("menu");
-		  if (x.style.display === "none") {
-		    x.style.display = "block";
-		  } else {
-		    x.style.display = "none";
-		  }
-		}
-
-
-
-		</script>
-{% endblock %}
-
-{% block content %}
-			<div class="header">UHR THREE</div>
-			<div class="explanation">
-				Wähle dein Wifi-Netzwerk aus und gib dein Passwort ein um die UHR THREE mit deinem Wifi zu verbinden.
-			</div>
-			<form method="post" action="/wifisetup/">
-				<div class="input">
-					<select name="ssid" id="ssid"></select>
-				</div>
-				<div class="input">
-					<input type="password" name="password" placeholder="Passwort">
-				</div>
-
-				<center><input type="submit" value="ok" id="connectButton"></center>
-			</form>
-
-			<div class="explanation">
-				Tip: Um die Wifi-Liste zu aktualisieren, lade die Seite einfach kurz neu!
-			</div>
+		<div id="menubar">
+			<div class="menuItem" id="mClock"><img src="/static/clock_icon.png"></div>
+			<div class="menuItem" id="mSnake"><img src="/static/games.png"></div>
+			<div class="menuItem" id="mWifi"><img src="/static/wifi_icon.png"></div>
+			<div class="menuItem" id="mTimezone"><img src="/static/globe.png"></div>
 		</div>
-	{% endblock %}
+
+		<div class="page" id="pLoading">
+			<img id="spinner" src="/static/spinner.gif" />
+		</div>
+
+		<div class="page" id="pWifi">
+			wifi setup<br>
+
+			Lade Wifi Liste<br>
+			<img id="wifiSpinner" src="/static/spinner.gif" /><br>
+
+			<select id="wifiName"></select><br>
+			<input type="password" id="wifiPassword">
+		</div>
+
+		<div class="page" id="pClock">
+			
+			<div class="applicationStartButton button center" id="btnClockStart">
+				Uhr starten
+			</div>
+
+			<div class="applicationPane">
+				
+				<div id="cAppTotalBrightness" class="groupBox">
+					<span class="label">Gesamthelligkeit</span><br>
+					<input type="range" min="0" max="255" class="slider">
+				</div>
+
+				<div id="cAppDefaultProfile" class="groupBox">
+					<span class="label heading">Standard Profil</span><br>
+
+
+					<span class="label">Buchstaben</span>
+
+					<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
+					<input type="range" min="0" max="255" class="slider" id="bodyBrightness" onchange="changeDefaultProfile('brightnessBody',$(this).val());">
+
+					<div class="verticalSpacer"></div>
+
+					<span class="labelIcon"><img src="/static/color_picker.png" /></span>
+					<input type="color" id="bodyColor" onchange="changeDefaultProfile('colorBodyRGB',hHEX2RGB($(this).val()));">
+
+
+					<span class="label">Rahmen</span>
+
+					<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
+					<input type="range" min="0" max="255" class="slider" id="frameBrightness" onchange="changeDefaultProfile('brightnessBorder',$(this).val());">
+
+					<div class="verticalSpacer"></div>
+
+					<span class="labelIcon"><img src="/static/color_picker.png" /></span>
+					<input type="color" id="frameColor" onchange="changeDefaultProfile('colorBorderRGB',hHEX2RGB($(this).val()));">
+
+
+					<span class="label">Minuten</span>
+
+					<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
+					<input type="range" min="0" max="255" class="slider" id="minutesBrightness" onchange="changeDefaultProfile('brightnessMinute',$(this).val());">
+
+					<div class="verticalSpacer"></div>
+
+					<span class="labelIcon"><img src="/static/color_picker.png" /></span>
+					<input type="color" id="minutesColor" onchange="changeDefaultProfile('colorMinuteRGB',hHEX2RGB($(this).val()));">
+
+
+					<span class="label">Sekunden</span>
+
+					<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
+					<input type="range" min="0" max="255" class="slider" id="secondsBrightness" onchange="changeDefaultProfile('brightnessSecond',$(this).val());">
+
+					<div class="verticalSpacer"></div>
+
+					<span class="labelIcon"><img src="/static/color_picker.png" /></span>
+					<input type="color" id="secondsColor" onchange="changeDefaultProfile('colorSecondRGB',hHEX2RGB($(this).val()));">
+				</div>
+
+
+			</div>
+
+		</div>
+
+		<div class="page" id="pSnake">
+			snake app<br>
+
+			<div class="applicationStartButton button center" id="btnClockStart">
+				start app
+			</div>
+
+			<div class="applicationPane">
+				blub
+			</div>
+
+		</div>
+
+		<div class="page" id="pTimezone">
+			timezone setup<br>
+		</div>
+
+	</body>
+</html>
