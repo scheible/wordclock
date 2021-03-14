@@ -1,9 +1,57 @@
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
+
 from flask import Flask, render_template, request, redirect
 from random import randint
 import time, json
-import labersack, wifi, timesettings, ipc
+import wifi, timesettings
+import shared.ipc as ipc
+
 
 app = Flask(__name__)
+
+
+@app.route('/mainview')
+def index():
+	return render_template('index.html')
+
+
+@app.route("/set", methods=["POST"])
+def set():
+	communication = ipc.WebserverComponentIpcSender()
+	data = request.json
+	print(data)
+	r = communication.send(json.dumps(data))
+	print(r)
+	return r
+
+
+@app.route("/state")
+def getState():
+	communication = ipc.WebserverComponentIpcSender()
+	jsonString = '{"commandType": "query"}'
+
+	r = communication.send(jsonString)
+	if (r == None):
+		answer = {'state': 'failed', 'update': 0, 'errorText': 'daemon does not answer'}
+	else:
+		answer = {'state': 'ok', 'update': 1, 'data': json.loads(r)}
+	return json.dumps(answer)
+
+
+@app.route('/longpoll')
+def blub():
+	communication = ipc.WebserverComponentIpcListener()
+
+	state, data = communication.recv()
+	if (state == ipc.NEW_JSON_UPDATE):
+		r = json.loads(data)
+		answer = {'state': 'ok', 'update': 1, 'data': r}
+		return json.dumps(answer)
+	else:
+		return json.dumps({'state': 'ok', 'update': 0})
 
 
 @app.route('/timesettings', methods=['GET'])
@@ -29,41 +77,6 @@ def setTimezone():
 	timesettings.setTimezone(cat, zone)
 	return render_template('timesettings_okay.html')
 
-@app.route("/set", methods=["POST"])
-def set():
-	communication = ipc.WebserverComponentIpcSender()
-	data = request.json
-	print(data)
-	r = communication.send(json.dumps(data))
-	print(r)
-	return r
-
-@app.route("/state")
-def getState():
-	communication = ipc.WebserverComponentIpcSender()
-	jsonString = '{"commandType": "query"}'
-
-	r = json.loads(communication.send(jsonString))
-	answer = {'state': 'ok', 'update': 1, 'app': r}
-	return json.dumps(answer)
-
-
-@app.route('/longpoll')
-def blub():
-	communication = ipc.WebserverComponentIpcListener()
-
-	state, data = communication.recv()
-	if (state == ipc.NEW_JSON_AVAILABLE):
-		r = json.loads(data)
-		answer = {'state': 'ok', 'update': 1, 'app': r}
-		return answer
-	else:
-		return json.dumps({'state': 'ok', 'update': 0})
-
-@app.route('/wifisetup/', methods=['GET'])
-def index():
-	print(request)
-	return render_template('index.html')
 
 @app.route('/listwifi', methods=['GET'])
 def listWifi():
@@ -98,12 +111,6 @@ def wifiSetup_post():
 	return "<h1>Wifi Setup, please restart</h1>"
 
 
-@app.route('/asdf/')
-def asdf():
-	return render_template('index2.html')
-
-
-
 # This will catch all paths that are not valid
 # So at any random url we will end up at the wifi
 # setup. This is what Captive Portal clients will do
@@ -111,9 +118,9 @@ def asdf():
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def test(path):
-	return redirect('/wifisetup')
+	return redirect('/mainview')
 
 
 
 if __name__ == "__main__":
-	app.run(debug=True, host="192.168.0.199", port=8080)
+	app.run(debug=True, host="192.168.0.229", port=8080)

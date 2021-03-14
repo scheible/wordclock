@@ -1,6 +1,6 @@
 import json, zmq
 
-NEW_JSON_AVAILABLE = 0
+NEW_JSON_UPDATE = 0
 DATA_QUERY = 1
 NO_JSON_AVAILABLE = 2
 MALFORMED_JSON = 3
@@ -66,17 +66,17 @@ class DaemonComponentIpcBindung():
                 return DATA_QUERY, None
 
             elif (obj['commandType'] == 'set'):
-                dataObj = obj['data']
+                dataObj = obj['dat']
                 self.__returnOk()
                 return NEW_JSON_AVAILABLE, dataObj
 
             elif (obj['commandType'] == 'remove'):
-                dataObj = obj['data']
+                dataObj = obj['dat']
                 self.__returnOk()
                 return NEW_JSON_REMOVE, dataObj
 
             elif (obj['commandType'] == 'add'):
-                dataObj = obj['data']
+                dataObj = obj['dat']
                 self.__returnOk()
                 return NEW_JSON_ADD, dataObj
 

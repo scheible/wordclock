@@ -13,6 +13,7 @@ $(document).ready(function(){
 	$('#btnClockStart').click(appClockStart);
 
 
+	stopAllApps();;
 	initState();
 	longPolling();
 });
@@ -41,13 +42,15 @@ function initState() {
 
 function routeNewStateToApp(data) {
 	console.log(data.update);
-	if (data.state != 'ok')
+	if (data.state != 'ok')  {
+		alert("Interner Fehler. Bitte starte die Uhr neu!");
 		return;
+	}
 
-	lastState = data;
+	app = data.data.applications[0];
 
 	stopAllApps();
-	switch(data.app.appId) {
+	switch(app.appId) {
 		case 0:
 			// no app active -> show loading screen
 			break;
@@ -55,7 +58,7 @@ function routeNewStateToApp(data) {
 			// clock app active -> switch to clock
 			//$('#mClock').click();
 			startApp('#pClock');
-			processClockState(data.app);
+			processClockState(app);
 			break;
 		case 2:
 			//snake
@@ -85,11 +88,16 @@ function changeDefaultProfile(key, value) {
 	dataToChange = {
 			"commandType": "set",
 			"dat": {
-				"defaultProfile": {}
+				"applications": [
+					{
+						"appId": 1,
+						"defaultProfile": {}
+					}
+				]
 				}
 			};
 
-	dataToChange.dat.defaultProfile[key] = value;
+	dataToChange.dat.applications[0].defaultProfile[key] = value;
 
 	$.ajax({
 			  type: "POST",
