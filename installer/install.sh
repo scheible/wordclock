@@ -6,7 +6,7 @@ echo "updating package sources"
 apt-get update
 
 echo "install binary packages"
-apt-get install -y hostapd dnsmasq python3.7-venv nginx python3-pip
+apt-get install -y hostapd dnsmasq python3.7-venv nginx python3-pip python3-dev libatlas-base-dev
 
 echo "unmasking hostapd daemon"
 systemctl unmask hostapd
@@ -48,6 +48,9 @@ echo "installing python modules into virtual env"
 /opt/wordclock/bin/env/bin/python -m pip install flask
 /opt/wordclock/bin/env/bin/python -m pip install zmq
 /opt/wordclock/bin/env/bin/python -m pip install gunicorn
+/opt/wordclock/bin/env/bin/python -m pip install numpy
+/opt/wordclock/bin/env/bin/python -m pip install scipy
+/opt/wordclock/bin/env/bin/python -m pip install rpi_ws281x
 
 
 echo "creating gunicorn service"
