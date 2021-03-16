@@ -10,17 +10,17 @@
         "transitionTimeMs": 1000,
         "transitionMode": "exp",
         "colorBodyRGB": [
-            0,
-            161,
-            216
+            255,
+            255,
+            0
         ],
-        "brightnessBody": 122,
+        "brightnessBody": 8,
         "colorBorderRGB": [
             0,
             255,
             255
         ],
-        "brightnessBorder": 3,
+        "brightnessBorder": 6,
         "colorMinuteRGB": [
             0,
             0,
@@ -42,12 +42,12 @@
             "userProfileEnabled": true,
             "startTime": {
                 "hours": 22,
-                "minutes": 38,
+                "minutes": 0,
                 "seconds": 0
             },
             "stopTime": {
-                "hours": 12,
-                "minutes": 0,
+                "hours": 22,
+                "minutes": 1,
                 "seconds": 0
             },
             "config": {

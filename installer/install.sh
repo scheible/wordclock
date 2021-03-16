@@ -53,11 +53,17 @@ echo "installing python modules into virtual env"
 /opt/wordclock/bin/env/bin/python -m pip install rpi_ws281x
 
 
-echo "creating gunicorn service"
+echo "creating gunicorn daemon"
 cp wordclockweb.service /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable wordclockweb.service
 systemctl start wordclockweb.service
+
+echo "creating wordclock daemon"
+cp wordclock.service /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable wordclock.service
+systemctl start wordclock.service
 
 echo "modify access rights on wpa_supplicant and etc/localtime"
 chmod o+w /etc

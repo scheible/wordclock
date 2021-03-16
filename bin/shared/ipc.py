@@ -48,8 +48,8 @@ class DaemonComponentIpcBindung():
     def __init__(self):
         self.__context = zmq.Context()
         self.__socket = self.__context.socket(zmq.REP)
-        self.__socket.RCVTIMEO = 500
-        self.__socket.setsockopt(zmq.LINGER, 500)
+        self.__socket.RCVTIMEO = 5000
+        self.__socket.setsockopt(zmq.LINGER, 5000)
         self.__socket.bind('tcp://*:1234')
 
         self.__pubContext = zmq.Context()

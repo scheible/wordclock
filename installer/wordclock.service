@@ -1,0 +1,12 @@
+[Unit]
+Description = Word Clock Daemon
+After = network.target
+
+[Service]
+User = root
+Group = root
+WorkingDirectory = /opt/wordclock/bin
+ExecStart = nice -n -20 /opt/wordclock/bin/mainAppl.py
+
+[Install]
+WantedBy = multi-user.target
