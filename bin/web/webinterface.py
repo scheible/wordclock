@@ -22,7 +22,6 @@ if __name__ != '__main__':
 def index():
 	return render_template('index.html')
 
-
 @app.route('/testing/startap')
 def testing_startap():
 	app.logger.info('starting wifi access point')
@@ -48,7 +47,7 @@ def getState():
 	jsonString = '{"commandType": "query"}'
 
 	r = communication.send(jsonString)
-	if (r == None):
+	if (r == 'error'):
 		answer = {'state': 'failed', 'update': 0, 'errorText': 'daemon does not answer'}
 	else:
 		try:

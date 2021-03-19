@@ -1,3 +1,4 @@
+#!env/bin/python -u
 
 from application.applicationManager import *
 from shared.ipc import *
