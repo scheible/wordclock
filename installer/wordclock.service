@@ -2,11 +2,17 @@
 Description = Word Clock Daemon
 After = network.target
 
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
 [Service]
 User = root
 Group = root
 WorkingDirectory = /opt/wordclock/bin
 ExecStart = nice -n -20 /opt/wordclock/bin/mainAppl.py
+
+Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy = multi-user.target
