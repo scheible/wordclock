@@ -175,11 +175,26 @@ function setTimezone() {
 		  contentType: "application/json",
 		  data: JSON.stringify(data),
 		  dataType: "json"
-		});
+		}).done(function() {alert("Zeitzone gesetzt");});
 }
 
 function appClockStart() {
 	alert("starting clock application... (not implemented yet)");
+}
+
+function connectToWifi() {
+	data = {'ssid': $('#wifiName').val(), 'pw': $('#wifiPassword').val()};
+
+	if (confirm("Die Uhr wird versuchen sich mit dem WiFi zu verbinden. Diese Seite wird danach nicht mehr reagieren!")) {
+		showPage('#pLoading');
+		$.ajax({
+		  type: "POST",
+		  url: "/wifisetup",
+		  contentType: "application/json",
+		  data: JSON.stringify(data),
+		  dataType: "json"
+		});
+	}	
 }
 
 // ---- Helper Functions ---------------------------------

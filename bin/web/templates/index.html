@@ -2,6 +2,9 @@
 	<head>
 		<title>Hello</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
 
 		<link rel="stylesheet" href="/static/style2.css" />
 		<script src="/static/jquery-3.5.1.min.js"></script>
@@ -12,7 +15,7 @@
 		<div id="menubar">
 			<div class="menuItem" id="mClock"><img src="/static/clock_icon.png"></div>
 			<div class="menuItem" id="mSnake" style="display: none;"><img src="/static/games.png"></div>
-			<div class="menuItem" id="mWifi" style="display: none;"><img src="/static/wifi_icon.png"></div>
+			<div class="menuItem" id="mWifi"><img src="/static/wifi_icon.png"></div>
 			<div class="menuItem" id="mTimezone"><img src="/static/globe.png"></div>
 		</div>
 
@@ -27,7 +30,11 @@
 			<img id="wifiSpinner" src="/static/spinner.gif" /><br>
 
 			<select id="wifiName"></select><br>
-			<input type="password" id="wifiPassword">
+			<input type="password" id="wifiPassword"><br>
+
+			<div class="button" onclick="connectToWifi();">
+				Ok
+			</div>
 		</div>
 
 		<div class="page" id="pClock">
@@ -40,7 +47,7 @@
 				
 				<div id="cAppTotalBrightness" class="groupBox">
 					<span class="label">Gesamthelligkeit</span><br>
-					<input type="range" min="0" max="255" class="slider">
+					<input type="range" min="0" max="255" class="slider full">
 				</div>
 
 				<div id="cAppDefaultProfile" class="groupBox">
@@ -55,7 +62,7 @@
 					<div class="verticalSpacer"></div>
 
 					<span class="labelIcon"><img src="/static/color_picker.png" /></span>
-					<input type="color" id="bodyColor" onchange="changeDefaultProfile('colorBodyRGB',hHEX2RGB($(this).val()));">
+					<input type="color" id="bodyColor" class="colorPicker" onchange="changeDefaultProfile('colorBodyRGB',hHEX2RGB($(this).val()));">
 
 
 					<span class="label">Rahmen</span>
@@ -118,6 +125,8 @@
 				Ok
 			</div>
 		</div>
+
+		<div class="verticalSpacer"></div>
 
 	</body>
 </html>

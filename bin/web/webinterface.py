@@ -4,13 +4,18 @@ parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
 from flask import Flask, render_template, request, redirect
-from random import randint
-import time, json
-import wifi, timesettings
+import time, json, logging
+import timesettings, wifi
 import shared.ipc as ipc
 
 
 app = Flask(__name__)
+
+
+if __name__ != '__main__':
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
 
 
 @app.route('/mainview')
@@ -18,13 +23,22 @@ def index():
 	return render_template('index.html')
 
 
+@app.route('/testing/startap')
+def testing_startap():
+	app.logger.info('starting wifi access point')
+	wifi.startAP()
+	return "ok"
+
+@app.route('/testing/stopap')
+def testing_stopap():
+	wifi.stopAP()
+	return "ok"
+
 @app.route("/set", methods=["POST"])
 def set():
 	communication = ipc.WebserverComponentIpcSender()
 	data = request.json
-	print(data)
 	r = communication.send(json.dumps(data))
-	print(r)
 	return r
 
 
@@ -37,7 +51,10 @@ def getState():
 	if (r == None):
 		answer = {'state': 'failed', 'update': 0, 'errorText': 'daemon does not answer'}
 	else:
-		answer = {'state': 'ok', 'update': 1, 'data': json.loads(r)}
+		try:
+			answer = {'state': 'ok', 'update': 1, 'data': json.loads(r)}
+		except:
+			answer = {'state': 'failed', 'update': 0, 'errorText': 'daemon returned malformed json'}
 	return json.dumps(answer)
 
 
@@ -81,35 +98,27 @@ def setTimezone():
 
 @app.route('/listwifi', methods=['GET'])
 def listWifi():
-	#availableAPs = listwifi.listWifi()
-	time.sleep(2)
-	availableAPs = ['test1', 'test2', 'test3']
+	availableAPs = wifi.listWifi()
 	return json.dumps(availableAPs)
 
-@app.route('/wifisetup/', methods=['POST'])
+@app.route('/wifisetup', methods=['POST'])
 def wifiSetup_post():
-	print("DEBUGGING")
-	ssid = request.form['ssid']
-	pw = request.form['password']
-	print("setting wifi with")
-	print("ssid    ", ssid)
-	print("password", pw)
 
-	fileHandle = open('/etc/wpa_supplicant/wpa_supplicant.conf','w')
-	fileHandle.write('country=DE\n')
-	fileHandle.write('ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\n')
-	fileHandle.write('update_config=1\n')
-	fileHandle.write('network={\n')
-	fileHandle.write('ssid="' + ssid + '"\n')
-	fileHandle.write('scan_ssid=1\n')
-	fileHandle.write('psk="' + pw + '"\n')
-	fileHandle.write('key_mgmt=WPA-PSK\n')
-	fileHandle.write('}\n')
-	fileHandle.close()
+	answer = {'state': 'ok', 'update': 0}
+	try:
+		data = request.json
+		ssid = data['ssid']
+		pw = data['pw']
 
-	wifi.stopAP()
+		print("setting wifi with")
+		print("ssid    ", ssid)
+		print("password", pw)
 
-	return "<h1>Wifi Setup, please restart</h1>"
+		wifi.connectToAP(ssid, pw)
+	except:
+		answer = {'state': 'failed', 'update': 0, 'errorText': 'provided wrong json'}
+
+	return answer
 
 
 # This will catch all paths that are not valid
@@ -124,4 +133,4 @@ def test(path):
 
 
 if __name__ == "__main__":
-	app.run(debug=True, host="192.168.0.199", port=8080)
+	app.run(debug=True, host="localhost", port=8080)

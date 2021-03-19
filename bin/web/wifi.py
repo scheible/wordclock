@@ -17,3 +17,18 @@ def stopAP():
 
 def startAP():
 	result = subprocess.check_output('sudo ./start_ap.sh', shell=True)
+
+def connectToAP(ssid, pw):
+	fileHandle = open('/etc/wpa_supplicant/wpa_supplicant.conf','w')
+	fileHandle.write('country=DE\n')
+	fileHandle.write('ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\n')
+	fileHandle.write('update_config=1\n')
+	fileHandle.write('network={\n')
+	fileHandle.write('ssid="' + ssid + '"\n')
+	fileHandle.write('scan_ssid=1\n')
+	fileHandle.write('psk="' + pw + '"\n')
+	fileHandle.write('key_mgmt=WPA-PSK\n')
+	fileHandle.write('}\n')
+	fileHandle.close()
+
+	stopAP()

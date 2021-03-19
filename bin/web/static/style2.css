@@ -39,7 +39,10 @@
 				color: white;
 				font-family: arial;
 				font-size: 1em;
-
+				-webkit-user-select: none; /* Safari */        
+				-moz-user-select: none; /* Firefox */
+				-ms-user-select: none; /* IE10+/Edge */
+				user-select: none; /* Standard */
 			}
 			.button:hover, .button:active {
 				background-color: #a00;
@@ -54,6 +57,9 @@
 			.slider {
 				width: 80%;
 				display: inline-block;
+			}
+			.full {
+				width: 100%;
 			}
 
 			.heading {
@@ -102,6 +108,7 @@
  				min-height: 100%;
  				box-sizing: border-box;
  				display: none;
+ 				overflow:auto;
 			}
 			#pLoading #spinner {
 				width: 5em;
@@ -116,11 +123,11 @@
 				text-align: center;
 			}
 
-			select, input {
+			select, input[type="text"], input[type="password"] {
 				min-width: 15em;
 				font-size: 1.4em;
 				margin: 0.2em;
-			}
+			} 
 
 			#pWifi #wifiSpinner {
 				width: 5em;

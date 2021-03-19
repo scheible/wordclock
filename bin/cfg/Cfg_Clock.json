@@ -11,16 +11,16 @@
         "transitionMode": "exp",
         "colorBodyRGB": [
             255,
-            255,
-            0
+            0,
+            212
         ],
-        "brightnessBody": 8,
+        "brightnessBody": 78,
         "colorBorderRGB": [
             0,
             255,
             255
         ],
-        "brightnessBorder": 6,
+        "brightnessBorder": 0,
         "colorMinuteRGB": [
             0,
             0,
