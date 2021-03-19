@@ -5,13 +5,7 @@
     	"applications": [
         	{
         		"appId": 1,
-        		"defaultProfile":  {
-        			"colorBodyRGB": [
-        				0,
-        				100,
-        				0
-        			]
-        		}
+        		 "brightness": 80
     		}
 		]
 	}

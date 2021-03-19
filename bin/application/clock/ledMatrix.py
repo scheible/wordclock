@@ -4,10 +4,15 @@ Created on Sat Feb 13 09:59:35 2021
 
 @author: andre
 """
+import time
+startTime1 = time.time()
 
 import numpy as np
 from scipy.stats import norm
 from time import tzset
+endTime1 = time.time()
+print ("StartUp took1: ", round((endTime1 - startTime1) * 1000), "ms")
+
 DISABLED_LETTER = 1
 ENABLED_LETTER = 2
 
@@ -17,7 +22,17 @@ TEMP_ENABLED_LETTER = 5
 UPDATE_LETTER = 6
 BORDER_ELEMENT = 7
 MINUTE_ELEMENT = 8
-SECOND_ELEMENT = 10
+
+DISABLED_MINUTE = 11
+ENABLED_MINUTE = 12
+DISABLE_MINUTE = 13
+ENABLE_MINUTE = 14
+TEMP_ENABLE_MINUTE = 15
+UPDATE_MINUTE = 16
+
+
+
+SECOND_ELEMENT = 40
 
 class LedMatrix:
     
@@ -33,7 +48,7 @@ class LedMatrix:
         self.__num_border_side = jsonConfig["numLedBorderSide"]
         self.__num_border_corner = jsonConfig["numLedBorderCorner"]
         self.__borderBody = np.zeros(self.__num_border_elements, dtype=float)
-        self.__clearBorderBody = self.__borderBody.copy()
+        self.__minuteBody = np.zeros(self.__num_border_elements, dtype=float)
         
         self.colorLetterRGB =   np.zeros(3, dtype = np.float)
         self.colorMinuteRGB = np.zeros(3, dtype = np.float)
@@ -46,13 +61,12 @@ class LedMatrix:
         self.oldColorBorderRGB = np.zeros(3, dtype = np.float)
         
         self.colorCurrentLetterRGB = np.zeros(3, dtype = np.float)
-        
+        self.colorCurrentMinuteRGB = np.zeros(3, dtype = np.float)
         # Transition times
         self.letterTransitionTime = 0
         self.__minuteTransitionTime = 0
         self.__secondTransitionTime = 0
         self.minute = 0
-        self.second = 0
         self.secondWithMsInFloat = 0
         
         
@@ -62,7 +76,7 @@ class LedMatrix:
         dT = 1e-3
         
         mean = 0
-        standard_deviation = 1 / 2
+        standard_deviation = self.T / 8
         
         x_values = np.arange(-self.T / 2, self.T / 2 + dT, dT)
         y_values = norm(mean, standard_deviation)
@@ -70,7 +84,8 @@ class LedMatrix:
         y_values = y_values.pdf(x_values)
         y_values = y_values / np.max(y_values)
         self.secondWeightLookup  = np.round(y_values , 3)
-        self.ledListToSeconds = 60 / 92 * np.arange(92)
+        
+        self.ledListToSeconds = 60 / 92 * ((np.arange(92) - self.__num_border_side // 2) % 92)
         
         
         # Init lookup table
@@ -85,7 +100,16 @@ class LedMatrix:
                 else:
                     self.__led_look_up_table[i * numLedsVertical + j, 1] = (numLedsVertical - j - 1) // ledsPerElement
                 self.__led_look_up_table[i * numLedsVertical + j, 0] = self.__num_horizontal_fields - i - 1
-    
+                
+        # Set Lookup Matrix to decide between border and minute fields
+        self.minuteOrBorder = BORDER_ELEMENT * np.ones(self.__num_border_elements, dtype=float)
+        for cornerElement in range(1, 5):
+            startCorner = cornerElement * self.__num_border_side + (cornerElement - 1) * self.__num_border_corner
+            endCorner = startCorner + self.__num_border_corner
+            self.minuteOrBorder[startCorner : endCorner] = MINUTE_ELEMENT
+        bodyList = self.__matrixBodyState[self.__led_look_up_table[:, 1], self.__led_look_up_table[:, 0]].copy()
+        self.minuteOrBorder = np.concatenate((bodyList, self.minuteOrBorder))
+
     
     def __getTimeDifference(self, timestamp, timearray, base):
         tmp = timearray - timestamp
@@ -93,25 +117,21 @@ class LedMatrix:
         tmp = np.sign(tmp) * np.min(np.array([np.abs(tmp), np.abs(tmp + 60)]), axis = 0)
         return tmp
     
-
     def getListFromMatrix(self):
         
         bodyList = self.__matrixBodyState[self.__led_look_up_table[:, 1], self.__led_look_up_table[:, 0]]
         
-        if (self.profile["isBorderShown"]):
+        if (self.profile["colorBorderRGB"]):
             self.__borderBody = BORDER_ELEMENT * np.ones(self.__num_border_elements, dtype=float)
         else:
             self.__borderBody = np.zeros(self.__num_border_elements, dtype=float)
             
-        if (self.profile["isMinuteShown"]):
-            cornerElement = self.minute % 5
-            if (cornerElement > 0):
-                startCorner = cornerElement * self.__num_border_side + (cornerElement - 1) * self.__num_border_corner
-                endCorner = startCorner + self.__num_border_corner
-                self.__borderBody[startCorner : endCorner] = MINUTE_ELEMENT
-                
-        if (self.profile["isSecondShown"]):
-            
+        if (self.profile["brightnessMinute"]):
+            self.__borderBody[self.__minuteBody > 0] = self.__minuteBody[self.__minuteBody > 0] 
+
+        
+        if (self.profile["brightnessSecond"]):
+            self.minuteOrBorder = np.concatenate((bodyList, self.__borderBody)).copy()
             t = self.secondWithMsInFloat
             lowerLimit = (t - self.T / 2) % 60
             upperLimit = (t + self.T / 2) % 60
@@ -169,9 +189,10 @@ class LedMatrix:
         
         if (self.letterTransitionTime == 0):
             self.oldColorLetterRGB = self.colorLetterRGB.copy()
+            self.oldColorMinuteRGB = self.colorMinuteRGB.copy()
         else:
             self.oldColorLetterRGB = self.colorCurrentLetterRGB.copy()
-        self.oldColorMinuteRGB = self.colorMinuteRGB
+            self.oldColorMinuteRGB = self.colorCurrentMinuteRGB.copy()
         self.oldColorSecondRGB = self.colorSecondRGB
         self.oldColorBorderRGB = self.colorBorderRGB
     
@@ -185,6 +206,16 @@ class LedMatrix:
         self.__matrixBodyState[self.__matrixBodyState == ENABLE_LETTER]  = TEMP_ENABLED_LETTER
         self.__matrixBodyState[self.__matrixBodyState == ENABLED_LETTER] = TEMP_ENABLED_LETTER
         self.__matrixBodyState[self.__matrixBodyState == UPDATE_LETTER]  = TEMP_ENABLED_LETTER
+
+        
+        
+        
+        self.__minuteBody[self.__minuteBody == DISABLE_MINUTE] = BORDER_ELEMENT
+        self.__minuteBody[self.__minuteBody == ENABLE_MINUTE] = TEMP_ENABLE_MINUTE
+        self.__minuteBody[self.__minuteBody == ENABLED_MINUTE] = TEMP_ENABLE_MINUTE
+        self.__minuteBody[self.__minuteBody == UPDATE_MINUTE] = TEMP_ENABLE_MINUTE
+
+
         
             
     def postUpdate(self, jsonUpdate):
@@ -193,7 +224,12 @@ class LedMatrix:
                 self.__matrixBodyState[self.__matrixBodyState == ENABLED_LETTER] = UPDATE_LETTER
                 self.__matrixBodyState[self.__matrixBodyState == ENABLE_LETTER] = UPDATE_LETTER
                 
+            if (np.sum(np.abs(self.oldColorMinuteRGB - self.colorMinuteRGB)) > 0):
+                self.__minuteBody[self.__minuteBody == ENABLED_MINUTE] = UPDATE_MINUTE
+                self.__minuteBody[self.__minuteBody == ENABLE_MINUTE] = UPDATE_MINUTE
+                
         self.__matrixBodyState[self.__matrixBodyState == TEMP_ENABLED_LETTER] = DISABLE_LETTER
+        self.__minuteBody[self.__minuteBody == TEMP_ENABLE_MINUTE] = DISABLE_MINUTE
         
         if (self.profile["isSoftTransitionEnabled"]):
             self.letterTransitionTime = self.profile["transitionTimeMs"]
@@ -206,6 +242,19 @@ class LedMatrix:
         else:
             self.__matrixBodyState[line, start : start + length] = ENABLED_LETTER
             
+    def updateMinuteField(self, minute):
+        
+        if (self.profile["brightnessMinute"]):
+            for cornerElement in range(1, minute + 1):
+                startCorner = cornerElement * self.__num_border_side + (cornerElement - 1) * self.__num_border_corner
+                endCorner = startCorner + self.__num_border_corner
+
+                if (self.__minuteBody[startCorner] == TEMP_ENABLE_MINUTE):
+                    self.__minuteBody[startCorner : endCorner] = ENABLED_MINUTE
+                else:
+                    self.__minuteBody[startCorner : endCorner] = ENABLE_MINUTE
+
+
 
         
 from datetime import datetime
@@ -225,43 +274,64 @@ class ClockBackend:
         minute = currentTime.minute
         second = currentTime.second
         
+
+        
         updateNecessary = False
         if(hour != self.__lastHour) or (minute != self.__lastMinute) or(second != self.__lastSecond):
             updateNecessary = True
         return updateNecessary
         
     def buildLedMatrixFromCurrentTime(self, jsonConfig, updateJson=False):
+        
+       # Call tzset() to check if timezone was changed.
        tzset()
+       
+       # Get current time
        currentTime = datetime.now()
        
+       # Extract the current hour, minute and second
        hour = currentTime.hour
        minute = currentTime.minute
        second = currentTime.second
        
-       self.__ledMatrix.second = second
+       
+       # Store the currend second in a float variable inside LED matrix.
        self.__ledMatrix.secondWithMsInFloat = second + currentTime.microsecond / 1000000
         
        
-           
+       # Only perform update if either the hour or minute has changed - or
+       # in case a json update is requested
        if(hour != self.__lastHour) or (minute != self.__lastMinute) or updateJson:
-           
+
+           # Update the colors of the LED matrix if needed
            self.__ledMatrix.setColorsFromTime(currentTime, jsonConfig)
            
+           # Call the pre Update of the led matrix
            self.__ledMatrix.preUpdate()
+           
+           # Update the letter and minute for the matrix
            self.__setMatrixFromTime(currentTime)
+           
+           # Call the post Update of the led matrix
            self.__ledMatrix.postUpdate(updateJson)
+
        
+       # Return the led matrix
        return self.__ledMatrix
         
     def __setMatrixFromTime(self, time):
+        
+        # Get the current hour, minute and second from the time
         hour = time.hour
         minute = time.minute
         second = time.second
         
+        # save the current hour and minute as last hour and last minute
         self.__lastHour = hour
         self.__lastMinute = minute
         
-        self.__ledMatrix.minute = minute % 5
+        # Update the minute field of the led matrix
+        self.__ledMatrix.updateMinuteField(minute % 5)
         
         self.__ES()
         self.__IST()
@@ -309,9 +379,7 @@ class ClockBackend:
         else:
             self.__hour((hour+1)     % 12)
     
-        if (minute < 5):
-            self.__UHR()
-    
+
     def __hour(self, h):
 
         if (h == 0):
