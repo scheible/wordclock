@@ -10,29 +10,29 @@
         "transitionTimeMs": 1000,
         "transitionMode": "exp",
         "colorBodyRGB": [
-            255,
-            0,
-            212
+            23,
+            30,
+            211
         ],
-        "brightnessBody": 78,
+        "brightnessBody": 30,
         "colorBorderRGB": [
             0,
             255,
             255
         ],
-        "brightnessBorder": 0,
+        "brightnessBorder": 17,
         "colorMinuteRGB": [
             0,
             0,
             255
         ],
-        "brightnessMinute": 0,
+        "brightnessMinute": 210,
         "colorSecondRGB": [
             100,
             0,
             0
         ],
-        "brightnessSecond": 0,
+        "brightnessSecond": 170,
         "isMinuteShown": true,
         "isSecondShown": true,
         "isBorderShown": true

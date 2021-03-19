@@ -1,22 +1,31 @@
 import subprocess
 
 def listWifi():
-	result = subprocess.check_output('sudo iw dev wlan0 scan ap-force | grep SSID', shell=True)
-	sResult = result.decode('utf-8')
-	wifiList = []
-	for line in sResult.split('\n'):
-		line = line.strip()
-		if (len(line) > 7 and line[0] != '*'):
-			wifiList.append(line[6:])
+	try:
+		result = subprocess.check_output('sudo iw dev wlan0 scan ap-force | grep SSID', shell=True)
+		sResult = result.decode('utf-8')
+		wifiList = []
+		for line in sResult.split('\n'):
+			line = line.strip()
+			if (len(line) > 7 and line[0] != '*'):
+				wifiList.append(line[6:])
+	except:
+		wifiList = None
 
 	return wifiList
 
 
 def stopAP():
-	result = subprocess.check_output('sudo ./stop_ap.sh', shell=True)
+	try:
+		result = subprocess.check_output('sudo ./stop_ap.sh', shell=True)
+	except:
+		pass
 
 def startAP():
-	result = subprocess.check_output('sudo ./start_ap.sh', shell=True)
+	try:
+		result = subprocess.check_output('sudo ./start_ap.sh', shell=True)
+	except:
+		pass
 
 def connectToAP(ssid, pw):
 	fileHandle = open('/etc/wpa_supplicant/wpa_supplicant.conf','w')

@@ -14,19 +14,23 @@ $(document).ready(function(){
 	initState();
 	longPolling();
 
-	$('#mTimezone').click();
+	$('#mClock').click();
 });
 
 function longPolling() {
-	console.log("polling viewId=" +  currentViewId);
-	$.get("/longpoll", function(data, status){
-	    if (status == 'success') {
-	    	jData = JSON.parse(data);
-	    	if (jData.state == 'ok' && jData.update == 1) {
-	    		routeNewStateToApp(jData);
-	    	}
-	    }
-	    longPolling();
+	$.ajax({
+		url: "/longpoll",
+		success: function(data, status){
+		    	jData = JSON.parse(data);
+		    	if (jData.state == 'ok' && jData.update == 1) {
+		    		routeNewStateToApp(jData);
+		    	}
+			    longPolling();
+			},
+		timeout: 7000,
+		error: function(data, status){
+			alert("Verbindung mit der Uhr verloren. Bitte lade die Seite neu.");
+		}
 	});
 }
 

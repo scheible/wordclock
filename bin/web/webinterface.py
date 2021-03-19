@@ -98,7 +98,15 @@ def setTimezone():
 
 @app.route('/listwifi', methods=['GET'])
 def listWifi():
-	availableAPs = wifi.listWifi()
+	availableAPs = None
+	counter = 0
+	while availableAPs == None:
+		availableAPs = wifi.listWifi()
+		counter+=1
+
+		if counter > 5:
+			return json.dumps(['<error loading wifi list>'])
+
 	return json.dumps(availableAPs)
 
 @app.route('/wifisetup', methods=['POST'])
