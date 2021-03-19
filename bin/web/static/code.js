@@ -72,6 +72,8 @@ function routeNewStateToApp(data) {
 }
 
 function processClockState(appData) {
+	$('#cAppTotalBrightness #totalBrightness').val(appData.brightness);
+
 	$('#cAppDefaultProfile #bodyBrightness').val(appData.defaultProfile.brightnessBody);
 	$('#cAppDefaultProfile #bodyColor').val(hRGB2HEX(appData.defaultProfile.colorBodyRGB));
 
@@ -85,9 +87,30 @@ function processClockState(appData) {
 	$('#cAppDefaultProfile #secondsColor').val(hRGB2HEX(appData.defaultProfile.colorSecondRGB));
 }
 
+function changeAppConfig(key, value) {
+	dataToChange = {
+			"commandType": "set",
+			"dat": {
+				"applications": [
+					{
+						"appId": 1,
+					}
+				]
+				}
+			};
+	dataToChange.dat.applications[0][key] = value;
+
+	$.ajax({
+			  type: "POST",
+			  url: "/set",
+			  contentType: "application/json",
+			  data: JSON.stringify(dataToChange),
+			  dataType: "json"
+			});
+
+}
+
 function changeDefaultProfile(key, value) {
-	console.log(key);
-	console.log(key)
 	dataToChange = {
 			"commandType": "set",
 			"dat": {

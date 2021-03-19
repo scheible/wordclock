@@ -47,7 +47,7 @@
 				
 				<div id="cAppTotalBrightness" class="groupBox">
 					<span class="label">Gesamthelligkeit</span><br>
-					<input type="range" min="0" max="255" class="slider full">
+					<input id="totalBrightness" type="range" min="0" max="255" class="slider full" onchange="changeAppConfig('brightness', parseInt($(this).val()));">
 				</div>
 
 				<div id="cAppDefaultProfile" class="groupBox">

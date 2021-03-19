@@ -5,7 +5,7 @@
     "numLedBorderSide": 14,
     "numLedBorderCorner": 9,
     "ledsPerLetter": 2,
-    "brightness": 80,
+    "brightness": 10,
     "defaultProfile": {
         "isSoftTransitionEnabled": true,
         "transitionTimeMs": 1000,

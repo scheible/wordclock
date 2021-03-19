@@ -5,7 +5,7 @@
     	"applications": [
         	{
         		"appId": 1,
-        		 "brightness": 80
+        		 "brightness": 10
     		}
 		]
 	}
