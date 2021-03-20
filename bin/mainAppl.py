@@ -25,6 +25,7 @@ while True:
     
     if ((state == NEW_JSON_UPDATE) or (state == NEW_JSON_REMOVE) or (state == NEW_JSON_ADD)):
         applicationManager.modifyJsonConfig(data, state)
+        jsonConfig = applicationManager.getJsonConfig()
         daemonComponentIpcBindung.sendCommand(jsonConfig)
     else:
         time.sleep(0.1)
