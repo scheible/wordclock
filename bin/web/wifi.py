@@ -1,5 +1,41 @@
 import subprocess
 
+
+def getStatus():
+	# COMPLETED: connceted to a wiif
+	# DISCONNECTED: could mean connection went wrong or in AP mode
+	# SCANNING
+	# ASSOCIATING
+	# UNKNOWN: some error occured and we don't know the state
+
+
+	try:
+		result = subprocess.check_output('wpa_cli -i wlan0 status | grep wpa_state', shell=True)
+		sResult = result.decode('utf-8').strip()
+		state = sResult.split('=')
+		if (len(state) == 2):
+			return state[1]
+		else:
+			return "UNKNOWN"
+
+	except:
+		return "UNKNOWN"
+
+def isAP():
+	try:
+		result = subprocess.check_output('systemctl status hostapd | grep Active:', shell=True)
+		sResult = result.decode('utf-8').strip()
+		isActive = sResult.split(' ')
+		if (len(isActive) >= 2):
+			isActive = isActive[1]
+			if (isActive == "active"):
+				return "ap"
+			else:
+				return "no_ap"
+		return "unknown"
+	except:
+		return "unknown"
+
 def listWifi():
 	try:
 		result = subprocess.check_output('sudo iw dev wlan0 scan ap-force | grep SSID', shell=True)
@@ -13,7 +49,6 @@ def listWifi():
 		wifiList = None
 
 	return wifiList
-
 
 def stopAP():
 	try:
