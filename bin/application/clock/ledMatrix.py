@@ -375,17 +375,20 @@ class ClockBackend:
 
 
         if (minute >= 00 and minute < 25):
-            self.__hour(hour % 12)
+            self.__hour(hour % 12, minute)
         else:
-            self.__hour((hour+1)     % 12)
+            self.__hour((hour+1)     % 12, minute)
     
 
-    def __hour(self, h):
+    def __hour(self, h, m):
 
         if (h == 0):
             self.__ZWOELF()
         elif (h == 1):
-            self.__EIN()
+            if (m < 5):
+                self.__EIN()
+            else:
+                self.__EINS()
         elif (h == 2):
             self.__ZWEI()
         elif (h == 3):
@@ -444,7 +447,9 @@ class ClockBackend:
     
     def __EIN(self):
         self.__ledMatrix.enableLetters(5, 0, 3)
-    
+    def __EINS(self):
+        self.__ledMatrix.enableLetters(5, 0, 4)
+        
     def __ZWEI(self):
         self.__ledMatrix.enableLetters(5, 7, 4)
     
