@@ -5,15 +5,15 @@
     "numLedBorderSide": 14,
     "numLedBorderCorner": 9,
     "ledsPerLetter": 2,
-    "brightness": 10,
+    "brightness": 100,
     "defaultProfile": {
         "isSoftTransitionEnabled": true,
         "transitionTimeMs": 1000,
         "transitionMode": "exp",
         "colorBodyRGB": [
-            33,
-            140,
-            57
+            50,
+            0,
+            0
         ],
         "brightnessBody": 188,
         "colorBorderRGB": [
@@ -40,7 +40,7 @@
     },
     "userProfiles": [
         {
-            "userProfileEnabled": true,
+            "userProfileEnabled": false,
             "startTime": {
                 "hours": 22,
                 "minutes": 38,
