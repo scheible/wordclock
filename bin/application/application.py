@@ -67,7 +67,18 @@ class Application:
              else:
                 print("Given json config is not valid!")
                 
-                
+    def increaseBrightness(self, inc):
+        tmpJson = self.__jsonConfig.copy()
+        if (tmpJson["brightness"] < 255):
+            tmpJson["brightness"] = tmpJson["brightness"] + inc
+            self.modifyJsonConfig(tmpJson, NEW_JSON_UPDATE)
+            
+    def decreaseBrightness(self, dec):
+        tmpJson = self.__jsonConfig.copy()
+        print(tmpJson["brightness"])
+        if (tmpJson["brightness"] > 0):
+            tmpJson["brightness"] = tmpJson["brightness"] - dec
+            self.modifyJsonConfig(tmpJson, NEW_JSON_UPDATE)
         
     def getJsonConfig(self):
         return self.__jsonConfig

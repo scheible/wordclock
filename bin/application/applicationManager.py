@@ -30,14 +30,32 @@ class ApplicationManager():
         
         
     def modifyJsonConfig(self, jsonConfig, operationType):
-        applicationJsons = jsonConfig["applications"]
-        for applicationJson in applicationJsons:
-            appId = applicationJson["appId"]
+        
+        if "brightness" in jsonConfig:
+            incr = 0
+            print("Change birghtness")
+            if jsonConfig["brightness"] == "increase":
+                self.__applicationClock.increaseBrightness(1)
+            elif jsonConfig["brightness"] == "decrease":
+                self.__applicationClock.decreaseBrightness(1)
+            if jsonConfig["brightness"] == "increaseHold":
+                self.__applicationClock.increaseBrightness(5)
+            elif jsonConfig["brightness"] == "decreaseHold":
+                self.__applicationClock.decreaseBrightness(5)
             
-            if (appId == APPLICATION_ID_CLOCK):
-                self.__applicationClock.modifyJsonConfig(applicationJson, operationType)
-            else:
-                print(appId, " is not a valid application Id, json could not be set for this application.")
+        else:
+            
+            applicationJsons = jsonConfig["applications"]
+            for applicationJson in applicationJsons:
+                appId = applicationJson["appId"]
+                
+                if (appId == APPLICATION_ID_CLOCK):
+                    
+                    self.__applicationClock.modifyJsonConfig(applicationJson, operationType)
+                    
+                    
+                else:
+                    print(appId, " is not a valid application Id, json could not be set for this application.")
             
     def getJsonConfig(self, appId = APPLICATION_ID_ALL):
         if (appId == APPLICATION_ID_ALL): 
