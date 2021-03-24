@@ -32,8 +32,9 @@ class myButton:
         self.lastButtonPressTime = time.time()
         
         self.hasRegisteredEvent = False
+        self.buttonIsPressed = False
         
-        
+        self.timerThread = 0
     def __del__(self):
         GPIO.cleanup()
         
@@ -41,29 +42,25 @@ class myButton:
     def buttonThread(self, isButtonReleased, actionList):
         startTime = time.time()
         
-        actionPressed = [False] * len(actionList)
+        actionPressed = False
         while(True):
             if isButtonReleased():
                 break
             
             buttonTime = round((time.time()- startTime) * 1000)
             
-            for actionId in range(len(actionList)):
-                if not actionPressed[actionId]:
-                    action = actionList[actionId]
-                    if (buttonTime >= action["MinTime"]):
-                        action["Callback"]()
-                        actionPressed[actionId] = True
+            if not actionPressed:
+                if (buttonTime >= actionList["MinTime"]):
+                    actionList["Callback"]()
+                    actionPressed = True
                     
             
             time.sleep(0.01)
             
             
-            
-        print ("Button duration was: ", buttonTime, "ms")
-            
         
     def buttonAction(self, channel):
+        time.sleep(0.001)
         if (GPIO.input(channel) == 0):
             self.buttonPressed()
         else:
@@ -74,37 +71,40 @@ class myButton:
         
         #Check if button is still pressed
         if (GPIO.input(self.gpioPin) == 0):
-            for holdAction in self.keyHoldActions:
-                holdAction[1]()
-                threading.Timer(holdAction[0] / 1000, self.buttonHold).start()
+            self.keyHoldActions[1]()
+            self.timerThread = threading.Timer(self.keyHoldActions[0] / 1000, self.buttonHold)
+            self.timerThread.start()
                 
     def buttonPressed(self):
-        pressTime = round((time.time() - self.lastButtonPressTime) * 1000)
-        print("Key pressed. Time past since last press: ", pressTime, "ms")
-        
-        
-        # Start a thread with the min duration to check if a button was hold for the period of time.
-        for holdTime in self.keyHoldActions:
-            threading.Timer(holdTime[0] / 1000, self.buttonHold).start()
-        
-        
-        for protectionTime in self.keyPressedActions:
-            if (pressTime) > protectionTime[0]:
-                protectionTime[1]()
-                self.lastButtonPressTime = time.time()
-                
-        if (self.buttonPressTimeForRelease == 0):
-            self.buttonPressTimeForRelease = time.time()
+        if (not self.buttonIsPressed):
+            self.buttonIsPressed = True
+            pressTime = (time.time() - self.lastButtonPressTime) * 1000
+            
+            
+            # Start a thread with the min duration to check if a button was hold for the period of time.
+            if len(self.keyHoldActions):
+                self.timerThread = threading.Timer(self.keyHoldActions[0] / 1000, self.buttonHold)
+                self.timerThread.start()
+            
+            
+            if len(self.keyPressedActions):
+                if (pressTime) > self.keyPressedActions[0]:
+                    self.lastButtonPressTime = time.time()
+                    self.keyPressedActions[1]()
+                    
+                    
+            if (self.buttonPressTimeForRelease == 0):
+                self.buttonPressTimeForRelease = time.time()
                 
     
     def buttonReleased(self):
-        releaseTime = round((time.time() - self.buttonPressTimeForRelease) * 1000)
-        print("Button released. Button was pressed for: ", releaseTime, "ms")
-        print("")
-        for releaseAction in self.keyReleasedActions:
-            if (releaseTime) > releaseAction[0]:
-                releaseAction[1]()
-                
+        self.buttonIsPressed = False
+        releaseTime = (time.time() - self.buttonPressTimeForRelease) * 1000
+        if len(self.keyReleasedActions):
+            if (releaseTime) > self.keyReleasedActions[0]:
+                self.keyReleasedActions[1]()
+        if len(self.keyHoldActions):
+            self.timerThread.cancel()
         self.buttonPressTimeForRelease = 0
 
         
@@ -117,11 +117,11 @@ class myButton:
             self.hasRegisteredEvent = True
             
         if (actionType == ACTION_TYPE_KEY_PRESSED):
-            self.keyPressedActions.append([time, callbackFunction])
+            self.keyPressedActions = [time, callbackFunction]
         elif (actionType == ACTION_TYPE_KEY_RELEASED):
-            self.keyReleasedActions.append([time, callbackFunction])
+            self.keyReleasedActions = [time, callbackFunction]
         elif (actionType == ACTION_TYPE_KEY_HOLD):
-            self.keyHoldActions.append([time, callbackFunction])
+            self.keyHoldActions = [time, callbackFunction]
             
 
 
