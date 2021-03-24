@@ -33,6 +33,7 @@ class myButton:
         
         self.hasRegisteredEvent = False
         self.buttonIsPressed = False
+        self.timerActive = False
         
         self.timerThread = 0
     def __del__(self):
@@ -74,6 +75,7 @@ class myButton:
             self.keyHoldActions[1]()
             self.timerThread = threading.Timer(self.keyHoldActions[0] / 1000, self.buttonHold)
             self.timerThread.start()
+            
                 
     def buttonPressed(self):
         if (not self.buttonIsPressed):
@@ -85,6 +87,7 @@ class myButton:
             if len(self.keyHoldActions):
                 self.timerThread = threading.Timer(self.keyHoldActions[0] / 1000, self.buttonHold)
                 self.timerThread.start()
+                self.timerActive = True
             
             
             if len(self.keyPressedActions):
@@ -103,7 +106,8 @@ class myButton:
         if len(self.keyReleasedActions):
             if (releaseTime) > self.keyReleasedActions[0]:
                 self.keyReleasedActions[1]()
-        if len(self.keyHoldActions):
+        if self.timerActive:
+            self.timerActive = False
             self.timerThread.cancel()
         self.buttonPressTimeForRelease = 0
 
