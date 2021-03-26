@@ -8,7 +8,6 @@ import time
 startTime1 = time.time()
 
 import numpy as np
-from scipy.stats import norm
 from time import tzset
 endTime1 = time.time()
 print ("StartUp took1: ", round((endTime1 - startTime1) * 1000), "ms")
@@ -73,18 +72,18 @@ class LedMatrix:
         # Store Lookup Table for seconds
             
         self.T = 4
-        dT = 1e-3
-        
+        self.dT = 10e-3
         mean = 0
         standard_deviation = self.T / 8
         
-        x_values = np.arange(-self.T / 2, self.T / 2 + dT, dT)
-        y_values = norm(mean, standard_deviation)
+        x_values = np.arange(-self.T / 2, self.T / 2 + self.dT, self.dT)
+        #y_values = norm(mean, standard_deviation)
+        #y_values 
+        #y_values = y_values.pdf(x_values)
+        #self.secondWeightLookup  = np.round(y_values , 3)
         
-        y_values = y_values.pdf(x_values)
-        y_values = y_values / np.max(y_values)
-        self.secondWeightLookup  = np.round(y_values , 3)
         
+        self.secondWeightLookup = np.load("application/clock/lookupTableGaus.npy")
         self.ledListToSeconds = 60 / 92 * ((np.arange(92) - self.__num_border_side // 2) % 92)
         
         
@@ -144,7 +143,7 @@ class LedMatrix:
                 
             values = self.__getTimeDifference(t, self.ledListToSeconds[ids], 60)
             
-            values = np.rint(1000 * values).astype(int)
+            values = np.rint((1 / self.dT) * values).astype(int)
             
             weights = self.secondWeightLookup[values + self.secondWeightLookup.size // 2]
             self.__borderBody[ids] = SECOND_ELEMENT + weights
@@ -293,7 +292,7 @@ class ClockBackend:
        hour = currentTime.hour
        minute = currentTime.minute
        second = currentTime.second
-       
+
        
        # Store the currend second in a float variable inside LED matrix.
        self.__ledMatrix.secondWithMsInFloat = second + currentTime.microsecond / 1000000
@@ -325,7 +324,7 @@ class ClockBackend:
         hour = time.hour
         minute = time.minute
         second = time.second
-        
+
         # save the current hour and minute as last hour and last minute
         self.__lastHour = hour
         self.__lastMinute = minute
