@@ -8,6 +8,7 @@ Created on Sat Mar 20 11:31:35 2021
 import time
 from shared.myButton import *
 import shared.ipc
+import shared.wifi as wifi
 
 
 communication = shared.ipc.WebserverComponentIpcSender()
@@ -23,7 +24,7 @@ def leftButtonFunctionHold():
     r = communication.send(decreaseBrightnessHold)
 
 def middleButtonFunctionHold():
-     print("You are pressing the middle button: ")
+	wifi.startAP()
      
      
 def rightButtonFunction():

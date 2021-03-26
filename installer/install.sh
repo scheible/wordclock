@@ -49,8 +49,9 @@ echo "installing python modules into virtual env"
 /opt/wordclock/bin/env/bin/python -m pip install zmq
 /opt/wordclock/bin/env/bin/python -m pip install gunicorn
 /opt/wordclock/bin/env/bin/python -m pip install numpy
-/opt/wordclock/bin/env/bin/python -m pip install scipy
+#/opt/wordclock/bin/env/bin/python -m pip install scipy
 /opt/wordclock/bin/env/bin/python -m pip install rpi_ws281x
+/opt/wordclock/bin/env/bin/python -m pip install rpi.gpio
 
 
 echo "creating gunicorn daemon"
@@ -64,6 +65,12 @@ cp wordclock.service /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable wordclock.service
 systemctl start wordclock.service
+
+echo "creating wordclock button daemon"
+cp wordclockbutton.service /etc/systemd/system/
+systemctl daemon-reload
+systemctl enable wordclockbutton.service
+systemctl start wordclockbutton.service
 
 echo "modify access rights on wpa_supplicant and etc/localtime"
 chmod o+w /etc
