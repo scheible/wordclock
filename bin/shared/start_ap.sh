@@ -1,5 +1,5 @@
 #!/bin/sh
-wpa_cli -i wlan0 disconnect
+cd $(dirname $0)
 python3 change_dhcpcd_config.py static
 dhcpcd -k wlan0
 systemctl stop wpa_supplicant

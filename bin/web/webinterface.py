@@ -5,11 +5,13 @@ sys.path.append(parentdir)
 
 from flask import Flask, render_template, request, redirect
 import time, json, logging
-import timesettings, wifi
+import timesettings
 import shared.ipc as ipc
+import shared.wifi as wifi
 
 
 app = Flask(__name__)
+app.jinja_env.auto_reload = True
 
 
 if __name__ != '__main__':
@@ -58,7 +60,7 @@ def getState():
 
 
 @app.route('/longpoll')
-def blub():
+def longpoll():
 	communication = ipc.WebserverComponentIpcListener()
 
 	state, data = communication.recv()

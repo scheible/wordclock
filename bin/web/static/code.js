@@ -188,6 +188,8 @@ function menuOnclickTimezone(){
 	hLoadDropdownFromServer('#timezoneCategory', "/timesettings/timezonecategories");
 }
 
+// ----- Page functions -----------------------------------
+
 function timezoneUpdateTimezones() {
 	var category = $('#timezoneCategory').val();
 	hLoadDropdownFromServer('#timezone', '/timesettings/timezones/' + category);
@@ -222,6 +224,12 @@ function connectToWifi() {
 		  dataType: "json"
 		});
 	}	
+}
+
+function createProfile() {
+	template = $('#cAppProfile_1').clone();
+	template.attr('id','cAppProfile_2');
+	template.appendTo('#pClock .applicationPane');
 }
 
 // ---- Helper Functions ---------------------------------

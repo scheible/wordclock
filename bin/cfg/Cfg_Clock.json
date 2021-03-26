@@ -5,17 +5,17 @@
     "numLedBorderSide": 14,
     "numLedBorderCorner": 9,
     "ledsPerLetter": 2,
-    "brightness": 21,
+    "brightness": 53,
     "defaultProfile": {
         "isSoftTransitionEnabled": true,
         "transitionTimeMs": 1000,
         "transitionMode": "exp",
         "colorBodyRGB": [
             255,
-            0,
+            255,
             255
         ],
-        "brightnessBody": 12,
+        "brightnessBody": 113,
         "colorBorderRGB": [
             255,
             255,
@@ -27,7 +27,7 @@
             255,
             255
         ],
-        "brightnessMinute": 0,
+        "brightnessMinute": 186,
         "colorSecondRGB": [
             255,
             255,

@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, os
 
 
 def getStatus():
@@ -52,13 +52,15 @@ def listWifi():
 
 def stopAP():
 	try:
-		result = subprocess.check_output('sudo ./stop_ap.sh', shell=True)
+		path = os.path.dirname(__file__)
+		result = subprocess.check_output('sudo ' + path + '/stop_ap.sh', shell=True)
 	except:
 		pass
 
 def startAP():
 	try:
-		result = subprocess.check_output('sudo ./start_ap.sh', shell=True)
+		path = os.path.dirname(__file__)
+		result = subprocess.check_output('sudo ' + path + '/start_ap.sh', shell=True)
 	except:
 		pass
 

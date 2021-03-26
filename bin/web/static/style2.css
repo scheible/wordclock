@@ -63,21 +63,27 @@
 			}
 
 			.heading {
-				border-bottom: 1px solid white;
-				padding-bottom: 1em;
+				/*border-bottom: 1px solid white;*/
+				padding-bottom: 0.1em;
 				display: block;
 				font-weight: bold;
 			}
-
+			.active {
+				color: red;
+			}
 			.groupBox {
 				margin: 1em;
 				padding: 1em;
+				padding-top:0.1em;
 				border-radius: 0.7em;
 				border: 2px solid white;
 				background-color: #444;
 				color: white;
 			}
-
+			.checkable {
+				display: inline-block;
+				padding-bottom: 0.6em;
+			}
 			.labelIcon {
 				display: inline-block;
 				width: 2em;
@@ -90,7 +96,7 @@
 			}
 
 			.label {
-				margin-top: 1em;
+				margin-top: 0em;
 				display:block;
 			}
 

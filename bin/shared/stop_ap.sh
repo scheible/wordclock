@@ -1,4 +1,5 @@
 #!/bin/sh
+cd $(dirname $0)
 python3 change_dhcpcd_config.py dhcp
 dhcpcd -k wlan0
 systemctl stop dnsmasq
