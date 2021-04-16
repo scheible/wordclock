@@ -12,6 +12,7 @@ import threading
 ACTION_TYPE_KEY_PRESSED = 1
 ACTION_TYPE_KEY_RELEASED = 2
 ACTION_TYPE_KEY_HOLD = 3
+ACTION_TYPE_KEY_HOLD_SINGLE = 4
 
 class myButton:
     
@@ -21,6 +22,7 @@ class myButton:
         self.keyPressedActions = []
         self.keyReleasedActions = []
         self.keyHoldActions = []
+        self.keyHoldActionsSingle = []
         
         self.bounceTime = bounceTime
         #self.__buttonThread = threading.Thread(target = self.buttonThread, args = (lambda : self.isButtonReleased, self.actionList)) 
@@ -76,6 +78,12 @@ class myButton:
             self.timerThread = threading.Timer(self.keyHoldActions[0] / 1000, self.buttonHold)
             self.timerThread.start()
             
+    def buttonHoldSingle(self):
+        
+        #Check if button is still pressed
+        if (GPIO.input(self.gpioPin) == 0):
+            self.keyHoldActionsSingle[1]()
+            
                 
     def buttonPressed(self):
         if (not self.buttonIsPressed):
@@ -86,6 +94,12 @@ class myButton:
             # Start a thread with the min duration to check if a button was hold for the period of time.
             if len(self.keyHoldActions):
                 self.timerThread = threading.Timer(self.keyHoldActions[0] / 1000, self.buttonHold)
+                self.timerThread.start()
+                self.timerActive = True
+                
+            # Start a thread with the min duration to check if a button was hold for the period of time.
+            if len(self.keyHoldActionsSingle):
+                self.timerThread = threading.Timer(self.keyHoldActionsSingle[0] / 1000, self.buttonHoldSingle)
                 self.timerThread.start()
                 self.timerActive = True
             
@@ -126,6 +140,8 @@ class myButton:
             self.keyReleasedActions = [time, callbackFunction]
         elif (actionType == ACTION_TYPE_KEY_HOLD):
             self.keyHoldActions = [time, callbackFunction]
+        elif (actionType == ACTION_TYPE_KEY_HOLD_SINGLE):
+            self.keyHoldActionsSingle = [time, callbackFunction]
             
 
 

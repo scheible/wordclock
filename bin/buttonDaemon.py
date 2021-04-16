@@ -33,14 +33,14 @@ def rightButtonFunctionHold():
      r = communication.send(increaseBrightnessHold)
      
      
-bounceTime = 20
+bounceTime = 1
 leftButton = myButton(17, bounceTime)
 leftButton.addButtonAction(ACTION_TYPE_KEY_PRESSED, leftButtonFunction, 100)
 leftButton.addButtonAction(ACTION_TYPE_KEY_HOLD, leftButtonFunctionHold, 150)
 
 
 middleButton = myButton(27, bounceTime)
-middleButton.addButtonAction(ACTION_TYPE_KEY_HOLD, middleButtonFunctionHold, 2000)
+middleButton.addButtonAction(ACTION_TYPE_KEY_HOLD_SINGLE, middleButtonFunctionHold, 2000)
 rightButton = myButton(22, bounceTime)
 rightButton.addButtonAction(ACTION_TYPE_KEY_PRESSED, rightButtonFunction, 100)
 rightButton.addButtonAction(ACTION_TYPE_KEY_HOLD, rightButtonFunctionHold, 150)
