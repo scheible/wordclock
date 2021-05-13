@@ -24,7 +24,17 @@ def leftButtonFunctionHold():
     r = communication.send(decreaseBrightnessHold)
 
 def middleButtonFunctionHold():
-	wifi.startAP()
+	print("wifi button triggered - checking if wifi is already on")
+	state = wifi.isAP()
+	if (state == 'no_ap'):
+		print("starting wifi AP")
+		wifi.startAP()
+	elif (state == 'ap'):
+		print("wifi already on, stopping AP")
+		wifi.stopAP()
+	else:
+		print("wifi status unknown")
+	
      
      
 def rightButtonFunction():
