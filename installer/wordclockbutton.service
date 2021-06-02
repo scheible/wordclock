@@ -2,8 +2,8 @@
 Description = Word Clock Button Daemon
 After = network.target
 
-StartLimitIntervalSec=500
-StartLimitBurst=5
+#StartLimitIntervalSec=500
+#StartLimitBurst=5
 
 [Service]
 User = root

@@ -2,11 +2,16 @@
 # installer script for uhrthree
 # run this script as root or with sudo
 
-echo "updating package sources"
-apt-get update
 
-echo "install binary packages"
-apt-get install -y hostapd dnsmasq python3.7-venv nginx python3-pip python3-dev libatlas-base-dev
+if  [ $1 != "no_external" ]
+then
+	echo "updating package sources"
+	apt-get update
+
+	echo "install binary packages"
+	apt-get install -y hostapd dnsmasq python3.7-venv nginx python3-pip python3-dev libatlas-base-dev
+
+fi
 
 echo "unmasking hostapd daemon"
 systemctl unmask hostapd
@@ -41,18 +46,20 @@ echo "making AP scripts executable"
 chmod +x /opt/wordclock/bin/shared/start_ap.sh
 chmod +x /opt/wordclock/bin/shared/stop_ap.sh
 
-echo "creating python virtual environment"
-python3 -m venv /opt/wordclock/bin/env
+if  [ $1 != "no_external" ]
+then
+	echo "creating python virtual environment"
+	python3 -m venv /opt/wordclock/bin/env
 
-echo "installing python modules into virtual env"
-/opt/wordclock/bin/env/bin/python -m pip install flask
-/opt/wordclock/bin/env/bin/python -m pip install zmq
-/opt/wordclock/bin/env/bin/python -m pip install gunicorn
-/opt/wordclock/bin/env/bin/python -m pip install numpy
-#/opt/wordclock/bin/env/bin/python -m pip install scipy
-/opt/wordclock/bin/env/bin/python -m pip install rpi_ws281x
-/opt/wordclock/bin/env/bin/python -m pip install rpi.gpio
-
+	echo "installing python modules into virtual env"
+	/opt/wordclock/bin/env/bin/python -m pip install flask
+	/opt/wordclock/bin/env/bin/python -m pip install zmq
+	/opt/wordclock/bin/env/bin/python -m pip install gunicorn
+	/opt/wordclock/bin/env/bin/python -m pip install numpy
+	#/opt/wordclock/bin/env/bin/python -m pip install scipy
+	/opt/wordclock/bin/env/bin/python -m pip install rpi_ws281x
+	/opt/wordclock/bin/env/bin/python -m pip install rpi.gpio
+fi
 
 echo "creating gunicorn daemon"
 cp wordclockweb.service /etc/systemd/system/
