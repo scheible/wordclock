@@ -138,3 +138,7 @@
 			#pWifi #wifiSpinner {
 				width: 5em;
 			}
+
+			#cAppProfile_template {
+				display:none;
+			}

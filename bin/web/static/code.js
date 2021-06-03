@@ -44,7 +44,6 @@ function initState() {
 }
 
 function routeNewStateToApp(data) {
-	console.log(data.update);
 	if (data.state != 'ok')  {
 		alert("Interner Fehler. Bitte starte die Uhr neu!");
 		return;
@@ -85,7 +84,39 @@ function processClockState(appData) {
 
 	$('#cAppDefaultProfile #secondsBrightness').val(appData.defaultProfile.brightnessSecond);
 	$('#cAppDefaultProfile #secondsColor').val(hRGB2HEX(appData.defaultProfile.colorSecondRGB));
+
+	//process the user defined profiles
+	$(".userProfile").remove();
+
+	for (i=0;i<appData.userProfiles.length;i++) {
+		console.log("found a profile");
+		console.log(appData.userProfiles[i]);
+		processClockUserProfile(appData.userProfiles[i], i);
+	}
 }
+
+function processClockUserProfile(profileData, i) {
+
+	profileElement = createProfile(i);
+	profileElement.show();
+
+	profileElement.find("#headingCheckbox").prop("checked", profileData.userProfileEnabled);	
+	profileElement.find("#cProfileStart").val(hTimeToString(profileData.startTime));
+	profileElement.find("#cProfileEnd").val(hTimeToString(profileData.stopTime));
+
+	profileElement.find('#bodyBrightness').val(profileData.config.brightnessBody);
+	profileElement.find('#bodyColor').val(hRGB2HEX(profileData.config.colorBodyRGB));
+
+	profileElement.find('#frameBrightness').val(profileData.config.brightnessBorder);
+	profileElement.find('#frameColor').val(hRGB2HEX(profileData.config.colorBorderRGB));
+
+	profileElement.find('#minutesBrightness').val(profileData.config.brightnessMinute);
+	profileElement.find('#minutesColor').val(hRGB2HEX(profileData.config.colorMinuteRGB));
+
+	profileElement.find('#secondsBrightness').val(profileData.config.brightnessSecond);
+	profileElement.find('#secondsColor').val(hRGB2HEX(profileData.config.colorSecondRGB));
+}
+
 
 function changeAppConfig(key, value) {
 	dataToChange = {
@@ -226,10 +257,15 @@ function connectToWifi() {
 	}	
 }
 
-function createProfile() {
-	template = $('#cAppProfile_1').clone();
-	template.attr('id','cAppProfile_2');
+function createProfile(i) {
+	template = $('#cAppProfile_template').clone();
+	template.attr('id','cAppProfile_' + i);
 	template.appendTo('#pClock .applicationPane');
+	template.addClass('userProfile');
+	template.find('.heading').text("Nutzerprofil " + (i + 1));
+	template.find('input').prop('disabled', true);
+
+	return template
 }
 
 // ---- Helper Functions ---------------------------------
@@ -296,4 +332,20 @@ function hHEX2RGB (hex) {
         return false;
     }
     return [r, g, b];
+}
+
+function hTimeToString(time) {
+	var hours;
+	var minutes;
+
+	hours = time.hours;
+	if (hours <= 9)
+		hours = "0" + hours;
+
+	minutes = time.minutes;
+	if (minutes <= 9)
+		minutes = "0" + minutes;
+
+	return (hours + ":" + minutes);
+
 }

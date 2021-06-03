@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Hello</title>
+		<title>Wordclock</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 		<meta http-equiv="Pragma" content="no-cache" />
@@ -50,10 +50,6 @@
 					<input id="totalBrightness" type="range" min="0" max="255" class="slider full" onchange="changeAppConfig('brightness', parseInt($(this).val()));">
 				</div>
 
-				<div class="button center" id="test" onclick="createProfile();">
-						löschen
-					</div>
-
 				<div id="cAppDefaultProfile" class="groupBox">
 					<span class="label heading active">Standard Profil</span><br>
 
@@ -102,8 +98,8 @@
 					<input type="color" id="secondsColor" onchange="changeDefaultProfile('colorSecondRGB',hHEX2RGB($(this).val()));">
 				</div>
 
-				<div id="cAppProfile_1" class="groupBox">
-					<input type="checkbox"><span class="heading checkable">Nutzerprofil 1</span>
+				<div id="cAppProfile_template" class="groupBox">
+					<input type="checkbox" id="headingCheckbox"><span class="heading checkable">Nutzerprofil 1</span>
 					<br>
 
 					<span class="label">Zeit</span>
@@ -152,9 +148,9 @@
 					<span class="labelIcon"><img src="/static/color_picker.png" /></span>
 					<input type="color" id="secondsColor" onchange="changeDefaultProfile('colorSecondRGB',hHEX2RGB($(this).val()));">
 
-					<div class="button center" id="test">
+					<!--<div class="button center" id="test">
 						löschen
-					</div>
+					</div> -->
 				</div>
 
 			</div>
