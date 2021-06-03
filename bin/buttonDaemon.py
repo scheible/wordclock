@@ -57,7 +57,10 @@ rightButton.addButtonAction(ACTION_TYPE_KEY_PRESSED, rightButtonFunction, 100)
 rightButton.addButtonAction(ACTION_TYPE_KEY_HOLD, rightButtonFunctionHold, 150)
 
 
-  
+#disable the raspberry pi LED
+fHandle = open("/sys/class/leds/led0/brightness", "w")
+fHandle.write("0\n")
+fHandle.close()
 
 
 while(True):
