@@ -89,8 +89,6 @@ function processClockState(appData) {
 	$(".userProfile").remove();
 
 	for (i=0;i<appData.userProfiles.length;i++) {
-		console.log("found a profile");
-		console.log(appData.userProfiles[i]);
 		processClockUserProfile(appData.userProfiles[i], i);
 	}
 }
@@ -163,6 +161,109 @@ function changeDefaultProfile(key, value) {
 			  data: JSON.stringify(dataToChange),
 			  dataType: "json"
 			});
+}
+
+function changeProfile(key, value, profile) {
+	profileIndex = profile.parent('.groupBox').attr('profileIndex');
+
+	dataToChange = {
+		"commandType": "set",
+		"dat": {
+			"applications": [
+				{
+					"appId": 1,
+					"userProfiles": []
+				}
+			]
+		}
+	}
+
+	//create an empty array to point to the right profile
+	for (i=0;i<=profileIndex;i++) {
+		dataToChange.dat.applications[0].userProfiles.push({});
+	}
+
+	dataToChange.dat.applications[0].userProfiles[profileIndex]['config'] = {};
+	dataToChange.dat.applications[0].userProfiles[profileIndex]['config'][key] = value;
+
+	$.ajax({
+		  type: "POST",
+		  url: "/set",
+		  contentType: "application/json",
+		  data: JSON.stringify(dataToChange),
+		  dataType: "json"
+		});
+}
+
+function changeProfileMeta(key, value, profile) {
+
+	console.log(value);
+
+	profileIndex = profile.parent('.groupBox').attr('profileIndex');
+
+	dataToChange = {
+		"commandType": "set",
+		"dat": {
+			"applications": [
+				{
+					"appId": 1,
+					"userProfiles": []
+				}
+			]
+		}
+	}
+
+	//create an empty array to point to the right profile
+	for (i=0;i<=profileIndex;i++) {
+		dataToChange.dat.applications[0].userProfiles.push({});
+	}
+
+	dataToChange.dat.applications[0].userProfiles[profileIndex] = {};
+	dataToChange.dat.applications[0].userProfiles[profileIndex][key] = value;
+
+	$.ajax({
+		  type: "POST",
+		  url: "/set",
+		  contentType: "application/json",
+		  data: JSON.stringify(dataToChange),
+		  dataType: "json"
+		});
+}
+
+function changeProfileTime(key, value, profile) {
+	profileIndex = profile.parent('.groupBox').attr('profileIndex');
+
+	dataToChange = {
+		"commandType": "set",
+		"dat": {
+			"applications": [
+				{
+					"appId": 1,
+					"userProfiles": []
+				}
+			]
+		}
+	}
+
+	//create an empty array to point to the right profile
+	for (i=0;i<=profileIndex;i++) {
+		dataToChange.dat.applications[0].userProfiles.push({});
+	}
+
+	dataToChange.dat.applications[0].userProfiles[profileIndex] = {};
+	dataToChange.dat.applications[0].userProfiles[profileIndex][key] = {
+		"hours": hGetHours(value),
+		"minutes": hGetMinutes(value)
+	};
+
+	$.ajax({
+	  type: "POST",
+	  url: "/set",
+	  contentType: "application/json",
+	  data: JSON.stringify(dataToChange),
+	  dataType: "json"
+	});
+
 }
 
 
@@ -260,10 +361,10 @@ function connectToWifi() {
 function createProfile(i) {
 	template = $('#cAppProfile_template').clone();
 	template.attr('id','cAppProfile_' + i);
+	template.attr('profileIndex', i);
 	template.appendTo('#pClock .applicationPane');
 	template.addClass('userProfile');
 	template.find('.heading').text("Nutzerprofil " + (i + 1));
-	template.find('input').prop('disabled', true);
 
 	return template
 }
@@ -348,4 +449,12 @@ function hTimeToString(time) {
 
 	return (hours + ":" + minutes);
 
+}
+
+function hGetHours(strTime) {
+	return parseInt(strTime.split(':')[0]);
+}
+
+function hGetMinutes(strTime) {
+	return parseInt(strTime.split(':')[1]);
 }

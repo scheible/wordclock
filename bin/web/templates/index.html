@@ -100,27 +100,27 @@
 				</div>
 
 				<div id="cAppProfile_template" class="groupBox">
-					<input type="checkbox" id="headingCheckbox"><span class="heading checkable">Nutzerprofil 1</span>
+					<input type="checkbox" id="headingCheckbox" onchange="changeProfileMeta('userProfileEnabled',$(this).is(':checked'),$(this));"><span class="heading checkable">Nutzerprofil 1</span>
 					<br>
 
 					<span class="label">Zeit</span>
-					<input type="time" id="cProfileStart">--<input type="time" id="cProfileEnd">
+					<input type="time" id="cProfileStart" onchange="changeProfileTime('startTime',$(this).val(), $(this));">--<input type="time" id="cProfileEnd" onchange="changeProfileTime('stopTime',$(this).val(), $(this));">
 
 					<span class="label">Buchstaben</span>
 
 					<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
-					<input type="range" min="0" max="255" class="slider" id="bodyBrightness" onchange="changeDefaultProfile('brightnessBody',parseInt($(this).val()));">
+					<input type="range" min="0" max="255" class="slider" id="bodyBrightness" onchange="changeProfile('brightnessBody',parseInt($(this).val()),$(this));">
 
 					<div class="verticalSpacer"></div>
 
 					<span class="labelIcon"><img src="/static/color_picker.png" /></span>
-					<input type="color" id="bodyColor" class="colorPicker" onchange="changeDefaultProfile('colorBodyRGB',hHEX2RGB($(this).val()));">
+					<input type="color" id="bodyColor" class="colorPicker" onchange="changeProfile('colorBodyRGB',hHEX2RGB($(this).val()), $(this));">
 
 					<div class="frame">
 						<span class="label">Rahmen</span>
 
 						<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
-						<input type="range" min="0" max="255" class="slider" id="frameBrightness" onchange="changeDefaultProfile('brightnessBorder',parseInt($(this).val()));">
+						<input type="range" min="0" max="255" class="slider" id="frameBrightness" onchange="changeProfile('brightnessBorder',parseInt($(this).val()));">
 
 						<div class="verticalSpacer"></div>
 
@@ -131,23 +131,23 @@
 						<span class="label">Minuten</span>
 
 						<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
-						<input type="range" min="0" max="255" class="slider" id="minutesBrightness" onchange="changeDefaultProfile('brightnessMinute',parseInt($(this).val()));">
+						<input type="range" min="0" max="255" class="slider" id="minutesBrightness" onchange="changeProfile('brightnessMinute',parseInt($(this).val()));">
 
 						<div class="verticalSpacer"></div>
 
 						<span class="labelIcon"><img src="/static/color_picker.png" /></span>
-						<input type="color" id="minutesColor" onchange="changeDefaultProfile('colorMinuteRGB',hHEX2RGB($(this).val()));">
+						<input type="color" id="minutesColor" onchange="changeProfile('colorMinuteRGB',hHEX2RGB($(this).val()));">
 
 
 						<span class="label">Sekunden</span>
 
 						<span class="labelIcon"><img src="/static/lightbulb-2-512.png" /></span>
-						<input type="range" min="0" max="255" class="slider" id="secondsBrightness" onchange="changeDefaultProfile('brightnessSecond',parseInt($(this).val()));">
+						<input type="range" min="0" max="255" class="slider" id="secondsBrightness" onchange="changeDProfile('brightnessSecond',parseInt($(this).val()));">
 
 						<div class="verticalSpacer"></div>
 
 						<span class="labelIcon"><img src="/static/color_picker.png" /></span>
-						<input type="color" id="secondsColor" onchange="changeDefaultProfile('colorSecondRGB',hHEX2RGB($(this).val()));">
+						<input type="color" id="secondsColor" onchange="changeProfile('colorSecondRGB',hHEX2RGB($(this).val()));">
 					</div>
 
 					<!--<div class="button center" id="test">

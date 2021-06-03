@@ -5,7 +5,7 @@
     "numLedBorderSide": 14,
     "numLedBorderCorner": 9,
     "ledsPerLetter": 2,
-    "brightness": 53,
+    "brightness": 255,
     "defaultProfile": {
         "isSoftTransitionEnabled": true,
         "transitionTimeMs": 1000,
@@ -15,13 +15,13 @@
             255,
             255
         ],
-        "brightnessBody": 113,
+        "brightnessBody": 12,
         "colorBorderRGB": [
             255,
-            255,
+            40,
             255
         ],
-        "brightnessBorder": 0,
+        "brightnessBorder": 207,
         "colorMinuteRGB": [
             255,
             255,
@@ -33,16 +33,61 @@
             255,
             255
         ],
-        "brightnessSecond": 0,
+        "brightnessSecond": 215,
         "isMinuteShown": true,
         "isSecondShown": true,
         "isBorderShown": true
     },
     "userProfiles": [
         {
-            "userProfileEnabled": true,
+            "userProfileEnabled": false,
             "startTime": {
-                "hours": 22,
+                "hours": 14,
+                "minutes": 20,
+                "seconds": 0
+            },
+            "stopTime": {
+                "hours": 15,
+                "minutes": 0,
+                "seconds": 0
+            },
+            "config": {
+                "isSoftTransitionEnabled": true,
+                "transitionTimeMs": 500,
+                "transitionMode": "exp",
+                "colorBodyRGB": [
+                    255,
+                    0,
+                    0
+                ],
+                "brightnessBody": 100,
+                "colorBorderRGB": [
+                    1,
+                    1,
+                    1
+                ],
+                "brightnessBorder": 255,
+                "colorMinuteRGB": [
+                    100,
+                    0,
+                    0
+                ],
+                "brightnessMinute": 255,
+                "colorSecondRGB": [
+                    20,
+                    20,
+                    20
+                ],
+                "brightnessSecond": 255,
+                "isMinuteShown": true,
+                "isSecondShown": false,
+                "isBorderShown": false
+            }
+        },
+        {
+            "userProfileEnabled": false,
+            "startTime": {
+                "hours": 12,
                 "minutes": 38,
                 "seconds": 0
             },
@@ -56,11 +101,56 @@
                 "transitionTimeMs": 500,
                 "transitionMode": "exp",
                 "colorBodyRGB": [
+                    0,
+                    0,
+                    255
+                ],
+                "brightnessBody": 187,
+                "colorBorderRGB": [
+                    1,
+                    1,
+                    1
+                ],
+                "brightnessBorder": 255,
+                "colorMinuteRGB": [
                     100,
                     0,
                     0
                 ],
-                "brightnessBody": 255,
+                "brightnessMinute": 255,
+                "colorSecondRGB": [
+                    20,
+                    20,
+                    20
+                ],
+                "brightnessSecond": 255,
+                "isMinuteShown": true,
+                "isSecondShown": false,
+                "isBorderShown": false
+            }
+        },
+        {
+            "userProfileEnabled": true,
+            "startTime": {
+                "hours": 14,
+                "minutes": 26,
+                "seconds": 0
+            },
+            "stopTime": {
+                "hours": 14,
+                "minutes": 34,
+                "seconds": 0
+            },
+            "config": {
+                "isSoftTransitionEnabled": true,
+                "transitionTimeMs": 500,
+                "transitionMode": "exp",
+                "colorBodyRGB": [
+                    255,
+                    255,
+                    0
+                ],
+                "brightnessBody": 96,
                 "colorBorderRGB": [
                     1,
                     1,
