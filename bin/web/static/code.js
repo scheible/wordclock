@@ -98,7 +98,6 @@ function processClockUserProfile(profileData, i) {
 	profileElement = createProfile(i);
 	profileElement.show();
 
-	profileElement.find("#headingCheckbox").prop("checked", profileData.userProfileEnabled);
 	hEnableToggle(profileElement.find("#profileActiveToggle i"), profileData.userProfileEnabled);
 	
 	profileElement.find("#cProfileStart").val(hTimeToString(profileData.startTime));
