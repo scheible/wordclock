@@ -87,6 +87,7 @@
 				border: 2px solid white;
 				background-color: #444;
 				color: white;
+				position: relative;
 			}
 			.checkable {
 				display: inline-block;
@@ -152,6 +153,23 @@
 			#cAppProfile_template {
 				display:none;
 			}
+			.deleteProfile {
+				display: block;
+				position: absolute;
+				top: 0.3em;
+				right: 0.6em;
+
+			}
+			.enableSlider {
+				display: block;
+				position: absolute;
+				top: 0.3em;
+				right: 3.2em;
+			}
+			.sliderOn {
+				display:none;
+			}
+
 			.frame {
 				display: none;
 			}

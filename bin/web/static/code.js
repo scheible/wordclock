@@ -98,7 +98,9 @@ function processClockUserProfile(profileData, i) {
 	profileElement = createProfile(i);
 	profileElement.show();
 
-	profileElement.find("#headingCheckbox").prop("checked", profileData.userProfileEnabled);	
+	profileElement.find("#headingCheckbox").prop("checked", profileData.userProfileEnabled);
+	hEnableToggle(profileElement.find("#profileActiveToggle i"), profileData.userProfileEnabled);
+	
 	profileElement.find("#cProfileStart").val(hTimeToString(profileData.startTime));
 	profileElement.find("#cProfileEnd").val(hTimeToString(profileData.stopTime));
 
@@ -196,9 +198,6 @@ function changeProfile(key, value, profile) {
 }
 
 function changeProfileMeta(key, value, profile) {
-
-	console.log(value);
-
 	profileIndex = profile.parent('.groupBox').attr('profileIndex');
 
 	dataToChange = {
@@ -264,6 +263,14 @@ function changeProfileTime(key, value, profile) {
 	  dataType: "json"
 	});
 
+}
+
+function enableProfileClick(toggle) {
+	profileIndex = toggle.parent('.groupBox').attr('profileIndex');
+	toggleIcon = toggle.find("i");
+
+	hEnableToggle(toggleIcon, toggleIcon.hasClass('fa-toggle-off'));
+	changeProfileMeta('userProfileEnabled',toggleIcon.hasClass('fa-toggle-on'),toggleIcon.parent());
 }
 
 
@@ -388,6 +395,15 @@ function hLoadDropdownFromServer(dropdownId, url) {
 	    	$(dropdownId).change();
 	    }
 	});		
+}
+function hEnableToggle(toggleElement, state) {
+	if (state) {
+		toggleElement.removeClass('fa-toggle-off');
+		toggleElement.addClass('fa-toggle-on');
+	} else {
+		toggleElement.removeClass('fa-toggle-on');
+		toggleElement.addClass('fa-toggle-off');
+	}
 }
 
 function hRGB2HEX(rgb) {
