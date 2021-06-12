@@ -19,9 +19,14 @@
 			}
 			.menuItem {
 				padding: 0;
-				margin: 0;
-				display: inline-block;
+				margin: 0 auto;
+				display: inline-flex;
 				height: 100%;
+				width: 5em;
+				overflow: hidden;
+				color: white;
+				justify-content: center;
+  				align-items: center;
 			}
 			.menuItem img {
 				height: 100%;
@@ -55,8 +60,11 @@
 			}
 
 			.slider {
-				width: 80%;
+				width: 75%;
 				display: inline-block;
+			}
+			.timepicker {
+				max-width: 30%;
 			}
 			.full {
 				width: 100%;
@@ -79,17 +87,19 @@
 				border: 2px solid white;
 				background-color: #444;
 				color: white;
+				position: relative;
 			}
 			.checkable {
 				display: inline-block;
 				padding-bottom: 0.6em;
 			}
 			.labelIcon {
-				display: inline-block;
-				width: 2em;
-				height: 2em;
+				display: inline-flex;
+				width: 2.5em;
+				height: 2.5em;
 				padding: 0.5em;
-				vertical-align:middle;
+				justify-content: center;
+  				align-items: center;
 			}
 			.labelIcon img {
 				width: 100%;
@@ -131,6 +141,7 @@
 
 			select, input[type="text"], input[type="password"] {
 				min-width: 15em;
+				max-width: 15em;
 				font-size: 1.4em;
 				margin: 0.2em;
 			} 
@@ -142,6 +153,23 @@
 			#cAppProfile_template {
 				display:none;
 			}
-			.frame {
+			.deleteProfile {
+				display: block;
+				position: absolute;
+				top: 0.3em;
+				right: 0.6em;
+
+			}
+			.enableSlider {
+				display: block;
+				position: absolute;
+				top: 0.3em;
+				right: 3.2em;
+			}
+			.sliderOn {
 				display:none;
+			}
+
+			.frame {
+				display: none;
 			}
