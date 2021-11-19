@@ -5,7 +5,7 @@ communication = shared.ipc.WebserverComponentIpcSender()
 
 #jsonString = '{asdfasdf}'
 #jsonString = open("cfg/update.json").read()
-jsonString = open("cfg/update2.json").read()
+jsonString = open("cfg/update3.json").read()
 #jsonString = '{"commandType": "query"}'
 #jsonString = '{"commandType": "remove", "dat": {"userProfiles": {"index": 0}}}'
 

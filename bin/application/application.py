@@ -56,7 +56,7 @@ class Application:
         if ((operationType == NEW_JSON_UPDATE)):
             isUpdated = updateJson(_tempJsonConfig, jsonConfig)
         elif (operationType == NEW_JSON_ADD):
-            pass
+            isUpdated = addSomethingToJson(_tempJsonConfig, jsonConfig)
         elif (operationType == NEW_JSON_REMOVE):
             isUpdated = removeArrayElement(_tempJsonConfig, jsonConfig)
         if (isUpdated):

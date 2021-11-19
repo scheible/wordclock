@@ -51,3 +51,62 @@ def removeArrayElement(obj, update):
 					somethingDone = True
 
 	return somethingDone
+
+def addSomethingToJson(obj, update):
+	## only allow to add very specific fields to the json
+
+	profileTemplate = {
+        "userProfileEnabled": False,
+        "startTime": {
+            "hours": 0,
+            "minutes": 0,
+            "seconds": 0
+        },
+        "stopTime": {
+            "hours": 10,
+            "minutes": 0,
+            "seconds": 0
+        },
+        "config": {
+            "isSoftTransitionEnabled": True,
+            "transitionTimeMs": 500,
+            "transitionMode": "exp",
+            "colorBodyRGB": [
+                255,
+                255,
+                255
+            ],
+            "brightnessBody": 50,
+            "colorBorderRGB": [
+                1,
+                1,
+                1
+            ],
+            "brightnessBorder": 255,
+            "colorMinuteRGB": [
+                100,
+                0,
+                0
+            ],
+            "brightnessMinute": 255,
+            "colorSecondRGB": [
+                20,
+                20,
+                20
+            ],
+            "brightnessSecond": 255,
+            "isMinuteShown": True,
+            "isSecondShown": True,
+            "isBorderShown": True
+        }
+    }
+
+	somethingDone = False
+	if (update.get('userProfiles')):
+		print("json handler: add new user profile")
+		obj['userProfiles'].append(profileTemplate)
+		somethingDone = True
+	else:
+		print("json handler: unknown add command")
+
+	return somethingDone	
