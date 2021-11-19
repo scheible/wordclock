@@ -1,17 +1,11 @@
 {
-	"commandType": "set",
+	"commandType": "remove",
 	"dat": 
 	{
     	"applications": [
         	{
         		"appId": 1,
-        		"defaultProfile":  {
-        			"colorBodyRGB": [
-        				0,
-        				100,
-        				0
-        			]
-        		}
+        		"userProfiles":  {"index": 5}
     		}
 		]
 	}

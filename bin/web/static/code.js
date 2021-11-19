@@ -272,6 +272,55 @@ function enableProfileClick(toggle) {
 	changeProfileMeta('userProfileEnabled',toggleIcon.hasClass('fa-toggle-on'),toggleIcon.parent());
 }
 
+function removeProfileClick(trash) {
+	if (confirm("Profil wirklich löschen?")) {
+		profileIndex = trash.parent('.groupBox').attr('profileIndex');
+
+		dataToChange = {
+			"commandType": "remove",
+			"dat": 
+			{
+	    		"applications": [
+	        		{
+	        			"appId": 1,
+	        			"userProfiles":  {"index": parseInt(profileIndex)}
+	    			}
+				]
+			}
+		}
+
+		$.ajax({
+			  type: "POST",
+			  url: "/set",
+			  contentType: "application/json",
+			  data: JSON.stringify(dataToChange),
+			  dataType: "json"
+			});
+	}
+}
+
+function addProfileClick() {
+	command = {
+		"commandType": "add",
+		"dat": 
+		{
+    		"applications": [
+        		{
+        			"appId": 1,
+        			"userProfiles":  "dummy"
+    			}
+			]
+		}
+	}
+
+	$.ajax({
+		  type: "POST",
+		  url: "/set",
+		  contentType: "application/json",
+		  data: JSON.stringify(command),
+		  dataType: "json"
+		});	
+}
 
 
 
@@ -368,7 +417,7 @@ function createProfile(i) {
 	template = $('#cAppProfile_template').clone();
 	template.attr('id','cAppProfile_' + i);
 	template.attr('profileIndex', i);
-	template.appendTo('#pClock .applicationPane');
+	template.appendTo('#pClock #profiles');
 	template.addClass('userProfile');
 	template.find('.heading').text("Nutzerprofil " + (i + 1));
 
