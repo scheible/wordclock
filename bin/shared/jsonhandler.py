@@ -46,7 +46,7 @@ def removeArrayElement(obj, update):
 
 			elif type(obj[p]) is list:
 				index = update[p]['index']
-				if (index < len(obj[p])):
+				if (type(index) is int and index < len(obj[p])):
 					obj[p].pop(index)
 					somethingDone = True
 

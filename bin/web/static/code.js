@@ -274,7 +274,29 @@ function enableProfileClick(toggle) {
 
 function removeProfileClick(trash) {
 	profileIndex = trash.parent('.groupBox').attr('profileIndex');
-	alert("removing profile " + profileIndex);
+
+	dataToChange = {
+		"commandType": "remove",
+		"dat": 
+		{
+    		"applications": [
+        		{
+        			"appId": 1,
+        			"userProfiles":  {"index": parseInt(profileIndex)}
+    			}
+			]
+		}
+	}
+
+	$.ajax({
+		  type: "POST",
+		  url: "/set",
+		  contentType: "application/json",
+		  data: JSON.stringify(dataToChange),
+		  dataType: "json"
+		});
+
+	//alert("removing profile " + profileIndex);
 }
 
 
