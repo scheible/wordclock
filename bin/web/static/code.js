@@ -272,6 +272,10 @@ function enableProfileClick(toggle) {
 	changeProfileMeta('userProfileEnabled',toggleIcon.hasClass('fa-toggle-on'),toggleIcon.parent());
 }
 
+function removeProfileClick(trash) {
+	profileIndex = trash.parent('.groupBox').attr('profileIndex');
+	alert("removing profile " + profileIndex);
+}
 
 
 

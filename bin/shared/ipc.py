@@ -41,7 +41,7 @@ class WebserverComponentIpcSender():
             rcv = self.__socket.recv()
             return rcv.decode('UTF-8')
         except zmq.error.Again as e:
-            return "error"
+            return "error. no answer from wordclock daemon."
 
 
 class DaemonComponentIpcBindung():
@@ -86,6 +86,11 @@ class DaemonComponentIpcBindung():
         except (json.JSONDecodeError, TypeError):
             self.__returnNotOk(MALFORMED_JSON)
             return MALFORMED_JSON, None
+
+        except:
+            self.__returnNotOk(MALFORMED_JSON)
+            return MALFORMED_JSON, None
+
 
 
     def sendCommand(self, jsonConfig):
