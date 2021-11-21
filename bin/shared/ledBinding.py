@@ -34,6 +34,18 @@ class LedBinding:
         
     def getBrightness(self):
         return self.__strip.getBrightness()
+
+    def clear(self):
+        pixel_ref = self.__strip.getPixels()
+        for i in range(self.__strip.numPixels()):
+            pixel_ref[i] = 0
+
+    def setLedRGB(self, index, r, g, b):
+        self.__strip.setPixelColorRGB(index, r, g, b)
+
+    def show(self):
+        self.__strip.show()
+
         
             
             

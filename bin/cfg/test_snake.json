@@ -1,0 +1,12 @@
+{
+	"commandType": "set",
+	"dat": 
+	{
+    	"applications": [
+        	{
+        		"appId": 2,
+        		"direction": 0
+    		}
+		]
+	}
+}

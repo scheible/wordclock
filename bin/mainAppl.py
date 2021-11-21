@@ -10,7 +10,7 @@ print("Init application manager")
 applicationManager = ApplicationManager()
 
 print ("Start application")
-applicationManager.startApplication(APPLICATION_ID_CLOCK)
+applicationManager.startApplication(APPLICATION_ID_SNAKE)
 
 print("Daemon Component Ipc Bindung")
 daemonComponentIpcBindung = DaemonComponentIpcBindung()
@@ -24,9 +24,9 @@ while True:
     state, data = daemonComponentIpcBindung.receiveCommand(jsonConfig)
     
     if ((state == NEW_JSON_UPDATE) or (state == NEW_JSON_REMOVE) or (state == NEW_JSON_ADD)):
-        applicationManager.modifyJsonConfig(data, state)
-        jsonConfig = applicationManager.getJsonConfig()
-        daemonComponentIpcBindung.sendCommand(jsonConfig)
+        if (applicationManager.modifyJsonConfig(data, state)):
+            jsonConfig = applicationManager.getJsonConfig()
+            daemonComponentIpcBindung.sendCommand(jsonConfig)
     else:
         time.sleep(0.1)
         

@@ -59,6 +59,7 @@ class Application:
             isUpdated = addSomethingToJson(_tempJsonConfig, jsonConfig)
         elif (operationType == NEW_JSON_REMOVE):
             isUpdated = removeArrayElement(_tempJsonConfig, jsonConfig)
+
         if (isUpdated):
              if (self.validateJson(_tempJsonConfig)):
                  self.__jsonConfig = _tempJsonConfig.copy()
@@ -66,6 +67,8 @@ class Application:
                  self.updateJsonCounter = (self.updateJsonCounter + 1) & 0xFF
              else:
                 print("Given json config is not valid!")
+
+        return isUpdated
                 
     def increaseBrightness(self, inc):
         tmpJson = self.__jsonConfig.copy()

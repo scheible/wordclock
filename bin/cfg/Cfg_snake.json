@@ -1,0 +1,23 @@
+{
+    "appId": 2,
+    "brightness": 200,
+    "direction": 0,
+    "length": 3,
+    "playing": false,
+    "border": false,
+    "colorHeadRGB": [
+        255,
+        255,
+        255
+    ],
+    "colorBodyRGB": [
+        255,
+        255,
+        255
+    ],
+    "colorFoodRGB": [
+        0,
+        0,
+        255
+    ]
+}
