@@ -18,23 +18,28 @@ class ApplicationManager():
         self.__jsonClockConfigPath = "cfg/Cfg_Clock.json"
         self.__jsonWs2812bPath = "cfg/Drv_ws2812b.json"
         self.__currentApplication = 0
-        self.__applicationClock = ApplicationClock(self.__jsonClockConfigPath, self.__jsonWs2812bPath)
-        self.__applicationSnake = ApplicationSnake(self.__jsonSnakeConfigPath, self.__jsonWs2812bPath)
+        #self.__applicationClock = ApplicationClock(self.__jsonClockConfigPath, self.__jsonWs2812bPath)
+        #self.__applicationSnake = ApplicationSnake(self.__jsonSnakeConfigPath, self.__jsonWs2812bPath)
 
     def startApplication(self, appId):
 
         # TODO: make sure that only if the current application changes
         #       it is actually restarted
         if (self.__currentApplication != 0):
+            print("ApplicationManager: stopping current app")
             self.__currentApplication.stop()
+            del self.__currentApplication
+            self.__currentApplication = 0
         
         if (appId == APPLICATION_ID_CLOCK):
-            self.__applicationClock.start()
-            self.__currentApplication = self.__applicationClock
+            print("ApplicationManager: starting clock")
+            self.__currentApplication = ApplicationClock(self.__jsonClockConfigPath, self.__jsonWs2812bPath)
+            self.__currentApplication.start()
+
         elif (appId == APPLICATION_ID_SNAKE):
             print("ApplicationManager: starting snake")
-            self.__applicationSnake.start()
-            self.__currentApplication = self.__applicationSnake
+            self.__currentApplication = ApplicationSnake(self.__jsonSnakeConfigPath, self.__jsonWs2812bPath)
+            self.__currentApplication.start()
         else:
             print("ApplicationManager:",appId, "is not a valid application Id, no application could be started.")
             
@@ -64,10 +69,10 @@ class ApplicationManager():
                 appId = applicationJson["appId"]
                 
                 if (appId == APPLICATION_ID_CLOCK): 
-                    isUpdated = self.__applicationClock.modifyJsonConfig(applicationJson, operationType)
+                    isUpdated = self.__currentApplication.modifyJsonConfig(applicationJson, operationType)
 
                 elif(appId == APPLICATION_ID_SNAKE):
-                    isUpdated = self.__applicationSnake.modifyJsonConfig(applicationJson, operationType)
+                    isUpdated = self.__currentApplication.modifyJsonConfig(applicationJson, operationType)
                     
                 else:
                     print("ApplicationManager:", appId, "is not a valid application Id, json could not be set for this application.")

@@ -6,6 +6,7 @@ NO_JSON_AVAILABLE = 2
 MALFORMED_JSON = 3
 NEW_JSON_REMOVE = 4
 NEW_JSON_ADD = 5
+START_APP = 6
 
 class WebserverComponentIpcListener():
     def __init__(self, timeout=5000):
@@ -79,6 +80,11 @@ class DaemonComponentIpcBindung():
                 dataObj = obj['dat']
                 self.__returnOk()
                 return NEW_JSON_ADD, dataObj
+
+            elif (obj['commandType'] == 'startApp'):
+                dataObj = obj['dat']
+                self.__returnOk()
+                return START_APP, dataObj
 
         except zmq.error.Again as e:
             return NO_JSON_AVAILABLE, None
