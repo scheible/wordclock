@@ -82,8 +82,12 @@ class Snake():
 
         if (self.__posX > 10):
             self.__posX = 0
+        if (self.__posX < 0):
+            self.__posX = 10
         if (self.__posY > 9):
             self.__posY = 0
+        if (self.__posY < 0):
+            self.__posY = 9
 
     def changeDirection(self, direction):
         # dir 0 -> up

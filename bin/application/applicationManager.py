@@ -76,9 +76,9 @@ class ApplicationManager():
             
 
     def getJsonConfig(self, appId = APPLICATION_ID_ALL):
-        if (appId == APPLICATION_ID_ALL): 
+        if (appId == APPLICATION_ID_ALL and self.__currentApplication != 0): 
             
-            jsonConfig = self.__applicationClock.getJsonConfig()
+            jsonConfig = self.__currentApplication.getJsonConfig()
             localConfig = jsonConfig.copy()
             localConfig = self.buildGeneralJson(localConfig)
             

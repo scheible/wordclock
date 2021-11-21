@@ -173,3 +173,14 @@
 			.frame {
 				display: none;
 			}
+
+			#pSnake #joyStick {
+				position: relative;
+				left: 50%;
+			    margin-right: -50%;
+			    transform: translate(-50%, 0) 
+			}
+			#pSnake #joyStick .button {
+				width:  5em;
+				height:  5em;
+			}

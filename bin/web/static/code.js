@@ -324,6 +324,32 @@ function addProfileClick() {
 
 
 
+// ----- Snake button handlers -----
+function snakeDirectionClick(direction) {
+	dataToChange = {
+			"commandType": "set",
+			"dat": 
+			{
+	    		"applications": [
+	        		{
+	        			"appId": 2,
+	        			"direction":  parseInt(direction)
+	    			}
+				]
+			}
+		}
+
+		$.ajax({
+			  type: "POST",
+			  url: "/set",
+			  contentType: "application/json",
+			  data: JSON.stringify(dataToChange),
+			  dataType: "json"
+			});
+}
+
+
+
 // ---- View Management -----------------------------------
 
 function stopAllApps() {
