@@ -27,6 +27,7 @@ while True:
         if (applicationManager.modifyJsonConfig(data, state)):
             jsonConfig = applicationManager.getJsonConfig()
             daemonComponentIpcBindung.sendCommand(jsonConfig)
+            
     elif (state == START_APP):
         appId = data.get('appId')
         applicationManager.startApplication(appId)

@@ -8,8 +8,6 @@ $(document).ready(function(){
 	$('#mSnake').click(menuOnclickSnake);
 	$('#mTimezone').click(menuOnclickTimezone);
 
-	$('#btnClockStart').click(appClockStart);
-
 	stopAllApps();;
 	initState();
 	longPolling();
@@ -322,6 +320,24 @@ function addProfileClick() {
 		});	
 }
 
+function startAppClick(appId) {
+	dataToChange = {
+			"commandType": "startApp",
+			"dat": 
+			{
+	    		"appId": parseInt(appId)
+			}
+		}
+
+		$.ajax({
+			  type: "POST",
+			  url: "/set",
+			  contentType: "application/json",
+			  data: JSON.stringify(dataToChange),
+			  dataType: "json"
+			});	
+}
+
 
 
 // ----- Snake button handlers -----
@@ -420,9 +436,6 @@ function setTimezone() {
 		}).done(function() {alert("Zeitzone gesetzt");});
 }
 
-function appClockStart() {
-	alert("starting clock application... (not implemented yet)");
-}
 
 function connectToWifi() {
 	data = {'ssid': $('#wifiName').val(), 'pw': $('#wifiPassword').val()};
