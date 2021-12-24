@@ -10,16 +10,17 @@ print("Init application manager")
 applicationManager = ApplicationManager()
 
 print ("Start application")
-applicationManager.startApplication(APPLICATION_ID_CLOCK)
+#applicationManager.startApplication(APPLICATION_ID_CLOCK)
 
 print("Daemon Component Ipc Bindung")
 daemonComponentIpcBindung = DaemonComponentIpcBindung()
 
 jsonConfig = applicationManager.getJsonConfig()
 daemonComponentIpcBindung.sendCommand(jsonConfig)
-
+lasttime = 0
+framecount = 0
 while True:
-    
+    applicationManager.startApplication(APPLICATION_ID_CLOCK)
     jsonConfig = applicationManager.getJsonConfig()
     state, data = daemonComponentIpcBindung.receiveCommand(jsonConfig)
     
@@ -27,11 +28,13 @@ while True:
         applicationManager.modifyJsonConfig(data, state)
         jsonConfig = applicationManager.getJsonConfig()
         daemonComponentIpcBindung.sendCommand(jsonConfig)
-    else:
-        time.sleep(0.1)
-        
-        
-        
+
+    framecount = framecount + 1
+    if (time.time() - lasttime > 1):
+        lasttime = time.time()
+        print("Frame count: " + str(framecount))
+        framecount = 0
+    
      
 
 

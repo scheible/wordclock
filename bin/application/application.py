@@ -91,7 +91,8 @@ class Application:
         return True
     
     def start(self):
-        self.__application_thread.start()
+        #self.__application_thread.start()
+        self.applicationThread(False, False, self.__jsonConfig)
             
     def stop(self):
         print("Request application thread to stop")
@@ -99,19 +100,19 @@ class Application:
 
     def applicationThread(self, stop_threads, updateJsonCounter, jsonConfig):
         oldUpdateCounter = 0
-        print("Start runner")
-        while(True):
+        self.applicationTask(jsonConfig, False)
+        while(False):
             
-            if stop_threads():
+            if stop_threads:
                 print("Application thread will stop")
                 break                
             
-            if (oldUpdateCounter != updateJsonCounter()):
+            if (oldUpdateCounter != updateJsonCounter):
                 print("Detect json Update")
                 oldUpdateCounter = updateJsonCounter()
-                self.applicationTask(jsonConfig(), True)
+                self.applicationTask(jsonConfig, True)
             else:
-                self.applicationTask(jsonConfig(), False)
+                self.applicationTask(jsonConfig, False)
             
 
         

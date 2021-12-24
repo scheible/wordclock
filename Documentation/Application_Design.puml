@@ -53,38 +53,46 @@ namespace "Word_O_Clock" as top {
             class ClockFrontend {
                 +showLedMatrix(ledMatrix)
             }
-            class LedBinding {
-                +showLedMatrix(ledMatrix)
-            }
 
             top.Application.Application <|-- top.Application.Clock.ApplicationClock
             ApplicationClock *-- ClockBackend
             ApplicationClock *-- ClockFrontend
-            ClockFrontend *-- LedBinding
         }
 
         namespace Snake {
             class ApplicationSnake
             top.Application.Application <|-- top.Application.Snake.ApplicationSnake
         }
+
+        namespace LedServer {
+          class LedServer {
+            setLedMatrix(ledMatrix)
+            setOverrideMask(ledMatrix)
+            enableOverrideMask()
+            disableOverrideMask()
+          }
+          class LedBinding
+          class LedMatrix {
+            +clockToList()
+            +borderToList()
+              ---
+              +ledGrid
+              +ledBorder
+          }
+          LedServer *-- LedBinding
+          LedServer --> LedMatrix
+        }
+
+        top.Application.Clock.ClockFrontend *-- top.Application.LedServer.LedServer
+        top.Application.Snake.ApplicationSnake *-- top.Application.LedServer.LedServer
     }
 
     top.Application.ApplicationManager *--- top.Application.Clock.ApplicationClock
     top.Application.ApplicationManager *--- top.Application.Snake.ApplicationSnake
 
-    namespace DataTypes {
-        class LedMatrix {
-            +clockToList()
-            +borderToList()
-        }
-    }
-
-
     Daemon *-- env.IpcBinding
     Daemon *- top.Inputs.ButtonReader
     Daemon *-- top.Application.ApplicationManager
-
-    Daemon -[hidden]- top.DataTypes.LedMatrix
 
 
 }

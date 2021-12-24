@@ -2,8 +2,10 @@
     "appId": 1,
     "numLetterVertical": 10,
     "numLetterHorizontal": 11,
-    "numLedBorderSide": 14,
+    "numLedBorderSideTopBottom": 13,
+    "numLedBorderSideLeftRight": 11,
     "numLedBorderCorner": 9,
+    "numLedBorderCornerOffset": 0,
     "ledsPerLetter": 2,
     "brightness": 255,
     "defaultProfile": {
@@ -15,19 +17,19 @@
             255,
             255
         ],
-        "brightnessBody": 12,
+        "brightnessBody": 255,
         "colorBorderRGB": [
-            255,
-            40,
-            255
+            0,
+            0,
+            128
         ],
-        "brightnessBorder": 207,
+        "brightnessBorder": 128,
         "colorMinuteRGB": [
             255,
             255,
             255
         ],
-        "brightnessMinute": 186,
+        "brightnessMinute": 255,
         "colorSecondRGB": [
             255,
             255,

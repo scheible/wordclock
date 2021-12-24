@@ -50,11 +50,11 @@ class DaemonComponentIpcBindung():
         self.__socket = self.__context.socket(zmq.REP)
         self.__socket.RCVTIMEO = 5000
         self.__socket.setsockopt(zmq.LINGER, 5000)
-        self.__socket.bind('tcp://*:1234')
+        #self.__socket.bind('tcp://*:1234')
 
         self.__pubContext = zmq.Context()
         self.__pubSocket = self.__pubContext.socket(zmq.PUB)
-        self.__pubSocket.bind("tcp://*:6666")
+        #self.__pubSocket.bind("tcp://*:6666")
 
 
     def receiveCommand(self, state):

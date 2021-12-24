@@ -5,10 +5,12 @@ Created on Sat Feb 13 09:59:35 2021
 @author: andre
 """
 import time
+import os
 startTime1 = time.time()
-
+import json
 import numpy as np
-from time import tzset
+if os.name != 'nt':
+    from time import tzset
 endTime1 = time.time()
 print ("StartUp took1: ", round((endTime1 - startTime1) * 1000), "ms")
 
@@ -33,6 +35,7 @@ UPDATE_MINUTE = 16
 
 SECOND_ELEMENT = 40
 
+
 class LedMatrix:
     
     def __init__(self, jsonConfig):
@@ -43,9 +46,11 @@ class LedMatrix:
         self.__matrixBodyState = np.zeros((self.__num_vertical_fields, self.__num_horizontal_fields), dtype=float)
         
          # Set Border Body
-        self.__num_border_elements = 4 * jsonConfig["numLedBorderSide"] + 4 * jsonConfig["numLedBorderCorner"]
-        self.__num_border_side = jsonConfig["numLedBorderSide"]
+        self.__num_border_elements = 2 * jsonConfig["numLedBorderSideTopBottom"] + 2 * jsonConfig["numLedBorderSideLeftRight"] + 4 * jsonConfig["numLedBorderCorner"]
+        self.__num_border_side_topBottom = jsonConfig["numLedBorderSideTopBottom"]
+        self.__num_border_side_leftRight = jsonConfig["numLedBorderSideLeftRight"]
         self.__num_border_corner = jsonConfig["numLedBorderCorner"]
+        self.__num_border_corner_offset = jsonConfig["numLedBorderCornerOffset"]
         self.__borderBody = np.zeros(self.__num_border_elements, dtype=float)
         self.__minuteBody = np.zeros(self.__num_border_elements, dtype=float)
         
@@ -70,22 +75,12 @@ class LedMatrix:
         
         
         # Store Lookup Table for seconds
-            
         self.T = 4
         self.dT = 10e-3
-        mean = 0
-        standard_deviation = self.T / 8
-        
-        x_values = np.arange(-self.T / 2, self.T / 2 + self.dT, self.dT)
-        #y_values = norm(mean, standard_deviation)
-        #y_values 
-        #y_values = y_values.pdf(x_values)
-        #self.secondWeightLookup  = np.round(y_values , 3)
-        
-        
+  
+        # Load Gaus lookup table
         self.secondWeightLookup = np.load("application/clock/lookupTableGaus.npy")
-        self.ledListToSeconds = 60 / 92 * ((np.arange(92) - self.__num_border_side // 2) % 92)
-        
+        self.ledListToSeconds = 60 / self.__num_border_elements * ((np.arange(self.__num_border_elements) - self.__num_border_side_topBottom // 2 - self.__num_border_corner // 2 + self.__num_border_corner_offset) % self.__num_border_elements)
         
         # Init lookup table
         ledsPerElement = jsonConfig["ledsPerLetter"]
@@ -100,12 +95,50 @@ class LedMatrix:
                     self.__led_look_up_table[i * numLedsVertical + j, 1] = (numLedsVertical - j - 1) // ledsPerElement
                 self.__led_look_up_table[i * numLedsVertical + j, 0] = self.__num_horizontal_fields - i - 1
                 
+                
+        
+        numBorderTopBottom = self.__num_border_side_topBottom
+        numBorderLeftRight = self.__num_border_side_leftRight
+        numBorderCorner = self.__num_border_corner
+        numBorderOffset = self.__num_border_corner_offset
+        numBorderElements = self.__num_border_elements
+        
+        
+        
+        self.minutesLookupTable = np.zeros((4, self.__num_border_elements), dtype=bool)
+            
+        # Calculate IDs for minute + 1
+        startIdx = (numBorderOffset + numBorderTopBottom + numBorderCorner // 2 + 1) % numBorderElements
+        endIdx = (startIdx + numBorderCorner) % numBorderElements
+        self.minutesLookupTable[0, :] = self.__lookUpFromRange(startIdx, endIdx, numBorderElements)
+        
+        
+        # Calculate IDs for minute + 2
+        startIdx = (endIdx + numBorderLeftRight) % numBorderElements
+        endIdx = (startIdx + numBorderCorner) % numBorderElements
+        self.minutesLookupTable[1, :] = self.__lookUpFromRange(startIdx, endIdx, numBorderElements)
+        
+        # Calculate IDs for minute + 3
+        startIdx = (endIdx + numBorderTopBottom) % numBorderElements
+        endIdx = (startIdx + numBorderCorner) % numBorderElements
+        self.minutesLookupTable[2, :] = self.__lookUpFromRange(startIdx, endIdx, numBorderElements)
+        
+        # Calculate IDs for minute + 4
+        startIdx = (endIdx + numBorderLeftRight) % numBorderElements
+        endIdx = (startIdx + numBorderCorner) % numBorderElements
+        self.minutesLookupTable[3, :] = self.__lookUpFromRange(startIdx, endIdx, numBorderElements)
+                
+                
+                
+                
+                
+                
+                
         # Set Lookup Matrix to decide between border and minute fields
         self.minuteOrBorder = BORDER_ELEMENT * np.ones(self.__num_border_elements, dtype=float)
-        for cornerElement in range(1, 5):
-            startCorner = cornerElement * self.__num_border_side + (cornerElement - 1) * self.__num_border_corner
-            endCorner = startCorner + self.__num_border_corner
-            self.minuteOrBorder[startCorner : endCorner] = MINUTE_ELEMENT
+        for cornerElement in range(0, 4):
+            self.minuteOrBorder[self.minutesLookupTable[cornerElement, :]] = MINUTE_ELEMENT
+            
         bodyList = self.__matrixBodyState[self.__led_look_up_table[:, 1], self.__led_look_up_table[:, 0]].copy()
         self.minuteOrBorder = np.concatenate((bodyList, self.minuteOrBorder))
 
@@ -244,18 +277,25 @@ class LedMatrix:
     def updateMinuteField(self, minute):
         
         if (self.profile["brightnessMinute"]):
-            for cornerElement in range(1, minute + 1):
-                startCorner = cornerElement * self.__num_border_side + (cornerElement - 1) * self.__num_border_corner
+            for cornerElement in range(0, minute):
+                startCorner = cornerElement * self.__num_border_side_topBottom + (cornerElement - 1) * self.__num_border_corner
                 endCorner = startCorner + self.__num_border_corner
 
-                if (self.__minuteBody[startCorner] == TEMP_ENABLE_MINUTE):
-                    self.__minuteBody[startCorner : endCorner] = ENABLED_MINUTE
+                if (cornerElement < (minute - 1)):
+                    self.__minuteBody[self.minutesLookupTable[cornerElement, :]] = ENABLED_MINUTE
                 else:
-                    self.__minuteBody[startCorner : endCorner] = ENABLE_MINUTE
+                    self.__minuteBody[self.minutesLookupTable[cornerElement, :]] = ENABLE_MINUTE
 
-
-
+    def __lookUpFromRange(self, startIdx, endIdx, arrayLength):
+        borderIdxs = np.arange(arrayLength)
         
+        if (startIdx < endIdx):
+            lookupTable = (borderIdxs >= startIdx) & (borderIdxs < endIdx)
+        else:
+            lookupTable = (borderIdxs < endIdx) | (borderIdxs >= startIdx)
+
+        return lookupTable 
+    
 from datetime import datetime
 class ClockBackend:
     
@@ -283,7 +323,8 @@ class ClockBackend:
     def buildLedMatrixFromCurrentTime(self, jsonConfig, updateJson=False):
         
        # Call tzset() to check if timezone was changed.
-       tzset()
+       if os.name != 'nt':
+           tzset()
        
        # Get current time
        currentTime = datetime.now()
@@ -482,4 +523,4 @@ class ClockBackend:
     def __ZWOELF(self):
         self.__ledMatrix.enableLetters(8, 6, 5)
     
-    
+

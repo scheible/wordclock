@@ -7,7 +7,10 @@ Created on Sat Feb 13 09:59:25 2021
 import time
 startTime2 = time.time()
 from application.clock.ledMatrix import *
-from shared.ledBinding import * 
+if os.name == 'nt':
+    from shared.ledBinding_Mock import * 
+else:
+    from shared.ledBinding import * 
 endTime2 = time.time()
 print ("StartUp took2: ", round((endTime2 - startTime2) * 1000), "ms")
 class ClockFrontend:
@@ -15,7 +18,7 @@ class ClockFrontend:
     def __init__(self, jsonConfig, jsonWs2812b):
         self.__oldLedMatrix = -1
         self.__lastTimeStamp = round(time.time() * 1000)
-        self.numberOfLeds = 312
+        self.numberOfLeds = 304
         self.__ledBinding = LedBinding(jsonWs2812b, self.numberOfLeds, jsonConfig["brightness"] )
         
         
