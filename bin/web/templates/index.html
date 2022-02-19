@@ -67,39 +67,39 @@
 						<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
 						<input type="color" id="bodyColor" class="colorPicker" onchange="changeDefaultProfile('colorBodyRGB',hHEX2RGB($(this).val()));">
 
-						<div class="frame">
-							<span class="label">Rahmen</span>
 
-							<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
-							<input type="range" min="0" max="255" class="slider" id="frameBrightness" onchange="changeDefaultProfile('brightnessBorder',parseInt($(this).val()));">
+						<span class="label">Rahmen</span>
 
-							<div class="verticalSpacer"></div>
+						<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
+						<input type="range" min="0" max="255" class="slider" id="frameBrightness" onchange="changeDefaultProfile('brightnessBorder',parseInt($(this).val()));">
 
-							<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
-							<input type="color" id="frameColor" onchange="changeDefaultProfile('colorBorderRGB',hHEX2RGB($(this).val()));">
+						<div class="verticalSpacer"></div>
 
-
-							<span class="label">Minuten</span>
-
-							<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
-							<input type="range" min="0" max="255" class="slider" id="minutesBrightness" onchange="changeDefaultProfile('brightnessMinute',parseInt($(this).val()));">
-
-							<div class="verticalSpacer"></div>
-
-							<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
-							<input type="color" id="minutesColor" onchange="changeDefaultProfile('colorMinuteRGB',hHEX2RGB($(this).val()));">
+						<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
+						<input type="color" id="frameColor" onchange="changeDefaultProfile('colorBorderRGB',hHEX2RGB($(this).val()));">
 
 
-							<span class="label">Sekunden</span>
+						<span class="label">Minuten</span>
 
-							<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
-							<input type="range" min="0" max="255" class="slider" id="secondsBrightness" onchange="changeDefaultProfile('brightnessSecond',parseInt($(this).val()));">
+						<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
+						<input type="range" min="0" max="255" class="slider" id="minutesBrightness" onchange="changeDefaultProfile('brightnessMinute',parseInt($(this).val()));">
 
-							<div class="verticalSpacer"></div>
+						<div class="verticalSpacer"></div>
 
-							<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
-							<input type="color" id="secondsColor" onchange="changeDefaultProfile('colorSecondRGB',hHEX2RGB($(this).val()));">
-						</div>
+						<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
+						<input type="color" id="minutesColor" onchange="changeDefaultProfile('colorMinuteRGB',hHEX2RGB($(this).val()));">
+
+
+						<span class="label">Sekunden</span>
+
+						<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
+						<input type="range" min="0" max="255" class="slider" id="secondsBrightness" onchange="changeDefaultProfile('brightnessSecond',parseInt($(this).val()));">
+
+						<div class="verticalSpacer"></div>
+
+						<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
+						<input type="color" id="secondsColor" onchange="changeDefaultProfile('colorSecondRGB',hHEX2RGB($(this).val()));">
+
 					</div>
 
 					<div id="cAppProfile_template" class="groupBox">
@@ -123,39 +123,37 @@
 						<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
 						<input type="color" id="bodyColor" class="colorPicker" onchange="changeProfile('colorBodyRGB',hHEX2RGB($(this).val()), $(this));">
 
-						<div class="frame">
-							<span class="label">Rahmen</span>
+						<span class="label">Rahmen</span>
 
-							<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
-							<input type="range" min="0" max="255" class="slider" id="frameBrightness" onchange="changeProfile('brightnessBorder',parseInt($(this).val()));">
+						<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
+						<input type="range" min="0" max="255" class="slider" id="frameBrightness" onchange="changeProfile('brightnessBorder',parseInt($(this).val()));">
 
-							<div class="verticalSpacer"></div>
+						<div class="verticalSpacer"></div>
 
-							<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
-							<input type="color" id="frameColor" onchange="changeDefaultProfile('colorBorderRGB',hHEX2RGB($(this).val()));">
-
-
-							<span class="label">Minuten</span>
-
-							<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
-							<input type="range" min="0" max="255" class="slider" id="minutesBrightness" onchange="changeProfile('brightnessMinute',parseInt($(this).val()));">
-
-							<div class="verticalSpacer"></div>
-
-							<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
-							<input type="color" id="minutesColor" onchange="changeProfile('colorMinuteRGB',hHEX2RGB($(this).val()));">
+						<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
+						<input type="color" id="frameColor" onchange="changeDefaultProfile('colorBorderRGB',hHEX2RGB($(this).val()));">
 
 
-							<span class="label">Sekunden</span>
+						<span class="label">Minuten</span>
 
-							<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
-							<input type="range" min="0" max="255" class="slider" id="secondsBrightness" onchange="changeDProfile('brightnessSecond',parseInt($(this).val()));">
+						<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
+						<input type="range" min="0" max="255" class="slider" id="minutesBrightness" onchange="changeProfile('brightnessMinute',parseInt($(this).val()));">
 
-							<div class="verticalSpacer"></div>
+						<div class="verticalSpacer"></div>
 
-							<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
-							<input type="color" id="secondsColor" onchange="changeProfile('colorSecondRGB',hHEX2RGB($(this).val()));">
-						</div>
+						<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
+						<input type="color" id="minutesColor" onchange="changeProfile('colorMinuteRGB',hHEX2RGB($(this).val()));">
+
+
+						<span class="label">Sekunden</span>
+
+						<span class="labelIcon"><i class="fa fa-lightbulb-o fa-2x"></i></span>
+						<input type="range" min="0" max="255" class="slider" id="secondsBrightness" onchange="changeDProfile('brightnessSecond',parseInt($(this).val()));">
+
+						<div class="verticalSpacer"></div>
+
+						<span class="labelIcon"><i class="fa fa-eyedropper fa-2x"></i></span>
+						<input type="color" id="secondsColor" onchange="changeProfile('colorSecondRGB',hHEX2RGB($(this).val()));">
 
 						<!--<div class="button center" id="test">
 							löschen
